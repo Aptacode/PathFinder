@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
+using Aptacode.PathFinder;
 
 namespace PathFinder.Demo
 {
@@ -18,7 +19,7 @@ namespace PathFinder.Demo
                 new Obstacle(Guid.NewGuid(), new Vector2(75, 75), new Vector2(10, 10))
             );
 
-            var pathFinder = new PathFinder();
+            var pathFinder = new Aptacode.PathFinder.PathFinder();
             var path = pathFinder.FindPath(map);
             timer.Stop();
 
