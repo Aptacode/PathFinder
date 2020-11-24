@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 
-namespace PathFinder
+namespace Aptacode.PathFinder
 {
     public class PathFinder
     {

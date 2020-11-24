@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace PathFinder
+namespace Aptacode.PathFinder
 {
     public static class NodeExtensions
     {
