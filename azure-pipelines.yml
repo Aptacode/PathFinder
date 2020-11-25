@@ -29,12 +29,7 @@ steps:
   displayName: 'Use .NET 5'
   inputs:
     version: 5.x
-- task: DotNetCoreCLI@2
-  displayName: 'Restore'
-  inputs:
-    command: 'restore'
-    feedsToUse: 'select'
-    vstsFeed: '$(nugetFeet)'
+
 - task: DotNetCoreCLI@2
   displayName: 'Build'
   inputs:
