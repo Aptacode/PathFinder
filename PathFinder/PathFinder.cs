@@ -42,22 +42,14 @@ namespace Aptacode.PathFinder
                         continue;
                     }
 
-                    var currentBestNode = openNodes.FirstOrDefault(x => x.Position == node.Position);
-
-                    if (currentBestNode == null) //After further evaluation one of the open nodes may be better
+                    var currentBestNode = openNodes.Find(x => x.Position == node.Position);
+                    if (currentBestNode?.CostDistance > currentNode.CostDistance)
                     {
-                        openNodes.Add(node);
+                        continue;
                     }
-                    else//this is a brand new node
-                    {
-                        if (currentBestNode.CostDistance > currentNode.CostDistance)
-                        {
-                            continue;
-                        }
 
-                        openNodes.Remove(currentBestNode);
-                        openNodes.Add(node);
-                    }
+                    openNodes.Remove(currentBestNode);
+                    openNodes.Add(node);
                 }
             }
 
