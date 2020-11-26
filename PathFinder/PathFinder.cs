@@ -4,9 +4,9 @@ using System.Numerics;
 
 namespace Aptacode.PathFinder
 {
-    public class PathFinder
+    public static class PathFinder
     {
-        public List<Vector2> FindPath(Map map)
+        public static IEnumerable<Vector2> FindPath(this Map map)
         {
             var openNodes = new List<Node> {map.Start};
 
