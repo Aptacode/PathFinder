@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -14,7 +15,7 @@ namespace Aptacode.PathFinder
 
             while (openNodes.Count > 0)
             {
-                var currentNode = openNodes.OrderBy(x => x.CostDistance).First();
+                var currentNode = openNodes.OrderBy(x => x.CostDistance).ThenBy(x => x.Cost).First();
                 if (currentNode.Position == map.End.Position) //if we've reached the end node a path has been found.
                 {
                     var node = currentNode;
@@ -41,20 +42,20 @@ namespace Aptacode.PathFinder
                         continue;
                     }
 
-                    if (openNodes.Any(x => x.Position == node.Position)
-                    ) //After further evaluation one of the open nodes may be better
+                    var currentBestNode = openNodes.FirstOrDefault(x => x.Position == node.Position);
+
+                    if (currentBestNode == null) //After further evaluation one of the open nodes may be better
                     {
-                        var currentBestNode = openNodes.First(x => x.Position == node.Position);
-                        if (currentBestNode.CostDistance <= currentNode.CostDistance)
+                        openNodes.Add(node);
+                    }
+                    else//this is a brand new node
+                    {
+                        if (currentBestNode.CostDistance > currentNode.CostDistance)
                         {
                             continue;
                         }
 
                         openNodes.Remove(currentBestNode);
-                        openNodes.Add(node);
-                    }
-                    else //this is a brand new node
-                    {
                         openNodes.Add(node);
                     }
                 }

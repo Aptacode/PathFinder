@@ -37,7 +37,7 @@ namespace Aptacode.PathFinder
                 }
             }
 
-            var diagonalNeighbourCost = currentNode.Cost + Root2;
+            var diagonalNeighbourCost = currentNode.Cost + 1.42f;
             foreach (var neighbour in DiagonalNeighbours)
             {
                 var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, diagonalNeighbourCost);
@@ -53,8 +53,7 @@ namespace Aptacode.PathFinder
             float childCost)
         {
             var position = currentNode.Position + neighbour;
-            var delta = map.Dimensions - position;
-            if (delta.X < 0 || delta.Y < 0 || delta.X > map.Dimensions.X || delta.Y > map.Dimensions.Y ||
+            if (position.X < 0 || position.Y < 0 || position.X > map.Dimensions.X || position.Y > map.Dimensions.Y ||
                 map.HasCollision(position))
             {
                 return Node.Empty;

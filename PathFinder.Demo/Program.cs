@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -10,26 +12,16 @@ using SixLabors.ImageSharp.Processing;
 
 namespace PathFinder.Demo
 {
-    public class PathImageOutput
+    public static class ImageGenerator
     {
-        public void Draw(IEnumerable<PathFinderResult> results)
+        public static Image Generate(this PathFinderResult result)
         {
-            foreach (var result in results)
-            {
-                Draw(result);
-            }
-        }
-
-        public void Draw(PathFinderResult result)
-        {
-            Directory.CreateDirectory("output");
-
-            using Image image =
-                new Image<Rgba32>((int) result.Map.Dimensions.X * 10, (int) result.Map.Dimensions.Y * 10);
+            Image image =
+                new Image<Rgba32>((int)result.Map.Dimensions.X * 10, (int)result.Map.Dimensions.Y * 10);
             var options = new ShapeGraphicsOptions();
 
 
-            IPen gridPen = Pens.Solid(Color.LightGray, 1);
+            IPen gridPen = Pens.Solid(Color.DarkGray, 0.5f);
 
             var gridLines = new List<(PointF, PointF)>();
             for (var y = 1; y < result.Map.Dimensions.Y - 1; y++)
@@ -42,9 +34,9 @@ namespace PathFinder.Demo
                 gridLines.Add((new PointF(x * 10, 1), new PointF(x * 10, result.Map.Dimensions.Y * 10 - 1)));
             }
 
-            foreach (var valueTuple in gridLines)
+            foreach (var (start, end) in gridLines)
             {
-                image.Mutate(x => x.DrawLines(gridPen, valueTuple.Item1, valueTuple.Item2));
+                image.Mutate(x => x.DrawLines(gridPen, start, end));
             }
 
             IBrush brush = Brushes.Solid(Color.Gray);
@@ -59,8 +51,29 @@ namespace PathFinder.Demo
 
             var path = result.Path.Select(p => new PointF(p.X * 10, p.Y * 10)).ToArray();
             image.Mutate(x => x.DrawLines(pen, path));
+            var font = SystemFonts.CreateFont("Arial", 20, FontStyle.Bold);
+            image.Mutate(x => x.DrawText(result.ToString(), font, Color.Black, new PointF(10, 10)));
 
+            return image;
+        }
+    }
+    public class PathImageOutput
+    {
+        public void Output(IEnumerable<PathFinderResult> results)
+        {
+            foreach (var result in results)
+            {
+                Output(result);
+            }
+        }
+
+        public void Output(PathFinderResult result)
+        {
+            Directory.CreateDirectory("output");
+
+            var image = result.Generate();
             image.Save($"output/{result.Name}.png");
+            image.Dispose();
         }
     }
 
@@ -79,7 +92,7 @@ namespace PathFinder.Demo
                 if (string.Equals(answer?.ToUpper(), "O", StringComparison.Ordinal))
                 {
                     var imageOutput = new PathImageOutput();
-                    imageOutput.Draw(results.First());
+                    imageOutput.Output(results.First());
                     running = false;
                 }
 
