@@ -49,7 +49,7 @@ namespace PathFinder.Demo
             _pathFinderResults.Add(pathFinderResults);
         }
 
-        public void RunAll(int times)
+        public List<List<PathFinderResult>> RunAll(int times)
         {
             var timer = new Stopwatch();
 
@@ -99,6 +99,8 @@ namespace PathFinder.Demo
             Console.WriteLine("====================================================================");
             Console.WriteLine($"Total Elapsed: {timer.ElapsedMilliseconds}ms");
             Console.WriteLine("====================================================================");
+
+            return _pathFinderResults;
         }
 
         public PathFinderResult Run(string name, Map map)
@@ -110,7 +112,7 @@ namespace PathFinder.Demo
 
             var totalLength = path.Zip(path.Skip(1), (a, b) => a - b).Select(s => s.Length()).Sum();
 
-            return new PathFinderResult(name, timer.ElapsedMilliseconds, (int) totalLength, path.Count);
+            return new PathFinderResult(name, map, path, timer.ElapsedMilliseconds, (int) totalLength, path.Count);
         }
     }
 }
