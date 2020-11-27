@@ -37,7 +37,7 @@ namespace Aptacode.PathFinder
                 }
             }
 
-            var diagonalNeighbourCost = currentNode.Cost + 1.42f;
+            var diagonalNeighbourCost = currentNode.Cost + Root2;
             foreach (var neighbour in DiagonalNeighbours)
             {
                 var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, diagonalNeighbourCost);

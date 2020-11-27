@@ -86,7 +86,6 @@ namespace Aptacode.PathFinder
             _all.Remove(item);
             return true;
         }
-
         public IEnumerable<TItem> GetAll() => _all;
     }
 }
