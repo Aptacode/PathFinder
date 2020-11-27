@@ -38,7 +38,7 @@ namespace Aptacode.PathFinder
                 closedNodes[currentNode.Position] = currentNode;
                 openNodes.Remove(currentNode.Position);
 
-                foreach (var node in currentNode.GetNeighbours(map, map.End))
+                foreach (var node in currentNode.GetJumpPointSearchNeighbours(map, map.End))
                 {
                     if (closedNodes.ContainsKey(node.Position)
                     ) //Don't need to recheck node if it's already be looked at

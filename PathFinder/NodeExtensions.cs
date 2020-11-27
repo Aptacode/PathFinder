@@ -38,6 +38,31 @@ namespace Aptacode.PathFinder
 
         public static IEnumerable<Node> GetNeighbours(this Node currentNode, Map map, Node targetNode)
         {
+            var straightNeighbourCost = currentNode.Cost + 1;
+            foreach (var neighbour in StraightNeighbours)
+            {
+                var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, straightNeighbourCost);
+
+                if (neighbourNode != Node.Empty)
+                {
+                    yield return neighbourNode;
+                }
+            }
+
+            var diagonalNeighbourCost = currentNode.Cost + Root2;
+            foreach (var neighbour in DiagonalNeighbours)
+            {
+                var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, diagonalNeighbourCost);
+
+                if (neighbourNode != Node.Empty)
+                {
+                    yield return neighbourNode;
+                }
+            }
+        } 
+        
+        public static IEnumerable<Node> GetJumpPointSearchNeighbours(this Node currentNode, Map map, Node targetNode)
+        {
             var successors = new List<Node>();
             var forcedNeighbourCheck = Vector2.Zero;
             foreach (var neighbour in Neighbours)
@@ -55,28 +80,6 @@ namespace Aptacode.PathFinder
             }
 
             return successors;
-
-            //var straightNeighbourCost = currentNode.Cost + 1;
-            //foreach (var neighbour in StraightNeighbours)
-            //{
-            //    var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, straightNeighbourCost);
-
-            //    if (neighbourNode != Node.Empty)
-            //    {
-            //        yield return neighbourNode;
-            //    }
-            //}
-
-            //var diagonalNeighbourCost = currentNode.Cost + Root2;
-            //foreach (var neighbour in DiagonalNeighbours)
-            //{
-            //    var neighbourNode = currentNode.GetNeighbourNode(map, targetNode, neighbour, diagonalNeighbourCost);
-
-            //    if (neighbourNode != Node.Empty)
-            //    {
-            //        yield return neighbourNode;
-            //    }
-            //}
         }
 
         private static Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
