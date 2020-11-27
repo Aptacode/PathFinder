@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace Aptacode.PathFinder
@@ -9,10 +8,11 @@ namespace Aptacode.PathFinder
         public static IEnumerable<Vector2> FindPath(this Map map)
         {
             var sortedOpenNodes = new PriorityQueue<float, Node>();
+
             sortedOpenNodes.Enqueue(map.Start, map.Start.CostDistance);
 
-            var closedNodes = new List<Node>();
-            var openNodes = new List<Node> {map.Start};
+            var closedNodes = new Dictionary<Vector2, Node>();
+            var openNodes = new Dictionary<Vector2, Node>();
 
             while (!sortedOpenNodes.IsEmpty())
             {
@@ -32,26 +32,30 @@ namespace Aptacode.PathFinder
                     }
                 }
 
-                closedNodes.Add(currentNode);
-                openNodes.Remove(currentNode);
+                closedNodes[currentNode.Position] = currentNode;
+                openNodes.Remove(currentNode.Position);
 
                 foreach (var node in currentNode.GetNeighbours(map, map.End))
                 {
-                    if (closedNodes.Any(x => x.Position == node.Position)
+                    if (closedNodes.ContainsKey(node.Position)
                     ) //Don't need to recheck node if it's already be looked at
                     {
                         continue;
                     }
 
-                    var currentBestNode = openNodes.Find(x => x.Position == node.Position);
-                    if (currentBestNode?.CostDistance > currentNode.CostDistance)
+                    if (openNodes.TryGetValue(node.Position, out var currentBestNode))
                     {
-                        continue;
+                        if (currentBestNode?.CostDistance > currentNode.CostDistance)
+                        {
+                            continue;
+                        }
+
+                        sortedOpenNodes.Remove(currentBestNode, currentBestNode.CostDistance);
+                        openNodes.Remove(currentNode.Position);
                     }
 
-                    openNodes.Remove(currentBestNode);
-                    openNodes.Add(node);
                     sortedOpenNodes.Enqueue(node, node.CostDistance);
+                    openNodes[node.Position] = node;
                 }
             }
 

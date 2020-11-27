@@ -7,17 +7,16 @@ namespace Aptacode.PathFinder
 {
     public class PriorityQueue<TPriority, TItem>
     {
-        private readonly SortedDictionary<TPriority, Queue<TItem>> _storage;
-
-        private int _totalSize;
+        private readonly List<TItem> _all;
+        private readonly SortedDictionary<TPriority, List<TItem>> _storage;
 
         public PriorityQueue()
         {
-            _storage = new SortedDictionary<TPriority, Queue<TItem>>();
-            _totalSize = 0;
+            _storage = new SortedDictionary<TPriority, List<TItem>>();
+            _all = new List<TItem>();
         }
 
-        public bool IsEmpty() => _totalSize == 0;
+        public bool IsEmpty() => _all.Count == 0;
 
         public TItem Dequeue()
         {
@@ -28,8 +27,10 @@ namespace Aptacode.PathFinder
 
             foreach (var q in _storage.Values.Where(q => q.Count > 0))
             {
-                _totalSize--;
-                return q.Dequeue();
+                var item = q.First();
+                q.Remove(item);
+                _all.Remove(item);
+                return item;
             }
 
             Debug.Assert(false, "not supposed to reach here. problem with changing total_size");
@@ -48,7 +49,7 @@ namespace Aptacode.PathFinder
 
             foreach (var q in _storage.Values.Where(q => q.Count > 0))
             {
-                return q.Peek();
+                return q.First();
             }
 
             Debug.Assert(false, "not supposed to reach here. problem with changing total_size");
@@ -58,19 +59,34 @@ namespace Aptacode.PathFinder
 
         public TItem Dequeue(TPriority priority)
         {
-            _totalSize--;
-            return _storage[priority].Dequeue();
+            var item = _storage[priority].First();
+            _storage[priority].Remove(item);
+            _all.Remove(item);
+            return item;
         }
 
         public void Enqueue(TItem item, TPriority priority)
         {
             if (!_storage.ContainsKey(priority))
             {
-                _storage.Add(priority, new Queue<TItem>());
+                _storage.Add(priority, new List<TItem>());
             }
 
-            _storage[priority].Enqueue(item);
-            _totalSize++;
+            _storage[priority].Add(item);
+            _all.Add(item);
         }
+
+        public bool Remove(TItem item, TPriority priority)
+        {
+            if (!_storage[priority].Remove(item))
+            {
+                return false;
+            }
+
+            _all.Remove(item);
+            return true;
+        }
+
+        public IEnumerable<TItem> GetAll() => _all;
     }
 }
