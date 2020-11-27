@@ -18,10 +18,8 @@ namespace Aptacode.PathFinder
             Parent = parent;
             Position = position;
             Cost = cost;
-            var dx = Math.Abs((Position - target).X);
-            var dy = Math.Abs((Position - target).Y);
-
-            Distance = Math.Max(dx, dy);
+            var delta = Vector2.Abs(Position - target);
+            Distance = Math.Max(delta.X, delta.Y);
             CostDistance = Cost + Distance;
         }
 
@@ -48,10 +46,8 @@ namespace Aptacode.PathFinder
             Position = position;
             Cost = 0;
             Parent = Empty;
-            var dx = Math.Abs((Position - target).X);
-            var dy = Math.Abs((Position - target).Y);
-
-            Distance = Math.Max(dx, dy);
+            var delta = Vector2.Abs(Position - target);
+            Distance = Math.Max(delta.X, delta.Y);
             CostDistance = Cost + Distance;
         }
 
