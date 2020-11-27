@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -9,13 +8,15 @@ namespace Aptacode.PathFinder
     {
         public static IEnumerable<Vector2> FindPath(this Map map)
         {
-            var openNodes = new List<Node> {map.Start};
+            var sortedOpenNodes = new PriorityQueue<float, Node>();
+            sortedOpenNodes.Enqueue(map.Start, map.Start.CostDistance);
 
             var closedNodes = new List<Node>();
+            var openNodes = new List<Node> {map.Start};
 
-            while (openNodes.Count > 0)
+            while (!sortedOpenNodes.IsEmpty())
             {
-                var currentNode = openNodes.OrderBy(x => x.CostDistance).ThenBy(x => x.Cost).First();
+                var currentNode = sortedOpenNodes.Dequeue();
                 if (currentNode.Position == map.End.Position) //if we've reached the end node a path has been found.
                 {
                     var node = currentNode;
@@ -50,6 +51,7 @@ namespace Aptacode.PathFinder
 
                     openNodes.Remove(currentBestNode);
                     openNodes.Add(node);
+                    sortedOpenNodes.Enqueue(node, node.CostDistance);
                 }
             }
 

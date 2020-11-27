@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using SixLabors.Fonts;
@@ -17,7 +16,7 @@ namespace PathFinder.Demo
         public static Image Generate(this PathFinderResult result)
         {
             Image image =
-                new Image<Rgba32>((int)result.Map.Dimensions.X * 10, (int)result.Map.Dimensions.Y * 10);
+                new Image<Rgba32>((int) result.Map.Dimensions.X * 10, (int) result.Map.Dimensions.Y * 10);
             var options = new ShapeGraphicsOptions();
 
 
@@ -57,6 +56,7 @@ namespace PathFinder.Demo
             return image;
         }
     }
+
     public class PathImageOutput
     {
         public void Output(IEnumerable<PathFinderResult> results)
