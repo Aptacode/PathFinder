@@ -46,7 +46,7 @@ namespace PathFinder.Demo
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 0), new Vector2(1, 2)),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 3), new Vector2(1, 6)),
                         new Obstacle(Guid.NewGuid(), new Vector2(1, 9), new Vector2(9, 1))))
-        };
+            };
         }
 
         public void RunAll()

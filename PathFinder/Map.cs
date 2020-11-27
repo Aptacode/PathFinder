@@ -32,6 +32,11 @@ namespace Aptacode.PathFinder
 
         public bool HasCollision(Vector2 point)
         {
+            if (point.X < 0 || point.Y < 0 || point.X > Dimensions.X || point.Y > Dimensions.Y)
+            {
+                return true;
+            }
+
             return _obstacles.Values.Any(obstacle => obstacle.CollidesWith(point));
         }
     }

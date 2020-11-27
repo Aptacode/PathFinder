@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
 namespace Aptacode.PathFinder
@@ -13,7 +12,7 @@ namespace Aptacode.PathFinder
             sortedOpenNodes.Enqueue(map.Start, map.Start.CostDistance);
 
             var closedNodes = new Dictionary<Vector2, Node>();
-            var openNodes = new Dictionary<Vector2, Node>()
+            var openNodes = new Dictionary<Vector2, Node>
             {
                 {map.Start.Position, map.Start}
             };
@@ -38,7 +37,7 @@ namespace Aptacode.PathFinder
 
                 closedNodes[currentNode.Position] = currentNode;
                 openNodes.Remove(currentNode.Position);
-                
+
                 foreach (var node in currentNode.GetNeighbours(map, map.End))
                 {
                     if (closedNodes.ContainsKey(node.Position)
@@ -47,7 +46,7 @@ namespace Aptacode.PathFinder
                         continue;
                     }
 
-                                       
+
                     if (openNodes.TryGetValue(node.Position, out var existingOpenNode))
                     {
                         if (!(existingOpenNode?.CostDistance > node.CostDistance))
@@ -64,7 +63,6 @@ namespace Aptacode.PathFinder
                         sortedOpenNodes.Enqueue(node, node.CostDistance);
                         openNodes[node.Position] = node;
                     }
-
                 }
             }
 
