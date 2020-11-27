@@ -12,7 +12,10 @@ namespace Aptacode.PathFinder
             sortedOpenNodes.Enqueue(map.Start, map.Start.CostDistance);
 
             var closedNodes = new Dictionary<Vector2, Node>();
-            var openNodes = new Dictionary<Vector2, Node>();
+            var openNodes = new Dictionary<Vector2, Node>()
+            {
+                {map.Start.Position, map.Start}
+            };
 
             while (!sortedOpenNodes.IsEmpty())
             {
@@ -51,7 +54,7 @@ namespace Aptacode.PathFinder
                         }
 
                         sortedOpenNodes.Remove(currentBestNode, currentBestNode.CostDistance);
-                        openNodes.Remove(currentNode.Position);
+                        //openNodes.Remove(currentNode.Position);
                     }
 
                     sortedOpenNodes.Enqueue(node, node.CostDistance);
