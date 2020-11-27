@@ -50,23 +50,21 @@ namespace Aptacode.PathFinder
                                        
                     if (openNodes.TryGetValue(node.Position, out var existingOpenNode))
                     {
-                        if (existingOpenNode?.CostDistance > node.CostDistance)
+                        if (!(existingOpenNode?.CostDistance > node.CostDistance))
                         {
-                            sortedOpenNodes.Remove(existingOpenNode, existingOpenNode.CostDistance);
-                            sortedOpenNodes.Enqueue(node, node.CostDistance);
-                            openNodes[node.Position] = node;
                             continue;
                         }
 
-                        continue;
+                        sortedOpenNodes.Remove(existingOpenNode, existingOpenNode.CostDistance);
+                        sortedOpenNodes.Enqueue(node, node.CostDistance);
+                        openNodes[node.Position] = node;
                     }
                     else
                     {
                         sortedOpenNodes.Enqueue(node, node.CostDistance);
                         openNodes[node.Position] = node;
                     }
-                    
-                    
+
                 }
             }
 
