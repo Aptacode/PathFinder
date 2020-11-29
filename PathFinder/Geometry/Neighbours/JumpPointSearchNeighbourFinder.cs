@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Aptacode.PathFinder.Utilities;
 
 namespace Aptacode.PathFinder.Geometry.Neighbours
 {
@@ -57,7 +58,7 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
         private Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
             Vector2 forcedNeighbourCheck)
         {
-            var cost = delta.X != 0 && delta.Y != 0 ? DiagonalCost : StraightCost;
+            var cost = Math.Abs(delta.X) > Constants.Tolerance && Math.Abs(delta.Y) > Constants.Tolerance ? DiagonalCost : StraightCost;
 
             var nextNode = currentNode.GetNeighbourNode(map, end, delta, currentNode.Cost + cost);
 
@@ -71,9 +72,9 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
                 return nextNode;
             }
 
-            if (delta.X != 0 && delta.Y != 0)
+            if (Math.Abs(delta.X) > Constants.Tolerance && Math.Abs(delta.Y) > Constants.Tolerance)
             {
-                if (forcedNeighbourCheck.X != 0 && forcedNeighbourCheck.Y != 0)
+                if (Math.Abs(forcedNeighbourCheck.X) > Constants.Tolerance && Math.Abs(forcedNeighbourCheck.Y) > Constants.Tolerance)
                 {
                     return nextNode;
                 }
@@ -84,9 +85,9 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
                     return nextNode;
                 }
             }
-            else if (delta.X != 0 || delta.Y != 0)
+            else if (Math.Abs(delta.X) > Constants.Tolerance || Math.Abs(delta.Y) > Constants.Tolerance)
             {
-                if (forcedNeighbourCheck.X == 0 || forcedNeighbourCheck.Y == 0)
+                if (Math.Abs(forcedNeighbourCheck.X) < Constants.Tolerance || Math.Abs(forcedNeighbourCheck.Y) < Constants.Tolerance)
                 {
                     return nextNode;
                 }

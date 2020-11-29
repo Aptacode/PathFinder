@@ -129,7 +129,7 @@ namespace PathFinder.Demo
             var timer = new Stopwatch();
             timer.Start();
             var path = new Aptacode.PathFinder.Algorithm.PathFinder(map,
-                JumpPointSearchNeighbourFinder.All(1.0f,1.6f)).FindPath().ToList();
+                JumpPointSearchNeighbourFinder.All(1.0f,1.9f)).FindPath().ToList();
             timer.Stop();
 
             var totalLength = path.Zip(path.Skip(1), (a, b) => a - b).Select(s => s.Length()).Sum();

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Numerics;
+using Aptacode.PathFinder.Geometry.Neighbours;
+using Aptacode.PathFinder.Utilities;
 
 namespace Aptacode.PathFinder.Geometry
 {
@@ -64,7 +66,7 @@ namespace Aptacode.PathFinder.Geometry
         public bool Equals(Node other) => this == other;
 
         public static bool operator ==(Node lhs, Node rhs) =>
-            lhs?.Position == rhs?.Position && lhs?.Distance == rhs?.Distance && lhs?.Cost == rhs?.Cost;
+            lhs?.Position == rhs?.Position && Math.Abs(lhs.Distance - rhs.Distance) < Constants.Tolerance && Math.Abs(lhs.Cost - rhs.Cost) < Constants.Tolerance;
 
         public static bool operator !=(Node lhs, Node rhs) => !(lhs == rhs);
 
