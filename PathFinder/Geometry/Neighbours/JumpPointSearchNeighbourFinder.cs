@@ -58,7 +58,10 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
         private Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
             Vector2 forcedNeighbourCheck)
         {
-            var cost = Math.Abs(delta.X) > Constants.Tolerance && Math.Abs(delta.Y) > Constants.Tolerance ? DiagonalCost : StraightCost;
+            var cost = 
+                Math.Abs(delta.X) > Constants.Tolerance &&
+                Math.Abs(delta.Y) > Constants.Tolerance 
+                ? DiagonalCost : StraightCost;
 
             var nextNode = currentNode.GetNeighbourNode(map, end, delta, currentNode.Cost + cost);
 
@@ -79,8 +82,8 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
                     return nextNode;
                 }
 
-                if (Jump(map, nextNode, new Vector2(delta.X, 0), start, end, Vector2.Zero) != Node.Empty &&
-                    Jump(map, nextNode, new Vector2(0, delta.Y), start, end, Vector2.Zero) != Node.Empty)
+                if (Jump(map, nextNode, new Vector2(delta.X, 0), start, end, forcedNeighbourCheck) != Node.Empty &&
+                    Jump(map, nextNode, new Vector2(0, delta.Y), start, end, forcedNeighbourCheck) != Node.Empty)
                 {
                     return nextNode;
                 }
@@ -93,7 +96,7 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
                 }
             }
 
-            return Jump(map, nextNode, delta, start, end, Vector2.Zero);
+            return Jump(map, nextNode, delta, start, end, forcedNeighbourCheck);
         }
     }
 }
