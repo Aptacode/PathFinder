@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace Aptacode.PathFinder
+namespace Aptacode.PathFinder.Geometry
 {
     public struct Obstacle
     {

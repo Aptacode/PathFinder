@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Aptacode.PathFinder
+namespace Aptacode.PathFinder.Utilities
 {
     public class PriorityQueue<TPriority, TItem>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Numerics;
-using Aptacode.PathFinder;
+using Aptacode.PathFinder.Geometry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,10 +22,10 @@ namespace PathFinder.Tests
             var timer = new Stopwatch();
             timer.Start();
 
-            var map = new Map(100, 100, new Vector2(10, 10), new Vector2(90, 90),
+            var map = new Map(new Vector2(100, 100), new Vector2(10, 10), new Vector2(90, 90),
                 new Obstacle(Guid.NewGuid(), new Vector2(30, 30), new Vector2(20, 50)));
 
-            map.FindPath();
+            new Aptacode.PathFinder.Algorithm.PathFinder(map).FindPath();
 
             timer.Stop();
             var time = timer.ElapsedMilliseconds;

@@ -1,26 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using Aptacode.PathFinder.Geometry;
+using Aptacode.PathFinder.Geometry.Neighbours;
+using Aptacode.PathFinder.Utilities;
 
-namespace Aptacode.PathFinder
+namespace Aptacode.PathFinder.Algorithm
 {
-    public static class PathFinder
+    public class PathFinder
     {
-        public static IEnumerable<Vector2> FindPath(this Map map)
+        private readonly Map _map;
+        private readonly INeighbourFinder _neighbourFinder;
+
+        public PathFinder(Map map, INeighbourFinder neighbourFinder)
+        {
+            _map = map;
+            _neighbourFinder = neighbourFinder;
+        }
+
+        public PathFinder(Map map) : this(map, new JumpPointSearchNeighbourFinder(AllowedDirections.All)) { }
+
+        public IEnumerable<Vector2> FindPath()
         {
             var sortedOpenNodes = new PriorityQueue<float, Node>();
 
-            sortedOpenNodes.Enqueue(map.Start, map.Start.CostDistance);
+            sortedOpenNodes.Enqueue(_map.Start, _map.Start.CostDistance);
 
             var closedNodes = new Dictionary<Vector2, Node>();
             var openNodes = new Dictionary<Vector2, Node>
             {
-                {map.Start.Position, map.Start}
+                {_map.Start.Position, _map.Start}
             };
 
             while (!sortedOpenNodes.IsEmpty())
             {
                 var currentNode = sortedOpenNodes.Dequeue();
-                if (currentNode.Position == map.End.Position) //if we've reached the end node a path has been found.
+                if (currentNode.Position == _map.End.Position) //if we've reached the end node a path has been found.
                 {
                     var node = currentNode;
                     var path = new List<Vector2>();
@@ -38,14 +52,13 @@ namespace Aptacode.PathFinder
                 closedNodes[currentNode.Position] = currentNode;
                 openNodes.Remove(currentNode.Position);
 
-                foreach (var node in currentNode.GetJumpPointSearchNeighbours(map, map.End))
+                foreach (var node in _neighbourFinder.GetNeighbours(_map, currentNode, _map.End))
                 {
                     if (closedNodes.ContainsKey(node.Position)
                     ) //Don't need to recheck node if it's already be looked at
                     {
                         continue;
                     }
-
 
                     if (openNodes.TryGetValue(node.Position, out var existingOpenNode))
                     {
@@ -55,14 +68,10 @@ namespace Aptacode.PathFinder
                         }
 
                         sortedOpenNodes.Remove(existingOpenNode, existingOpenNode.CostDistance);
-                        sortedOpenNodes.Enqueue(node, node.CostDistance);
-                        openNodes[node.Position] = node;
                     }
-                    else
-                    {
-                        sortedOpenNodes.Enqueue(node, node.CostDistance);
-                        openNodes[node.Position] = node;
-                    }
+
+                    sortedOpenNodes.Enqueue(node, node.CostDistance);
+                    openNodes[node.Position] = node;
                 }
             }
 

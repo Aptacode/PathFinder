@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Aptacode.PathFinder;
+using Aptacode.PathFinder.Geometry;
+using Aptacode.PathFinder.Geometry.Neighbours;
 
 namespace PathFinder.Demo
 {
@@ -17,31 +18,31 @@ namespace PathFinder.Demo
             _maps = new List<(string name, Map map)>
             {
                 ("1",
-                    new Map(100, 100, new Vector2(0, 0), new Vector2(100, 100))),
+                    new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100))),
                 ("2",
-                    new Map(100, 100, new Vector2(0, 0), new Vector2(100, 100),
+                    new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100),
                         new Obstacle(Guid.NewGuid(), new Vector2(40, 40), new Vector2(20, 20)))),
                 ("3",
-                    new Map(100, 100, new Vector2(10, 20), new Vector2(10, 80),
+                    new Map(new Vector2(100, 100), new Vector2(10, 20), new Vector2(10, 80),
                         new Obstacle(Guid.NewGuid(), new Vector2(0, 40), new Vector2(80, 20)))),
                 ("4",
-                    new Map(100, 100, new Vector2(5, 5), new Vector2(90, 90),
+                    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(90, 90),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 20), new Vector2(40, 50)),
                         new Obstacle(Guid.NewGuid(), new Vector2(50, 10), new Vector2(20, 60)),
                         new Obstacle(Guid.NewGuid(), new Vector2(75, 75), new Vector2(10, 10)))),
                 ("5",
-                    new Map(100, 100, new Vector2(5, 5), new Vector2(11, 22),
+                    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(11, 22),
                         new Obstacle(Guid.NewGuid(), new Vector2(6, 6), new Vector2(5, 5)),
                         new Obstacle(Guid.NewGuid(), new Vector2(11, 11), new Vector2(5, 5)),
                         new Obstacle(Guid.NewGuid(), new Vector2(6, 16), new Vector2(5, 5)))),
                 ("6",
-                    new Map(100, 100, new Vector2(49, 1), new Vector2(52, 1),
+                    new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
                         new Obstacle(Guid.NewGuid(), new Vector2(2, 2), new Vector2(96, 1)),
                         new Obstacle(Guid.NewGuid(), new Vector2(50, 0), new Vector2(1, 2)),
                         new Obstacle(Guid.NewGuid(), new Vector2(50, 3), new Vector2(1, 95)),
                         new Obstacle(Guid.NewGuid(), new Vector2(2, 98), new Vector2(96, 1)))),
                 ("7",
-                    new Map(100, 100, new Vector2(4, 1), new Vector2(7, 1),
+                    new Map(new Vector2(100, 100), new Vector2(4, 1), new Vector2(7, 1),
                         new Obstacle(Guid.NewGuid(), new Vector2(1, 2), new Vector2(9, 1)),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 0), new Vector2(1, 2)),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 3), new Vector2(1, 6)),
@@ -127,7 +128,8 @@ namespace PathFinder.Demo
         {
             var timer = new Stopwatch();
             timer.Start();
-            var path = map.FindPath().ToList();
+            var path = new Aptacode.PathFinder.Algorithm.PathFinder(map,
+                new JumpPointSearchNeighbourFinder(AllowedDirections.Straight)).FindPath().ToList();
             timer.Stop();
 
             var totalLength = path.Zip(path.Skip(1), (a, b) => a - b).Select(s => s.Length()).Sum();

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace Aptacode.PathFinder
+namespace Aptacode.PathFinder.Geometry
 {
     public class Node : IEquatable<Node>
     {
@@ -13,14 +13,12 @@ namespace Aptacode.PathFinder
 
         public readonly Vector2 Position;
 
-        public Node(Vector2 position, Node parent, float cost, Vector2 target)
+        public Node(Node parent, Vector2 position, Vector2 target, float cost)
         {
             Parent = parent;
             Position = position;
             Cost = cost;
             var delta = Vector2.Abs(Position - target);
-            //Distance = Math.Max(delta.X, delta.Y);
-
             Distance = delta.X + delta.Y;
             CostDistance = Cost + Distance;
         }
@@ -49,7 +47,6 @@ namespace Aptacode.PathFinder
             Cost = 0;
             Parent = Empty;
             var delta = Vector2.Abs(Position - target);
-            //Distance = Math.Max(delta.X, delta.Y);
             Distance = delta.X + delta.Y;
 
             CostDistance = Cost + Distance;
