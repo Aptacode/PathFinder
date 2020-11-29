@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Utilities;
 
 namespace Aptacode.PathFinder.Geometry
@@ -19,10 +18,19 @@ namespace Aptacode.PathFinder.Geometry
         {
             Parent = parent;
             Position = position;
-            Cost = cost;
+            var isInline = parent.IsInline(position);
+            Cost = cost - (isInline ? 0.5f : 0);
+
             var delta = Vector2.Abs(Position - target);
+
             Distance = delta.X + delta.Y;
             CostDistance = Cost + Distance;
+        }
+
+        public bool IsInline(Vector2 position)
+        {
+            return Math.Abs(position.X - Position.X) < Constants.Tolerance ||
+                   Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
         }
 
         internal Node(Vector2 position)
@@ -48,6 +56,7 @@ namespace Aptacode.PathFinder.Geometry
             Position = position;
             Cost = 0;
             Parent = Empty;
+
             var delta = Vector2.Abs(Position - target);
             Distance = delta.X + delta.Y;
 
