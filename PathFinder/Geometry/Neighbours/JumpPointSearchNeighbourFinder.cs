@@ -6,12 +6,31 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
 {
     public class JumpPointSearchNeighbourFinder : INeighbourFinder
     {
-        public static readonly float Root2 = (float) Math.Sqrt(2);
+        public readonly float StraightCost;
+        public readonly float DiagonalCost;
         public readonly Vector2[] AllowedNeighbours;
 
-        public JumpPointSearchNeighbourFinder(AllowedDirections allowedDirections)
+
+        internal JumpPointSearchNeighbourFinder(AllowedDirections allowedDirections, float straightCost, float diagonalCost)
         {
             AllowedNeighbours = NeighbourKernels.GetNeighbours(allowedDirections);
+            StraightCost = straightCost;
+            DiagonalCost = diagonalCost;
+        }
+
+        public static JumpPointSearchNeighbourFinder Diagonal(float cost)
+        {
+            return new JumpPointSearchNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
+        }
+
+        public static JumpPointSearchNeighbourFinder Straight(float cost)
+        {
+            return new JumpPointSearchNeighbourFinder(AllowedDirections.Straight, cost, 0.0f);
+        }
+
+        public static JumpPointSearchNeighbourFinder All(float straightCost, float diagonalCost)
+        {
+            return new JumpPointSearchNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
         }
 
         public IEnumerable<Node> GetNeighbours(Map map, Node currentNode, Node targetNode)
@@ -38,7 +57,7 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
         private Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
             Vector2 forcedNeighbourCheck)
         {
-            var cost = delta.X != 0 && delta.Y != 0 ? Root2 : 1;
+            var cost = delta.X != 0 && delta.Y != 0 ? DiagonalCost : StraightCost;
 
             var nextNode = currentNode.GetNeighbourNode(map, end, delta, currentNode.Cost + cost);
 
