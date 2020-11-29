@@ -27,12 +27,6 @@ namespace Aptacode.PathFinder.Geometry
             CostDistance = Cost + Distance;
         }
 
-        public bool IsInline(Vector2 position)
-        {
-            return Math.Abs(position.X - Position.X) < Constants.Tolerance ||
-                   Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
-        }
-
         internal Node(Vector2 position)
         {
             Position = position;
@@ -63,6 +57,10 @@ namespace Aptacode.PathFinder.Geometry
             CostDistance = Cost + Distance;
         }
 
+        public bool IsInline(Vector2 position) =>
+            Math.Abs(position.X - Position.X) < Constants.Tolerance ||
+            Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
+
         public static Node StartNode(Vector2 position, Vector2 target) => new Node(position, target);
         public static Node EndNode(Vector2 position) => new Node(position);
 
@@ -75,7 +73,8 @@ namespace Aptacode.PathFinder.Geometry
         public bool Equals(Node other) => this == other;
 
         public static bool operator ==(Node lhs, Node rhs) =>
-            lhs?.Position == rhs?.Position && Math.Abs(lhs.Distance - rhs.Distance) < Constants.Tolerance && Math.Abs(lhs.Cost - rhs.Cost) < Constants.Tolerance;
+            lhs?.Position == rhs?.Position && Math.Abs(lhs.Distance - rhs.Distance) < Constants.Tolerance &&
+            Math.Abs(lhs.Cost - rhs.Cost) < Constants.Tolerance;
 
         public static bool operator !=(Node lhs, Node rhs) => !(lhs == rhs);
 

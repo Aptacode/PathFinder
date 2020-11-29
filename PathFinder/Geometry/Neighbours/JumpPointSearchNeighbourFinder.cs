@@ -7,31 +7,17 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
 {
     public class JumpPointSearchNeighbourFinder : INeighbourFinder
     {
-        public readonly float StraightCost;
-        public readonly float DiagonalCost;
         public readonly Vector2[] AllowedNeighbours;
+        public readonly float DiagonalCost;
+        public readonly float StraightCost;
 
 
-        internal JumpPointSearchNeighbourFinder(AllowedDirections allowedDirections, float straightCost, float diagonalCost)
+        internal JumpPointSearchNeighbourFinder(AllowedDirections allowedDirections, float straightCost,
+            float diagonalCost)
         {
             AllowedNeighbours = NeighbourKernels.GetNeighbours(allowedDirections);
             StraightCost = straightCost;
             DiagonalCost = diagonalCost;
-        }
-
-        public static JumpPointSearchNeighbourFinder Diagonal(float cost)
-        {
-            return new JumpPointSearchNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
-        }
-
-        public static JumpPointSearchNeighbourFinder Straight(float cost)
-        {
-            return new JumpPointSearchNeighbourFinder(AllowedDirections.Straight, cost, 0.0f);
-        }
-
-        public static JumpPointSearchNeighbourFinder All(float straightCost, float diagonalCost)
-        {
-            return new JumpPointSearchNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
         }
 
         public IEnumerable<Node> GetNeighbours(Map map, Node currentNode, Node targetNode)
@@ -55,13 +41,23 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
             return successors;
         }
 
+        public static JumpPointSearchNeighbourFinder Diagonal(float cost) =>
+            new JumpPointSearchNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
+
+        public static JumpPointSearchNeighbourFinder Straight(float cost) =>
+            new JumpPointSearchNeighbourFinder(AllowedDirections.Straight, cost, 0.0f);
+
+        public static JumpPointSearchNeighbourFinder All(float straightCost, float diagonalCost) =>
+            new JumpPointSearchNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
+
         private Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
             Vector2 forcedNeighbourCheck)
         {
-            var cost = 
+            var cost =
                 Math.Abs(delta.X) > Constants.Tolerance &&
-                Math.Abs(delta.Y) > Constants.Tolerance 
-                ? DiagonalCost : StraightCost;
+                Math.Abs(delta.Y) > Constants.Tolerance
+                    ? DiagonalCost
+                    : StraightCost;
 
             var nextNode = currentNode.GetNeighbourNode(map, end, delta, currentNode.Cost + cost);
 
@@ -77,7 +73,8 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
 
             if (Math.Abs(delta.X) > Constants.Tolerance && Math.Abs(delta.Y) > Constants.Tolerance)
             {
-                if (Math.Abs(forcedNeighbourCheck.X) > Constants.Tolerance && Math.Abs(forcedNeighbourCheck.Y) > Constants.Tolerance)
+                if (Math.Abs(forcedNeighbourCheck.X) > Constants.Tolerance &&
+                    Math.Abs(forcedNeighbourCheck.Y) > Constants.Tolerance)
                 {
                     return nextNode;
                 }
@@ -90,7 +87,8 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
             }
             else if (Math.Abs(delta.X) > Constants.Tolerance || Math.Abs(delta.Y) > Constants.Tolerance)
             {
-                if (Math.Abs(forcedNeighbourCheck.X) < Constants.Tolerance || Math.Abs(forcedNeighbourCheck.Y) < Constants.Tolerance)
+                if (Math.Abs(forcedNeighbourCheck.X) < Constants.Tolerance ||
+                    Math.Abs(forcedNeighbourCheck.Y) < Constants.Tolerance)
                 {
                     return nextNode;
                 }

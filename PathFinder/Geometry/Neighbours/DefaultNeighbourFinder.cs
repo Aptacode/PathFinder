@@ -1,34 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Aptacode.PathFinder.Geometry.Neighbours
 {
     public class DefaultNeighbourFinder : INeighbourFinder
     {
-        public readonly float StraightCost;
-        public readonly float DiagonalCost;
         public readonly AllowedDirections AllowedDirections;
+        public readonly float DiagonalCost;
+        public readonly float StraightCost;
 
         internal DefaultNeighbourFinder(AllowedDirections allowedDirections, float straightCost, float diagonalCost)
         {
             AllowedDirections = allowedDirections;
             StraightCost = straightCost;
             DiagonalCost = diagonalCost;
-        }
-
-        public static DefaultNeighbourFinder Diagonal(float cost)
-        {
-            return new DefaultNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
-        }
-
-        public static DefaultNeighbourFinder Straight(float cost)
-        {
-            return new DefaultNeighbourFinder(AllowedDirections.Straight,  cost, 0.0f);
-        }
-
-        public static DefaultNeighbourFinder All(float straightCost, float diagonalCost)
-        {
-            return new DefaultNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
         }
 
         public IEnumerable<Node> GetNeighbours(Map map, Node currentNode, Node targetNode)
@@ -61,5 +45,14 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
                 }
             }
         }
+
+        public static DefaultNeighbourFinder Diagonal(float cost) =>
+            new DefaultNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
+
+        public static DefaultNeighbourFinder Straight(float cost) =>
+            new DefaultNeighbourFinder(AllowedDirections.Straight, cost, 0.0f);
+
+        public static DefaultNeighbourFinder All(float straightCost, float diagonalCost) =>
+            new DefaultNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
     }
 }

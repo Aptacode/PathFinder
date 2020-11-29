@@ -11,7 +11,7 @@ namespace PathFinder.Demo
 {
     internal class PathFinderDemo
     {
-        private readonly IReadOnlyList<(string name, Map map)> _maps;
+        private readonly List<(string name, Map map)> _maps;
         private readonly List<List<PathFinderResult>> _pathFinderResults = new List<List<PathFinderResult>>();
 
         public PathFinderDemo()
@@ -47,8 +47,51 @@ namespace PathFinder.Demo
                         new Obstacle(Guid.NewGuid(), new Vector2(1, 2), new Vector2(9, 1)),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 0), new Vector2(1, 2)),
                         new Obstacle(Guid.NewGuid(), new Vector2(5, 3), new Vector2(1, 6)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(1, 9), new Vector2(9, 1))))
+                        new Obstacle(Guid.NewGuid(), new Vector2(1, 9), new Vector2(9, 1)))),
+                ("8", CubeField()),
+                ("9", VerticalBars())
             };
+        }
+
+        public Map VerticalBars()
+        {
+            var mapBuilder = new MapBuilder();
+            const int width = 100;
+            const int height = 100;
+            mapBuilder.SetDimensions(width, height);
+            mapBuilder.SetStart(0, 0);
+            mapBuilder.SetEnd(width, height);
+
+            var count = 0;
+            for (var i = 2; i < width - 2; i += 4)
+            {
+                var offset = count++ % 2 == 0 ? 2 : -2;
+                mapBuilder.AddObstacle(i, offset + 0, 2, height - 2);
+            }
+
+            return mapBuilder.Build();
+        }
+
+        public Map CubeField()
+        {
+            var mapBuilder = new MapBuilder();
+            const int width = 100;
+            const int height = 100;
+            mapBuilder.SetDimensions(width, height);
+            mapBuilder.SetStart(0, 0);
+            mapBuilder.SetEnd(100, 100);
+            var count = 0;
+            for (var i = -5; i < width + 5; i += 5)
+            {
+                var offset = count++ % 2 == 0 ? 3 : 0;
+
+                for (var j = -5; j < height + 5; j += 5)
+                {
+                    mapBuilder.AddObstacle(1 + i, offset + j, 3, 3);
+                }
+            }
+
+            return mapBuilder.Build();
         }
 
         public void RunAll()
@@ -130,7 +173,7 @@ namespace PathFinder.Demo
             var timer = new Stopwatch();
             timer.Start();
             var path = new Aptacode.PathFinder.Algorithm.PathFinder(map,
-                DefaultNeighbourFinder.Straight(1.0f)).FindPath().ToList();
+                DefaultNeighbourFinder.Straight(0.5f)).FindPath().ToList();
             timer.Stop();
 
             var totalLength = path.Zip(path.Skip(1), (a, b) => a - b).Select(s => s.Length()).Sum();
