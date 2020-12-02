@@ -7,7 +7,7 @@ using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Utilities;
 
-namespace PathFinder.Demo
+namespace PathFinder.ConsoleDemo
 {
     internal class PathFinderDemo
     {

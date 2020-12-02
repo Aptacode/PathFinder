@@ -1,10 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.Numerics;
-using Aptacode.PathFinder.Geometry;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace PathFinder.Tests
 {
     public class MapTests

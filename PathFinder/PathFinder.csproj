@@ -28,17 +28,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Exception_Messages.Designer.cs">
+    <Compile Update="Resources\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Exception_Messages.resx</DependentUpon>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Exception_Messages.resx">
+    <EmbeddedResource Update="Resources\ExceptionMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Exception_Messages.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

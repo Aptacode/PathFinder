@@ -2,7 +2,7 @@
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
 
-namespace PathFinder.Demo
+namespace PathFinder.ConsoleDemo
 {
     public class PathFinderResult
     {

@@ -1,14 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Numerics;
-using Aptacode.PathFinder;
-using Aptacode.PathFinder.Geometry;
-using PathFinder.Tests.Helpers;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace PathFinder.Tests
 {
     //public class MapTest_ExceptionTests_Data : IEnumerable<object[]>
@@ -35,10 +24,10 @@ namespace PathFinder.Tests
     //            Resources.END_POINT_HAS_COLLISION_WITH_OBSTACLE
     //        }
     //    };
-            
-            
+
+
     //    public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
     //    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
+    //}
 }

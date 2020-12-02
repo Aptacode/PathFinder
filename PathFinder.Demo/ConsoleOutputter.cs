@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
 
-namespace PathFinder.Demo
+namespace PathFinder.ConsoleDemo
 {
     public static class ConsoleOutputter
     {

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder", "PathFinder\Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Tests", "PathFinder.Tests\PathFinder.Tests.csproj", "{798F718E-2E70-43B6-AE1F-82550F2706EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Demo", "PathFinder.Demo\PathFinder.Demo.csproj", "{90ACAE73-F566-4E88-B5D7-A23A15841E0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.ConsoleDemo", "PathFinder.Demo\PathFinder.ConsoleDemo.csproj", "{90ACAE73-F566-4E88-B5D7-A23A15841E0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C102F39C-C040-4E7B-B27C-8A0E0E2C579E}"
 	ProjectSection(SolutionItems) = preProject

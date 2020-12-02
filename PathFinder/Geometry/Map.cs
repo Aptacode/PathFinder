@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Aptacode.PathFinder.Resources;
 
 namespace Aptacode.PathFinder.Geometry
 {
@@ -26,22 +27,22 @@ namespace Aptacode.PathFinder.Geometry
 
             if (IsOutOfBounds(start))
             {
-                throw new ArgumentException(Exception_Messages.StartPointOutOfBounds);
+                throw new ArgumentException(ExceptionMessages.StartPointOutOfBounds);
             }
 
             if (IsOutOfBounds(end))
             {
-                throw new ArgumentException(Exception_Messages.EndPointOutOfBounds);
+                throw new ArgumentException(ExceptionMessages.EndPointOutOfBounds);
             }
 
             if (HasCollision(start))
             {
-                throw new ArgumentException(Exception_Messages.StartPointHasCollisionWithObstacle);
+                throw new ArgumentException(ExceptionMessages.StartPointHasCollisionWithObstacle);
             }
 
             if (HasCollision(end))
             {
-                throw new ArgumentException(Exception_Messages.EndPointHasCollisionWithObstacle);
+                throw new ArgumentException(ExceptionMessages.EndPointHasCollisionWithObstacle);
             }
         }
 
