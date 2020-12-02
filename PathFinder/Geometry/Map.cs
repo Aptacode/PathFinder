@@ -26,22 +26,22 @@ namespace Aptacode.PathFinder.Geometry
 
             if (IsOutOfBounds(start))
             {
-                throw new ArgumentException("Start position was outside the bounds of the map.");
+                throw new ArgumentException(Exception_Messages.StartPointOutOfBounds);
             }
 
             if (IsOutOfBounds(end))
             {
-                throw new ArgumentException("End position was outside the bounds of the map.");
+                throw new ArgumentException(Exception_Messages.EndPointOutOfBounds);
             }
 
             if (HasCollision(start))
             {
-                throw new ArgumentException("Start position collides with an obstacle.");
+                throw new ArgumentException(Exception_Messages.StartPointHasCollisionWithObstacle);
             }
 
             if (HasCollision(end))
             {
-                throw new ArgumentException("End position collides with an obstacle.");
+                throw new ArgumentException(Exception_Messages.EndPointHasCollisionWithObstacle);
             }
         }
 
