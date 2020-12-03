@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
-using Aptacode.PathFinder.Resources;
 
-namespace Aptacode.PathFinder.Map
+namespace Aptacode.PathFinder.Maps
 {
     public class Map
     {

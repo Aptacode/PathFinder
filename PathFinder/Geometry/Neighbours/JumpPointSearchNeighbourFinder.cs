@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Aptacode.PathFinder.Maps;
 using Aptacode.PathFinder.Utilities;
 
 namespace Aptacode.PathFinder.Geometry.Neighbours

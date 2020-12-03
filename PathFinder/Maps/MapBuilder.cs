@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
+using Aptacode.PathFinder.Maps.Validation;
 using Aptacode.PathFinder.Resources;
 
-namespace Aptacode.PathFinder.Map
+namespace Aptacode.PathFinder.Maps
 {
     public class MapBuilder
     {
@@ -79,11 +80,10 @@ namespace Aptacode.PathFinder.Map
                 var map = new Map(_dimensions, _start, _end, _obstacles.Values.ToArray());
                 return MapResult.Ok(map, GeneralMessages.Success);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return MapResult.Fail(ex.Message);
             }
-
         }
 
         public MapResult Build()
@@ -93,14 +93,15 @@ namespace Aptacode.PathFinder.Map
             Reset();
 
 
-            if(!mapResult.Success == true)
+            if (!mapResult.Success)
             {
                 return mapResult;
             }
+
             var mapValidationResult = map.IsValid();
             return !mapValidationResult.Success
-                    ? MapResult.Fail(mapResult.Message)
-                    : MapResult.Ok(map, mapResult.Message);
+                ? MapResult.Fail(mapResult.Message)
+                : MapResult.Ok(map, mapResult.Message);
         }
 
         public void Reset()

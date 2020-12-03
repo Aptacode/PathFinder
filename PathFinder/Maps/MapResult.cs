@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aptacode.PathFinder.Map
+﻿namespace Aptacode.PathFinder.Maps
 {
     public class MapResult
     {
-         
-        public readonly string Message;
         public readonly Map? Map;
+        public readonly string Message;
         public readonly bool Success;
 
         private MapResult(string message, bool success, Map? map)
@@ -24,4 +19,3 @@ namespace Aptacode.PathFinder.Map
             new MapResult(message, true, map);
     }
 }
-

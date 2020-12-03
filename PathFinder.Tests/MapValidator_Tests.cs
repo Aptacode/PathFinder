@@ -1,7 +1,5 @@
-using Aptacode.PathFinder.Geometry;
-using Aptacode.PathFinder.Map;
-using System;
-using System.Numerics;
+using Aptacode.PathFinder.Maps;
+using Aptacode.PathFinder.Maps.Validation;
 using Xunit;
 
 namespace PathFinder.Tests

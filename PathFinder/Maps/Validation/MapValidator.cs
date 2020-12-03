@@ -1,8 +1,6 @@
 ﻿using Aptacode.PathFinder.Resources;
-using System;
-using System.Numerics;
 
-namespace Aptacode.PathFinder.Map
+namespace Aptacode.PathFinder.Maps.Validation
 {
     public static class MapValidator
     {
@@ -23,18 +21,19 @@ namespace Aptacode.PathFinder.Map
                 return MapValidationResult.Fail(ExceptionMessages.StartPointHasCollisionWithObstacle);
             }
 
-            if (map.HasCollision(map.Start.Position))
+            if (map.HasCollision(map.End.Position))
             {
                 return MapValidationResult.Fail(ExceptionMessages.EndPointHasCollisionWithObstacle);
             }
 
-            foreach(var obstacle in map.Obstacles)
+            foreach (var obstacle in map.Obstacles)
             {
-                if(map.IsOutOfBounds(obstacle.Position))
+                if (map.IsOutOfBounds(obstacle.Position))
                 {
                     return MapValidationResult.Fail(ExceptionMessages.ObstacleOutOfBounds);
                 }
             }
+
             return MapValidationResult.Ok(GeneralMessages.Success);
         }
     }

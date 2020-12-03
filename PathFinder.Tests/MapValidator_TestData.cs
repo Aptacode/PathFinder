@@ -1,10 +1,7 @@
-using Aptacode.PathFinder.Geometry;
-using Aptacode.PathFinder.Resources;
-using PathFinder.Tests.Helpers;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+using Aptacode.PathFinder.Resources;
+using PathFinder.Tests.Helpers;
 
 namespace PathFinder.Tests
 {
@@ -26,7 +23,6 @@ namespace PathFinder.Tests
             {
                 ExceptionMessages.StartPointHasCollisionWithObstacle,
                 Map_Helpers.StartPoint_HasCollision_WithObstacle_Map
-
             },
             new object[]
             {
@@ -36,7 +32,7 @@ namespace PathFinder.Tests
             new object[]
             {
                 GeneralMessages.Success,
-                Map_Helpers.Valid_No_Obstacles_Map            
+                Map_Helpers.Valid_No_Obstacles_Map
             }
         };
 

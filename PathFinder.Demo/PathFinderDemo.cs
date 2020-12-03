@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
-using Aptacode.PathFinder.Utilities;
+using Aptacode.PathFinder.Maps;
 
 namespace PathFinder.ConsoleDemo
 {
@@ -69,7 +69,8 @@ namespace PathFinder.ConsoleDemo
                 mapBuilder.AddObstacle(i, offset + 0, 2, height - 2);
             }
 
-            return mapBuilder.Build();
+            var mapResult = mapBuilder.Build();
+            return mapResult.Map;
         }
 
         public Map CubeField()
@@ -91,7 +92,8 @@ namespace PathFinder.ConsoleDemo
                 }
             }
 
-            return mapBuilder.Build();
+            var mapResult = mapBuilder.Build();
+            return mapResult.Map;
         }
 
         public void RunAll()

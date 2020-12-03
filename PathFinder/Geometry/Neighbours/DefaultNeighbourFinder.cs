@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Aptacode.PathFinder.Maps;
 
 namespace Aptacode.PathFinder.Geometry.Neighbours
 {

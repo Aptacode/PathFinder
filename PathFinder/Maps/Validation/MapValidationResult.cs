@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aptacode.PathFinder.Map
+﻿namespace Aptacode.PathFinder.Maps.Validation
 {
     public class MapValidationResult
     {
@@ -22,4 +18,3 @@ namespace Aptacode.PathFinder.Map
             new MapValidationResult(message, true);
     }
 }
-

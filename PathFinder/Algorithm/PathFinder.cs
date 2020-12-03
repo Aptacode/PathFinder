@@ -2,8 +2,8 @@
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
+using Aptacode.PathFinder.Maps;
 using Aptacode.PathFinder.Utilities;
-using Aptacode.PathFinder.Map;
 
 namespace Aptacode.PathFinder.Algorithm
 {

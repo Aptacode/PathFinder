@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
+using Aptacode.PathFinder.Maps;
 using Xunit;
 using Xunit.Abstractions;
 
