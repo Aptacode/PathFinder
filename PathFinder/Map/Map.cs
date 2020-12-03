@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Resources;
 
-namespace Aptacode.PathFinder.Geometry
+namespace Aptacode.PathFinder.Map
 {
     public class Map
     {
@@ -23,26 +24,6 @@ namespace Aptacode.PathFinder.Geometry
             foreach (var obstacle in obstacles)
             {
                 _obstacles.Add(obstacle.Id, obstacle);
-            }
-
-            if (IsOutOfBounds(start))
-            {
-                throw new ArgumentException(ExceptionMessages.StartPointOutOfBounds);
-            }
-
-            if (IsOutOfBounds(end))
-            {
-                throw new ArgumentException(ExceptionMessages.EndPointOutOfBounds);
-            }
-
-            if (HasCollision(start))
-            {
-                throw new ArgumentException(ExceptionMessages.StartPointHasCollisionWithObstacle);
-            }
-
-            if (HasCollision(end))
-            {
-                throw new ArgumentException(ExceptionMessages.EndPointHasCollisionWithObstacle);
             }
         }
 

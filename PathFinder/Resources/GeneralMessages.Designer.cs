@@ -22,14 +22,14 @@ namespace Aptacode.PathFinder.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ExceptionMessages {
+    public class GeneralMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExceptionMessages() {
+        internal GeneralMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Aptacode.PathFinder.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Aptacode.PathFinder.Resources.ExceptionMessages", typeof(ExceptionMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Aptacode.PathFinder.Resources.GeneralMessages", typeof(GeneralMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,11 @@ namespace Aptacode.PathFinder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End position collides with an obstacle..
+        ///   Looks up a localized string similar to Success..
         /// </summary>
-        public static string EndPointHasCollisionWithObstacle {
+        public static string Success {
             get {
-                return ResourceManager.GetString("EndPointHasCollisionWithObstacle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End position was outside the bounds of the map..
-        /// </summary>
-        public static string EndPointOutOfBounds {
-            get {
-                return ResourceManager.GetString("EndPointOutOfBounds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An obstacles starting position is outside the bounds of the map..
-        /// </summary>
-        public static string ObstacleOutOfBounds {
-            get {
-                return ResourceManager.GetString("ObstacleOutOfBounds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start position collides with an obstacle..
-        /// </summary>
-        public static string StartPointHasCollisionWithObstacle {
-            get {
-                return ResourceManager.GetString("StartPointHasCollisionWithObstacle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start position was outside the bounds of the map..
-        /// </summary>
-        public static string StartPointOutOfBounds {
-            get {
-                return ResourceManager.GetString("StartPointOutOfBounds", resourceCulture);
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
     }

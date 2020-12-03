@@ -8,32 +8,35 @@ using System.Numerics;
 
 namespace PathFinder.Tests
 {
-    public class MapTests_ExceptionTests_Data : IEnumerable<object[]>
+    public class MapValidator_TestData : IEnumerable<object[]>
     {
         private readonly List<object[]> _data = new List<object[]>
         {
             new object[]
             {
                 ExceptionMessages.StartPointOutOfBounds,
-                new Vector2(10, 10), new Vector2(-1, 0), new Vector2(5, 5)
+                Map_Helpers.StartPoint_OutOfBounds_Map
             },
             new object[]
             {
-                 ExceptionMessages.EndPointOutOfBounds,
-                new Vector2(10, 10), new Vector2(5, 0), new Vector2(-5, 5)
+                ExceptionMessages.EndPointOutOfBounds,
+                Map_Helpers.EndPoint_OutOfBounds_Map
             },
             new object[]
             {
                 ExceptionMessages.StartPointHasCollisionWithObstacle,
-                new Vector2(10, 10), new Vector2(1, 1), new Vector2(5, 5),
-                new Obstacle(Guid.NewGuid(), new Vector2(1, 1), new Vector2(0, 0))
-                
+                Map_Helpers.StartPoint_HasCollision_WithObstacle_Map
+
             },
             new object[]
             {
                 ExceptionMessages.EndPointHasCollisionWithObstacle,
-                new Vector2(10, 10), new Vector2(1, 1), new Vector2(5, 5),
-                new Obstacle(Guid.NewGuid(), new Vector2(5, 5), new Vector2(0, 0))               
+                Map_Helpers.EndPoint_HasCollision_WithObstacle_Map
+            },
+            new object[]
+            {
+                GeneralMessages.Success,
+                Map_Helpers.Valid_No_Obstacles_Map            
             }
         };
 
