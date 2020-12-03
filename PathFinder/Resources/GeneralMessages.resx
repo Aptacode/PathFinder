@@ -117,19 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EndPointHasCollisionWithObstacle" xml:space="preserve">
-    <value>End position collides with an obstacle.</value>
-  </data>
-  <data name="EndPointOutOfBounds" xml:space="preserve">
-    <value>End position was outside the bounds of the map.</value>
-  </data>
-  <data name="ObstacleOutOfBounds" xml:space="preserve">
-    <value>An obstacles starting position is outside the bounds of the map.</value>
-  </data>
-  <data name="StartPointHasCollisionWithObstacle" xml:space="preserve">
-    <value>Start position collides with an obstacle.</value>
-  </data>
-  <data name="StartPointOutOfBounds" xml:space="preserve">
-    <value>Start position was outside the bounds of the map.</value>
+  <data name="Success" xml:space="preserve">
+    <value>Success.</value>
   </data>
 </root>
