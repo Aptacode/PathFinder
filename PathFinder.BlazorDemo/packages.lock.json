@@ -2,6 +2,28 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v5.0": {
+      "Aptacode.FlowDesigner.Blazor": {
+        "type": "Direct",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "jirlcFrub+QDRsYVKs4DRJecc3MiAtk8c6z38t30H8MCujbGqrTTzf/c/tbMx002+n+CAefTQ66Ibep650ex3A==",
+        "dependencies": {
+          "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
+          "Aptacode.FlowDesigner.Core": "1.0.1",
+          "Aptacode.PathFinder": "1.0.4-CI-20201203-112103",
+          "Microsoft.AspNetCore.Components.Web": "5.0.0"
+        }
+      },
+      "Aptacode.FlowDesigner.Core": {
+        "type": "Direct",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "YyWBOzxlrNf1ndFJ0ju8aNxLHuPVnxAmKSNv+/168ZG835voAOGAT+wQ8JH6B18NscneBwmByNwObXxjyhCFtw==",
+        "dependencies": {
+          "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
+          "Aptacode.PathFinder": "1.0.4-CI-20201203-112103"
+        }
+      },
       "Microsoft.AspNetCore.Components.WebAssembly": {
         "type": "Direct",
         "requested": "[5.0.0, )",
@@ -26,6 +48,20 @@
         "requested": "[5.0.0, )",
         "resolved": "5.0.0",
         "contentHash": "3CPSQpCzEmI9o+1G79TnPCjF40omCdnoXj2Rg76BDwGj5+LZnFPjV+t35eedlvl+uthmholk/XXxXTYgJWSexw=="
+      },
+      "Aptacode.CSharp.Common.Utilities": {
+        "type": "Transitive",
+        "resolved": "1.0.0.30",
+        "contentHash": "s8GdIwpUPsVTrXthpPfO2p2Eke+PITZOqjvWa3siN2bIe5VQKMXHYEb/aV/aw2qiJDeOEXH/w3yW4fFVZVsm8A=="
+      },
+      "Aptacode.PathFinder": {
+        "type": "Transitive",
+        "resolved": "1.0.4-CI-20201203-112103",
+        "contentHash": "fezdEzRTVKjy47Wvg1DmRGfeaVmzGIGzArYgHJTylT7fYsLiY0Ok7BAwwtRJlOr34wof2H2pjW94lTXhiKcNAQ==",
+        "dependencies": {
+          "System.Numerics.Vectors": "4.5.0",
+          "System.ValueTuple": "4.5.0"
+        }
       },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",
@@ -207,6 +243,16 @@
         "type": "Transitive",
         "resolved": "5.0.0",
         "contentHash": "irMYm3vhVgRsYvHTU5b2gsT2CwT/SMM6LZFzuJjpIvT5Z4CshxNsaoBC1X/LltwuR3Opp8d6jOS/60WwOb7Q2Q=="
+      },
+      "System.Numerics.Vectors": {
+        "type": "Transitive",
+        "resolved": "4.5.0",
+        "contentHash": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ=="
+      },
+      "System.ValueTuple": {
+        "type": "Transitive",
+        "resolved": "4.5.0",
+        "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       }
     },
     ".NETCoreApp,Version=v5.0/browser-wasm": {}

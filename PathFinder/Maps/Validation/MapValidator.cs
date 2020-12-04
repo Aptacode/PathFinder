@@ -26,14 +26,6 @@ namespace Aptacode.PathFinder.Maps.Validation
                 return MapValidationResult.Fail(ExceptionMessages.EndPointHasCollisionWithObstacle);
             }
 
-            foreach (var obstacle in map.Obstacles)
-            {
-                if (map.IsOutOfBounds(obstacle.Position))
-                {
-                    return MapValidationResult.Fail(ExceptionMessages.ObstacleOutOfBounds);
-                }
-            }
-
             return MapValidationResult.Ok(GeneralMessages.Success);
         }
     }
