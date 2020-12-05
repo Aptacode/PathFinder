@@ -4,24 +4,24 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.FlowDesigner.Blazor": {
         "type": "Direct",
-        "requested": "[1.0.1, )",
-        "resolved": "1.0.1",
-        "contentHash": "jirlcFrub+QDRsYVKs4DRJecc3MiAtk8c6z38t30H8MCujbGqrTTzf/c/tbMx002+n+CAefTQ66Ibep650ex3A==",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "CdFqqIukzrsTaIELQ4QOOE1XQas78CyCYF6PubffCpXixkJG/G6rPwUv/SvNRqOFrC5qKXy74jOwpjuXzDgDCQ==",
         "dependencies": {
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.FlowDesigner.Core": "1.0.1",
-          "Aptacode.PathFinder": "1.0.4-CI-20201203-112103",
+          "Aptacode.FlowDesigner.Core": "1.0.4",
+          "Aptacode.PathFinder": "1.0.4-CI-20201204-190647",
           "Microsoft.AspNetCore.Components.Web": "5.0.0"
         }
       },
       "Aptacode.FlowDesigner.Core": {
         "type": "Direct",
-        "requested": "[1.0.1, )",
-        "resolved": "1.0.1",
-        "contentHash": "YyWBOzxlrNf1ndFJ0ju8aNxLHuPVnxAmKSNv+/168ZG835voAOGAT+wQ8JH6B18NscneBwmByNwObXxjyhCFtw==",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "ZHSKXsb9CsYv3XhcxwwGf4NmVWo5a2EgrvGkBBluZxBIk9wWTKmw78BlpL79MuqpbnuCb6epxlFp1591cX3syQ==",
         "dependencies": {
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.PathFinder": "1.0.4-CI-20201203-112103"
+          "Aptacode.PathFinder": "1.0.4-CI-20201204-190647"
         }
       },
       "Microsoft.AspNetCore.Components.WebAssembly": {
@@ -56,8 +56,8 @@
       },
       "Aptacode.PathFinder": {
         "type": "Transitive",
-        "resolved": "1.0.4-CI-20201203-112103",
-        "contentHash": "fezdEzRTVKjy47Wvg1DmRGfeaVmzGIGzArYgHJTylT7fYsLiY0Ok7BAwwtRJlOr34wof2H2pjW94lTXhiKcNAQ==",
+        "resolved": "1.0.4-CI-20201204-190647",
+        "contentHash": "tMoPZwCzNINhaHe0oCQd1TwiTWQX/1EQdW6ozDsqaZ0UJcPAiYGkUhLlFY2BWGr/7wpAOXR15ps2gWuGj+gRwg==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"

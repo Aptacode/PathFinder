@@ -1,5 +1,10 @@
 ﻿using Aptacode.FlowDesigner.Core.ViewModels;
+using Aptacode.PathFinder.Geometry;
+using Aptacode.PathFinder.Geometry.Neighbours;
+using Aptacode.PathFinder.Maps;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -13,19 +18,30 @@ namespace PathFinder.BlazorDemo.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            Designer = new DesignerViewModel();
-            Designer.CreateItem.Execute(("State 1", new Vector2(8, 8), new Vector2(8, 4)));
-            Designer.CreateItem.Execute(("State 2", new Vector2(8, 16), new Vector2(8, 4)));
-            Designer.CreateItem.Execute(("State 3", new Vector2(25, 30), new Vector2(8, 4)));
-            Designer.CreateItem.Execute(("State 4", new Vector2(10, 40), new Vector2(8, 4)));
-            Designer.CreateItem.Execute(("State 5", new Vector2(10, 50), new Vector2(8, 4)));
-            Designer.CreateItem.Execute(("State 6", new Vector2(25, 60), new Vector2(8, 4)));
+            var map = new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(90, 90),
+                new Obstacle(Guid.NewGuid(), new Vector2(5, 20), new Vector2(40, 50)),
+                new Obstacle(Guid.NewGuid(), new Vector2(50, 10), new Vector2(20, 60)),
+                new Obstacle(Guid.NewGuid(), new Vector2(75, 75), new Vector2(10, 10)));
 
-            var items = Designer.Items.ToList();
-            Designer.Connect.Execute((items[0], items[1]));
-            Designer.Connect.Execute((items[0], items[2]));
-            Designer.Connect.Execute((items[0], items[3]));
-            Designer.Connect.Execute((items[0], items[4]));
+            var timer = new Stopwatch();
+            timer.Start();
+            var path = new Aptacode.PathFinder.Algorithm.PathFinder(map,
+                DefaultNeighbourFinder.Straight(0.5f)).FindPath().ToList();
+            timer.Stop();
+
+            var totalLength = path.Zip(path.Skip(1), (a, b) => a - b).Select(s => s.Length()).Sum();
+
+            Designer = new DesignerViewModel((int)map.Dimensions.X, (int)map.Dimensions.Y);
+            foreach (var obstacle in map.Obstacles)
+            {
+                var item1 = Designer.AddItem("State 1", obstacle.Position, obstacle.Dimensions);
+                item1.CollisionsAllowed = false;
+            }
+
+            foreach (var point in path)
+            {
+                Designer.AddPoint(point);
+            }
 
             await base.OnInitializedAsync();
         }

@@ -23,6 +23,7 @@ namespace PathFinder.Tests
             {
                 ExceptionMessages.StartPointHasCollisionWithObstacle,
                 Map_Helpers.StartPoint_HasCollision_WithObstacle_Map
+                
             },
             new object[]
             {
