@@ -19,7 +19,7 @@ namespace Aptacode.PathFinder.Geometry
             Parent = parent;
             Position = position;
             var isInline = parent.IsInline(position);
-            Cost = cost - (isInline ? 0.5f : 0);
+            Cost = cost;  //- (isInline ? 0.5f : 0);
 
             var delta = Vector2.Abs(Position - target);
 
