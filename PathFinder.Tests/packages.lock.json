@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v5.0": {
+      "Aptacode.Geometry": {
+        "type": "Direct",
+        "requested": "[1.0.1.12, )",
+        "resolved": "1.0.1.12",
+        "contentHash": "+rSDvLBxnQS6GTq9njmtEdaDh6YOo7DBMEYAWQdUTf3EmiTseYIWPj1XqVqUsRzTDIX4bicOrPiMudodFWApVw==",
+        "dependencies": {
+          "System.Numerics.Vectors": "4.5.0"
+        }
+      },
       "coverlet.collector": {
         "type": "Direct",
         "requested": "[1.3.0, )",
@@ -1108,6 +1117,7 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
+          "Aptacode.Geometry": "1.0.1.12",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

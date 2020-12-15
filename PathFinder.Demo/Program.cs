@@ -42,10 +42,22 @@ namespace PathFinder.ConsoleDemo
             IPen pen = Pens.Solid(Color.Black, 2);
             foreach (var mapObstacle in result.Map.Obstacles)
             {
-                IPath yourPolygon = new RectangularPolygon(mapObstacle.Position.X * 10, mapObstacle.Position.Y * 10,
-                    mapObstacle.Dimensions.X * 10, mapObstacle.Dimensions.Y * 10);
-                image.Mutate(x => x.Fill(options, brush, yourPolygon)
-                    .Draw(options, pen, yourPolygon));
+                if(mapObstacle is Aptacode.Geometry.Primitives.Polygon polygon)
+                {
+                    var lineSegments = new List<LinearLineSegment>();
+                    foreach(var edge in polygon.Edges)
+                    {
+                        lineSegments.Add(new LinearLineSegment(edge.p1, edge.p2));
+                    }
+                    IPath yourPolygon = new Polygon(lineSegments);
+                      image.Mutate(x => x.Fill(options, brush, yourPolygon)
+                          .Draw(options, pen, yourPolygon));
+                }
+                if(mapObstacle is Aptacode.Geometry.Primitives.Point point)
+                {
+                    
+                }
+  
             }
 
             var path = result.Path.Select(p => new PointF(p.X * 10, p.Y * 10)).ToArray();

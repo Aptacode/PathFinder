@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Maps.Validation;
 using Aptacode.PathFinder.Resources;
@@ -10,14 +11,14 @@ namespace Aptacode.PathFinder.Maps
 {
     public class MapBuilder
     {
-        private readonly Dictionary<Guid, Obstacle> _obstacles;
+        private readonly Dictionary<Guid, Primitive> _obstacles;
         private Vector2 _dimensions;
         private Vector2 _end;
         private Vector2 _start;
 
         public MapBuilder()
         {
-            _obstacles = new Dictionary<Guid, Obstacle>();
+            _obstacles = new Dictionary<Guid, Primitive>();
             _dimensions = new Vector2(0, 0);
             _start = Vector2.Zero;
             _end = Vector2.Zero;
@@ -59,17 +60,10 @@ namespace Aptacode.PathFinder.Maps
             return this;
         }
 
-        public MapBuilder AddObstacle(int x, int y, int width, int height)
+        public MapBuilder AddObstacle(Primitive obstacle)
         {
-            var newObstacle = new Obstacle(Guid.NewGuid(), new Vector2(x, y), new Vector2(width, height));
-            _obstacles.Add(newObstacle.Id, newObstacle);
-            return this;
-        }
-
-        public MapBuilder AddObstacle(Vector2 position, Vector2 dimension)
-        {
-            var newObstacle = new Obstacle(Guid.NewGuid(), position, dimension);
-            _obstacles.Add(newObstacle.Id, newObstacle);
+            var newObstacle = obstacle;
+            _obstacles.Add(Guid.NewGuid(), newObstacle);
             return this;
         }
 

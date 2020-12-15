@@ -51,13 +51,13 @@ namespace PathFinder.BlazorDemo.Pages
 
             Designer = new DesignerViewModel((int)map.Dimensions.X, (int)map.Dimensions.Y);
 
-            foreach (var obstacle in map.Obstacles)
-            {
-                var newPoint = Designer.AddPoint(obstacle.Position);
-                newPoint.FillColor = Color.Red;
-            }
+            //foreach (var obstacle in map.Obstacles)
+            //{
+            //    var newPoint = Designer.AddPoint(obstacle.Position);
+            //    newPoint.FillColor = Color.Red;
+            //}
 
-            Designer.AddPath(new Aptacode.FlowDesigner.Core.ViewModels.Components.PathViewModel(Guid.NewGuid(), path));
+            //Designer.AddPath(new Aptacode.FlowDesigner.Core.ViewModels.Components.PathViewModel(Guid.NewGuid(), path));
 
             await base.OnInitializedAsync();
         }

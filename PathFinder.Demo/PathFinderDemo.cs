@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using Aptacode.Geometry.Primitives;
+using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Maps;
@@ -22,79 +24,79 @@ namespace PathFinder.ConsoleDemo
                     new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100))),
                 ("2",
                     new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100),
-                        new Obstacle(Guid.NewGuid(), new Vector2(40, 40), new Vector2(20, 20)))),
+                            new Rectangle(new Vector2(40, 40), new Vector2(60,40), new Vector2(60,60), new Vector2(40, 60)))),
                 ("3",
                     new Map(new Vector2(100, 100), new Vector2(10, 20), new Vector2(10, 80),
-                        new Obstacle(Guid.NewGuid(), new Vector2(0, 40), new Vector2(80, 20)))),
-                ("4",
-                    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(90, 90),
-                        new Obstacle(Guid.NewGuid(), new Vector2(5, 20), new Vector2(40, 50)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(50, 10), new Vector2(20, 60)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(75, 75), new Vector2(10, 10)))),
-                ("5",
-                    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(11, 22),
-                        new Obstacle(Guid.NewGuid(), new Vector2(6, 6), new Vector2(5, 5)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(11, 11), new Vector2(5, 5)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(6, 16), new Vector2(5, 5)))),
-                ("6",
-                    new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
-                        new Obstacle(Guid.NewGuid(), new Vector2(2, 2), new Vector2(96, 1)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(50, 0), new Vector2(1, 2)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(50, 3), new Vector2(1, 95)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(2, 98), new Vector2(96, 1)))),
-                ("7",
-                    new Map(new Vector2(100, 100), new Vector2(4, 1), new Vector2(7, 1),
-                        new Obstacle(Guid.NewGuid(), new Vector2(1, 2), new Vector2(9, 1)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(5, 0), new Vector2(1, 2)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(5, 3), new Vector2(1, 6)),
-                        new Obstacle(Guid.NewGuid(), new Vector2(1, 9), new Vector2(9, 1)))),
-                ("8", CubeField()),
-                ("9", VerticalBars())
+                        Rectangle.Create(new Vector2(0, 40), new Vector2(20, 20)))),
+                //("4",
+                //    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(90, 90),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(5, 20), new Vector2(40, 50)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(50, 10), new Vector2(20, 60)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(75, 75), new Vector2(10, 10)))),
+                //("5",
+                //    new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(11, 22),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(6, 6), new Vector2(5, 5)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(11, 11), new Vector2(5, 5)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(6, 16), new Vector2(5, 5)))),
+                //("6",
+                //    new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(2, 2), new Vector2(96, 1)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(50, 0), new Vector2(1, 2)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(50, 3), new Vector2(1, 95)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(2, 98), new Vector2(96, 1)))),
+                //("7",
+                //    new Map(new Vector2(100, 100), new Vector2(4, 1), new Vector2(7, 1),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(1, 2), new Vector2(9, 1)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(5, 0), new Vector2(1, 2)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(5, 3), new Vector2(1, 6)),
+                //        new Obstacle(Guid.NewGuid(), new Vector2(1, 9), new Vector2(9, 1)))),
+                //("8", CubeField()),
+                //("9", VerticalBars())
             };
         }
 
-        public Map VerticalBars()
-        {
-            var mapBuilder = new MapBuilder();
-            const int width = 100;
-            const int height = 100;
-            mapBuilder.SetDimensions(width, height);
-            mapBuilder.SetStart(0, 0);
-            mapBuilder.SetEnd(width, height);
+        //public Map VerticalBars()
+        //{
+        //    var mapBuilder = new MapBuilder();
+        //    const int width = 100;
+        //    const int height = 100;
+        //    mapBuilder.SetDimensions(width, height);
+        //    mapBuilder.SetStart(0, 0);
+        //    mapBuilder.SetEnd(width, height);
 
-            var count = 0;
-            for (var i = 2; i < width - 2; i += 4)
-            {
-                var offset = count++ % 2 == 0 ? 2 : -2;
-                mapBuilder.AddObstacle(i, offset + 0, 2, height - 2);
-            }
+        //    var count = 0;
+        //    for (var i = 2; i < width - 2; i += 4)
+        //    {
+        //        var offset = count++ % 2 == 0 ? 2 : -2;
+        //        mapBuilder.AddObstacle(i, offset + 0, 2, height - 2);
+        //    }
 
-            var mapResult = mapBuilder.Build();
-            return mapResult.Map;
-        }
+        //    var mapResult = mapBuilder.Build();
+        //    return mapResult.Map;
+        //}
 
-        public Map CubeField()
-        {
-            var mapBuilder = new MapBuilder();
-            const int width = 100;
-            const int height = 100;
-            mapBuilder.SetDimensions(width, height);
-            mapBuilder.SetStart(0, 0);
-            mapBuilder.SetEnd(100, 100);
-            var count = 0;
-            for (var i = -5; i < width + 5; i += 5)
-            {
-                var offset = count++ % 2 == 0 ? 3 : 0;
+        //public Map CubeField()
+        //{
+        //    var mapBuilder = new MapBuilder();
+        //    const int width = 100;
+        //    const int height = 100;
+        //    mapBuilder.SetDimensions(width, height);
+        //    mapBuilder.SetStart(0, 0);
+        //    mapBuilder.SetEnd(100, 100);
+        //    var count = 0;
+        //    for (var i = -5; i < width + 5; i += 5)
+        //    {
+        //        var offset = count++ % 2 == 0 ? 3 : 0;
 
-                for (var j = -5; j < height + 5; j += 5)
-                {
-                    mapBuilder.AddObstacle(1 + i, offset + j, 3, 3);
-                }
-            }
+        //        for (var j = -5; j < height + 5; j += 5)
+        //        {
+        //            mapBuilder.AddObstacle(1 + i, offset + j, 3, 3);
+        //        }
+        //    }
 
-            var mapResult = mapBuilder.Build();
-            return mapResult.Map;
-        }
+        //    var mapResult = mapBuilder.Build();
+        //    return mapResult.Map;
+        //}
 
         public void RunAll()
         {

@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v5.0": {
+      "Aptacode.Geometry": {
+        "type": "Direct",
+        "requested": "[1.0.1.13, )",
+        "resolved": "1.0.1.13",
+        "contentHash": "eOCCDRCtW3FXUNRMAVuHMBmklaCO4qsNVQzGVZxGbMTotZeM/B0LnhKPay3QJ4dCDlSaS14XzXbwHEN/15MSTg==",
+        "dependencies": {
+          "System.Numerics.Vectors": "4.5.0"
+        }
+      },
       "SixLabors.ImageSharp": {
         "type": "Direct",
         "requested": "[1.0.2, )",
@@ -45,6 +54,7 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
+          "Aptacode.Geometry": "1.0.1.12",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

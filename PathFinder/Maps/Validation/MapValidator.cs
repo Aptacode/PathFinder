@@ -1,4 +1,5 @@
-﻿using Aptacode.PathFinder.Resources;
+﻿using Aptacode.Geometry.Primitives;
+using Aptacode.PathFinder.Resources;
 
 namespace Aptacode.PathFinder.Maps.Validation
 {
@@ -6,22 +7,22 @@ namespace Aptacode.PathFinder.Maps.Validation
     {
         public static MapValidationResult IsValid(this Map map)
         {
-            if (map.IsOutOfBounds(map.Start.Position))
+            if (map.IsOutOfBounds(new Point(map.Start.Position)))
             {
                 return MapValidationResult.Fail(ExceptionMessages.StartPointOutOfBounds);
             }
 
-            if (map.IsOutOfBounds(map.End.Position))
+            if (map.IsOutOfBounds(new Point(map.End.Position)))
             {
                 return MapValidationResult.Fail(ExceptionMessages.EndPointOutOfBounds);
             }
 
-            if (map.HasCollision(map.Start.Position))
+            if (map.HasCollision(new Point(map.Start.Position)))
             {
                 return MapValidationResult.Fail(ExceptionMessages.StartPointHasCollisionWithObstacle);
             }
 
-            if (map.HasCollision(map.End.Position))
+            if (map.HasCollision(new Point(map.End.Position)))
             {
                 return MapValidationResult.Fail(ExceptionMessages.EndPointHasCollisionWithObstacle);
             }

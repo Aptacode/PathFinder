@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps;
 
 namespace PathFinder.ConsoleDemo
@@ -14,14 +15,14 @@ namespace PathFinder.ConsoleDemo
             {
                 for (var j = 0; j < (int) map.Dimensions.X; j++)
                 {
-                    var point = new Vector2(j, i);
+                    var point = new Point(new Vector2(j, i));
                     Console.ResetColor();
-                    if (point == map.Start.Position)
+                    if (point == new Point(map.Start.Position))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write(" A");
                     }
-                    else if (point == map.End.Position)
+                    else if (point == new Point(map.End.Position))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write(" B");
@@ -31,7 +32,7 @@ namespace PathFinder.ConsoleDemo
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.Write(" +");
                     }
-                    else if (path.Contains(point))
+                    else if (path.Contains(point.Position))
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(" +");

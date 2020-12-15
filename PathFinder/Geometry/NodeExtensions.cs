@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps;
 
 namespace Aptacode.PathFinder.Geometry
@@ -9,7 +10,7 @@ namespace Aptacode.PathFinder.Geometry
             float childCost)
         {
             var position = currentNode.Position + neighbour;
-            return map.IsInvalidPosition(position)
+            return map.IsInvalidPosition(new Point(position))
                 ? Node.Empty
                 : new Node(currentNode, position, targetNode.Position, childCost);
         }
