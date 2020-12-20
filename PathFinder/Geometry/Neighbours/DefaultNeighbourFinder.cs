@@ -48,12 +48,12 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
         }
 
         public static DefaultNeighbourFinder Diagonal(float cost) =>
-            new DefaultNeighbourFinder(AllowedDirections.Diagonal, 0.0f, cost);
+            new(AllowedDirections.Diagonal, 0.0f, cost);
 
         public static DefaultNeighbourFinder Straight(float cost) =>
-            new DefaultNeighbourFinder(AllowedDirections.Straight, cost, 0.0f);
+            new(AllowedDirections.Straight, cost, 0.0f);
 
         public static DefaultNeighbourFinder All(float straightCost, float diagonalCost) =>
-            new DefaultNeighbourFinder(AllowedDirections.All, straightCost, diagonalCost);
+            new(AllowedDirections.All, straightCost, diagonalCost);
     }
 }

@@ -12,9 +12,9 @@
         public bool Success { get; }
 
         public static MapValidationResult Fail(string message) =>
-            new MapValidationResult(message, false);
+            new(message, false);
 
         public static MapValidationResult Ok(string message) =>
-            new MapValidationResult(message, true);
+            new(message, true);
     }
 }

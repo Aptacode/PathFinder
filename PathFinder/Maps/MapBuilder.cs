@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Aptacode.Geometry.Primitives;
-using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Maps.Validation;
 using Aptacode.PathFinder.Resources;
 
@@ -85,7 +84,6 @@ namespace Aptacode.PathFinder.Maps
             var mapResult = CreateMap();
             var map = mapResult.Map;
             Reset();
-
 
             if (!mapResult.Success)
             {

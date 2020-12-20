@@ -6,30 +6,30 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
     {
         public static readonly Vector2[] Diagonal =
         {
-            new Vector2(-1, -1),
-            new Vector2(1, -1),
-            new Vector2(-1, 1),
-            new Vector2(1, 1)
+            new(-1, -1),
+            new(1, -1),
+            new(-1, 1),
+            new(1, 1)
         };
 
         public static readonly Vector2[] Straight =
         {
-            new Vector2(0, -1),
-            new Vector2(-1, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1)
+            new(0, -1),
+            new(-1, 0),
+            new(1, 0),
+            new(0, 1)
         };
 
         public static readonly Vector2[] All =
         {
-            new Vector2(0, -1),
-            new Vector2(-1, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-            new Vector2(-1, -1),
-            new Vector2(1, -1),
-            new Vector2(-1, 1),
-            new Vector2(1, 1)
+            new(0, -1),
+            new(-1, 0),
+            new(1, 0),
+            new(0, 1),
+            new(-1, -1),
+            new(1, -1),
+            new(-1, 1),
+            new(1, 1)
         };
 
         public static Vector2[] GetNeighbours(AllowedDirections allowedDirections)

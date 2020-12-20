@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Point = Aptacode.Geometry.Primitives.Point;
+using Polygon = Aptacode.Geometry.Primitives.Polygon;
 
 namespace PathFinder.ConsoleDemo
 {
@@ -17,7 +18,7 @@ namespace PathFinder.ConsoleDemo
     {
         public static Image Generate(this PathFinderResult result)
         {
-            var width = (int)result.Map.Dimensions.X * 10; 
+            var width = (int) result.Map.Dimensions.X * 10;
             var height = (int) result.Map.Dimensions.Y * 10;
             Image image =
                 new Image<Rgba32>(width, height);
@@ -46,7 +47,7 @@ namespace PathFinder.ConsoleDemo
             IPen pen = Pens.Solid(Color.Black, 2);
             foreach (var mapObstacle in result.Map.Obstacles)
             {
-                if(mapObstacle is Aptacode.Geometry.Primitives.Polygon polygon)
+                if (mapObstacle is Polygon polygon)
                 {
                     try
                     {
@@ -60,23 +61,16 @@ namespace PathFinder.ConsoleDemo
                             lineSegments.Add(new LinearLineSegment(p1, p2));
                         }
 
-                        IPath yourPolygon = new Polygon(lineSegments);
+                        IPath yourPolygon = new SixLabors.ImageSharp.Drawing.Polygon(lineSegments);
                         image.Mutate(x => x?.Fill(options, brush, yourPolygon)
                             .Draw(options, pen, yourPolygon));
                     }
-                    catch
-                    {
-
-                    }
-
+                    catch { }
                 }
-                if(mapObstacle is Aptacode.Geometry.Primitives.Point point)
-                {
-                    
-                }
-  
+
+                if (mapObstacle is Point point) { }
             }
-            
+
 
             var path = result.Path.Select(p => new PointF(p.X * 10, p.Y * 10)).ToArray();
             image.Mutate(x => x.DrawLines(pen, path));

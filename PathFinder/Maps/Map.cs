@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;
@@ -10,7 +7,6 @@ namespace Aptacode.PathFinder.Maps
 {
     public class Map
     {
-        private readonly Dictionary<Guid, Primitive> _obstacles;
         public readonly Vector2 Dimensions;
         public readonly Node End;
         public readonly Node Start;
@@ -21,23 +17,27 @@ namespace Aptacode.PathFinder.Maps
             Dimensions = dimensions;
             End = Node.EndNode(end);
             Start = Node.StartNode(start, end);
-
-            _obstacles = new Dictionary<Guid, Primitive>();
-            foreach (var obstacle in obstacles)
-            {
-                _obstacles.Add(Guid.NewGuid(), obstacle);
-            }
+            Obstacles = obstacles;
         }
 
-        public IEnumerable<Primitive> Obstacles => _obstacles.Values;
+        public Primitive[] Obstacles { get; }
 
         public bool HasCollision(Point point)
         {
-            return _obstacles.Values.Any(obstacle => obstacle.CollidesWith(point, CollisionDetector));
+            for (var i = 0; i < Obstacles.Length; i++)
+            {
+                if (Obstacles[i].CollidesWith(point, CollisionDetector))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool IsOutOfBounds(Point point) =>
-            point.Position.X < 0 || point.Position.Y < 0 || point.Position.X > Dimensions.X || point.Position.Y > Dimensions.Y;
+            point.Position.X < 0 || point.Position.Y < 0 || point.Position.X > Dimensions.X ||
+            point.Position.Y > Dimensions.Y;
 
         public bool IsInvalidPosition(Point point) => IsOutOfBounds(point) || HasCollision(point);
     }

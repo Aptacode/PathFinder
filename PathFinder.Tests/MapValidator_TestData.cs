@@ -7,7 +7,7 @@ namespace PathFinder.Tests
 {
     public class MapValidator_TestData : IEnumerable<object[]>
     {
-        private readonly List<object[]> _data = new List<object[]>
+        private readonly List<object[]> _data = new()
         {
             new object[]
             {
@@ -23,7 +23,6 @@ namespace PathFinder.Tests
             {
                 ExceptionMessages.StartPointHasCollisionWithObstacle,
                 Map_Helpers.StartPoint_HasCollision_WithObstacle_Map
-                
             },
             new object[]
             {

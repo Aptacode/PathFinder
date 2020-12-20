@@ -20,7 +20,7 @@ namespace Aptacode.PathFinder.Algorithm
 
         public PathFinder(Map map) : this(map, JumpPointSearchNeighbourFinder.All(1.0f, 2.0f)) { }
 
-        public IEnumerable<Vector2> FindPath()
+        public Vector2[] FindPath()
         {
             var sortedOpenNodes = new PriorityQueue<float, Node>();
 
@@ -45,7 +45,7 @@ namespace Aptacode.PathFinder.Algorithm
                         node = node.Parent;
                         if (node == Node.Empty)
                         {
-                            return path;
+                            return path.ToArray();
                         }
                     }
                 }
@@ -76,7 +76,7 @@ namespace Aptacode.PathFinder.Algorithm
                 }
             }
 
-            return new List<Vector2>();
+            return new Vector2[0];
         }
     }
 }

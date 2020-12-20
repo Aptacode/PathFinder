@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Aptacode.Geometry.Primitives;
 using Aptacode.Geometry.Primitives.Polygons;
-using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Maps;
 
@@ -14,7 +12,7 @@ namespace PathFinder.ConsoleDemo
     internal class PathFinderDemo
     {
         private readonly List<(string name, Map map)> _maps;
-        private readonly List<List<PathFinderResult>> _pathFinderResults = new List<List<PathFinderResult>>();
+        private readonly List<List<PathFinderResult>> _pathFinderResults = new();
 
         public PathFinderDemo()
         {
@@ -24,32 +22,32 @@ namespace PathFinder.ConsoleDemo
                     new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100))),
                 ("2",
                     new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100),
-                        Rectangle.Create( new Vector2(40, 40), new Vector2(20, 20)))),
+                        Rectangle.Create(new Vector2(40, 40), new Vector2(20, 20)))),
                 ("3",
                     new Map(new Vector2(100, 100), new Vector2(10, 20), new Vector2(10, 80),
-                        Rectangle.Create( new Vector2(0, 40), new Vector2(80, 20)))),
+                        Rectangle.Create(new Vector2(0, 40), new Vector2(80, 20)))),
                 ("4",
                     new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(90, 90),
-                        Rectangle.Create(  new Vector2(5, 20), new Vector2(40, 50)),
-                        Rectangle.Create(  new Vector2(50, 10), new Vector2(20, 60)),
-                        Rectangle.Create(  new Vector2(75, 75), new Vector2(10, 10)))),
+                        Rectangle.Create(new Vector2(5, 20), new Vector2(40, 50)),
+                        Rectangle.Create(new Vector2(50, 10), new Vector2(20, 60)),
+                        Rectangle.Create(new Vector2(75, 75), new Vector2(10, 10)))),
                 ("5",
                     new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(11, 22),
-                        Rectangle.Create( new Vector2(6, 6), new Vector2(5, 5)),
-                        Rectangle.Create( new Vector2(11, 11), new Vector2(5, 5)),
-                        Rectangle.Create( new Vector2(6, 16), new Vector2(5, 5)))),
+                        Rectangle.Create(new Vector2(6, 6), new Vector2(5, 5)),
+                        Rectangle.Create(new Vector2(11, 11), new Vector2(5, 5)),
+                        Rectangle.Create(new Vector2(6, 16), new Vector2(5, 5)))),
                 ("6",
                     new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
                         Rectangle.Create(new Vector2(2, 2), new Vector2(96, 1)),
-                        Rectangle.Create(  new Vector2(50, 0), new Vector2(1, 2)),
-                        Rectangle.Create(  new Vector2(50, 3), new Vector2(1, 95)),
+                        Rectangle.Create(new Vector2(50, 0), new Vector2(1, 2)),
+                        Rectangle.Create(new Vector2(50, 3), new Vector2(1, 95)),
                         Rectangle.Create(new Vector2(2, 98), new Vector2(96, 1)))),
                 ("7",
                     new Map(new Vector2(100, 100), new Vector2(4, 1), new Vector2(7, 1),
-                        Rectangle.Create(  new Vector2(1, 2), new Vector2(9, 1)),
-                        Rectangle.Create(  new Vector2(5, 0), new Vector2(1, 2)),
-                        Rectangle.Create(  new Vector2(5, 3), new Vector2(1, 6)),
-                        Rectangle.Create(  new Vector2(1, 9), new Vector2(9, 1)))),
+                        Rectangle.Create(new Vector2(1, 2), new Vector2(9, 1)),
+                        Rectangle.Create(new Vector2(5, 0), new Vector2(1, 2)),
+                        Rectangle.Create(new Vector2(5, 3), new Vector2(1, 6)),
+                        Rectangle.Create(new Vector2(1, 9), new Vector2(9, 1)))),
                 ("8", GenerateCubeField()),
                 ("9", GenerateVerticalBars())
             };

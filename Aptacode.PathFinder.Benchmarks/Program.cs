@@ -1,9 +1,8 @@
-﻿using System;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 
 namespace Aptacode.PathFinder.Benchmarks
 {
-    class Program
+    internal class Program
     {
         private static void Main(string[] args)
         {
