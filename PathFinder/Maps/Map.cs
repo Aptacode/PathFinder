@@ -14,7 +14,7 @@ namespace Aptacode.PathFinder.Maps
         public readonly Vector2 Dimensions;
         public readonly Node End;
         public readonly Node Start;
-        public CollisionDetector CollisionDetector = new CoarseCollisionDetector();
+        public CollisionDetector CollisionDetector = new FineCollisionDetector();
 
         public Map(Vector2 dimensions, Vector2 start, Vector2 end, params Primitive[] obstacles)
         {

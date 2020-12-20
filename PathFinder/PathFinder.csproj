@@ -19,11 +19,11 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <Nullable>enable</Nullable>
-    <LangVersion>9.0</LangVersion>
+    <Langversion>9.0</Langversion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aptacode.Geometry" Version="1.0.1.9" />
+    <PackageReference Include="Aptacode.Geometry" Version="1.0.1.37" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
@@ -66,7 +66,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.1.12</Version>
+      <Version>1.0.1.37</Version>
     </PackageReference>
   </ItemGroup>
 

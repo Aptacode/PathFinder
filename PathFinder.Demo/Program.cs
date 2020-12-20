@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
@@ -15,8 +17,10 @@ namespace PathFinder.ConsoleDemo
     {
         public static Image Generate(this PathFinderResult result)
         {
+            var width = (int)result.Map.Dimensions.X * 10; 
+            var height = (int) result.Map.Dimensions.Y * 10;
             Image image =
-                new Image<Rgba32>((int) result.Map.Dimensions.X * 10, (int) result.Map.Dimensions.Y * 10);
+                new Image<Rgba32>(width, height);
             var options = new ShapeGraphicsOptions();
 
 
@@ -44,14 +48,27 @@ namespace PathFinder.ConsoleDemo
             {
                 if(mapObstacle is Aptacode.Geometry.Primitives.Polygon polygon)
                 {
-                    var lineSegments = new List<LinearLineSegment>();
-                    foreach(var edge in polygon.Edges)
+                    try
                     {
-                        lineSegments.Add(new LinearLineSegment(edge.p1, edge.p2));
+                        var lineSegments = new List<LinearLineSegment>();
+                        foreach (var edge in polygon.Edges)
+                        {
+                            var p1 = edge.p1 * 10;
+                            var p2 = edge.p2 * 10;
+                            p1 = new Vector2(Math.Clamp(p1.X, 0, width), Math.Clamp(p1.Y, 0, height));
+                            p2 = new Vector2(Math.Clamp(p2.X, 0, width), Math.Clamp(p2.Y, 0, height));
+                            lineSegments.Add(new LinearLineSegment(p1, p2));
+                        }
+
+                        IPath yourPolygon = new Polygon(lineSegments);
+                        image.Mutate(x => x?.Fill(options, brush, yourPolygon)
+                            .Draw(options, pen, yourPolygon));
                     }
-                    IPath yourPolygon = new Polygon(lineSegments);
-                      image.Mutate(x => x.Fill(options, brush, yourPolygon)
-                          .Draw(options, pen, yourPolygon));
+                    catch
+                    {
+
+                    }
+
                 }
                 if(mapObstacle is Aptacode.Geometry.Primitives.Point point)
                 {
@@ -59,6 +76,7 @@ namespace PathFinder.ConsoleDemo
                 }
   
             }
+            
 
             var path = result.Path.Select(p => new PointF(p.X * 10, p.Y * 10)).ToArray();
             image.Mutate(x => x.DrawLines(pen, path));

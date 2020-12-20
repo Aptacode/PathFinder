@@ -26,9 +26,9 @@
       },
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.1.12, )",
-        "resolved": "1.0.1.12",
-        "contentHash": "+rSDvLBxnQS6GTq9njmtEdaDh6YOo7DBMEYAWQdUTf3EmiTseYIWPj1XqVqUsRzTDIX4bicOrPiMudodFWApVw==",
+        "requested": "[1.0.1.37, )",
+        "resolved": "1.0.1.37",
+        "contentHash": "3f6y3+WlZtnNF0x07GzrcoKleYq6C2UbScXwr2/0CZgjmt6IssP4Fg3mcQvIeuTWDuObMVcnt55scCEuKobK2A==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         }

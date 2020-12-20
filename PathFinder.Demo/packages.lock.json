@@ -4,9 +4,9 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.1.13, )",
-        "resolved": "1.0.1.13",
-        "contentHash": "eOCCDRCtW3FXUNRMAVuHMBmklaCO4qsNVQzGVZxGbMTotZeM/B0LnhKPay3QJ4dCDlSaS14XzXbwHEN/15MSTg==",
+        "requested": "[1.0.1.37, )",
+        "resolved": "1.0.1.37",
+        "contentHash": "3f6y3+WlZtnNF0x07GzrcoKleYq6C2UbScXwr2/0CZgjmt6IssP4Fg3mcQvIeuTWDuObMVcnt55scCEuKobK2A==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         }
@@ -54,7 +54,7 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.Geometry": "1.0.1.12",
+          "Aptacode.Geometry": "1.0.1.37",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }
