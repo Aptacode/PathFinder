@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aptacode.Geometry" Version="1.0.1.37" />
+    <PackageReference Include="Aptacode.Geometry" Version="1.0.2.4" />
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
   </ItemGroup>
 
