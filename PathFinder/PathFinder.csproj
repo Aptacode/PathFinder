@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aptacode.Geometry" Version="1.0.1.37" />
+    <PackageReference Include="Aptacode.Geometry" Version="1.0.2.4" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
@@ -54,13 +54,13 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.1.5</Version>
+      <Version>1.0.2.4</Version>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.0</Version>
+      <Version>1.0.2.4</Version>
     </PackageReference>
   </ItemGroup>
 
