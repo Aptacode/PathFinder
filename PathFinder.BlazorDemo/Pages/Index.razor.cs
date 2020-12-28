@@ -36,13 +36,13 @@ namespace PathFinder.BlazorDemo.Pages
             foreach (var obstacle in map.Obstacles)
             {
                 obstacle.Scale(scale);
-                components.Add(componentBuilder.SetPrimitive(obstacle).SetFillColor(Color.Red).Build());
+                components.Add(componentBuilder.AddPrimitive(obstacle).SetFillColor(Color.Red).Build());
             }
 
             var polyLinePath = new PolyLine(VertexArray.Create(path.ToArray()));
             polyLinePath.Scale(scale);
 
-            components.Add(componentBuilder.SetPrimitive(polyLinePath).Build());
+            components.Add(componentBuilder.AddPrimitive(polyLinePath).Build());
             SceneController = new PathFinderSceneController(map.Dimensions * scale, components);
 
             await base.OnInitializedAsync();
