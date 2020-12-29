@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Maps;
@@ -21,24 +22,24 @@ namespace Aptacode.PathFinder.Benchmarks
             _noObstacles = new Map(new Vector2(100, 100), new Vector2(0, 0), new Vector2(100, 100));
 
             _oneObstacle = new Map(new Vector2(100, 100), new Vector2(10, 20), new Vector2(10, 80),
-                Rectangle.Create(new Vector2(0, 40), new Vector2(80, 20)));
+                Rectangle.Create(new Vector2(0, 40), new Vector2(80, 20)).ToViewModel());
 
             _threeSmallCubes = new Map(new Vector2(100, 100), new Vector2(5, 5), new Vector2(11, 22),
-                Rectangle.Create(new Vector2(6, 6), new Vector2(5, 5)),
-                Rectangle.Create(new Vector2(11, 11), new Vector2(5, 5)),
-                Rectangle.Create(new Vector2(6, 16), new Vector2(5, 5)));
+                Rectangle.Create(new Vector2(6, 6), new Vector2(5, 5)).ToViewModel(),
+                Rectangle.Create(new Vector2(11, 11), new Vector2(5, 5)).ToViewModel(),
+                Rectangle.Create(new Vector2(6, 16), new Vector2(5, 5)).ToViewModel());
 
             _largeIShape = new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
-                Rectangle.Create(new Vector2(2, 2), new Vector2(96, 1)),
-                Rectangle.Create(new Vector2(50, 0), new Vector2(1, 2)),
-                Rectangle.Create(new Vector2(50, 3), new Vector2(1, 95)),
-                Rectangle.Create(new Vector2(2, 98), new Vector2(96, 1)));
+                Rectangle.Create(new Vector2(2, 2), new Vector2(96, 1)).ToViewModel(),
+                Rectangle.Create(new Vector2(50, 0), new Vector2(1, 2)).ToViewModel(),
+                Rectangle.Create(new Vector2(50, 3), new Vector2(1, 95)).ToViewModel(),
+                Rectangle.Create(new Vector2(2, 98), new Vector2(96, 1)).ToViewModel());
 
             _smallIShape = new Map(new Vector2(100, 100), new Vector2(49, 1), new Vector2(52, 1),
-                Rectangle.Create(new Vector2(2, 2), new Vector2(96, 1)),
-                Rectangle.Create(new Vector2(50, 0), new Vector2(1, 2)),
-                Rectangle.Create(new Vector2(50, 3), new Vector2(1, 95)),
-                Rectangle.Create(new Vector2(2, 98), new Vector2(96, 1)));
+                Rectangle.Create(new Vector2(2, 2), new Vector2(96, 1)).ToViewModel(),
+                Rectangle.Create(new Vector2(50, 0), new Vector2(1, 2)).ToViewModel(),
+                Rectangle.Create(new Vector2(50, 3), new Vector2(1, 95)).ToViewModel(),
+                Rectangle.Create(new Vector2(2, 98), new Vector2(96, 1)).ToViewModel());
 
             _cubeField = GenerateCubeField();
             _verticalBars = GenerateVerticalBars();
@@ -57,7 +58,8 @@ namespace Aptacode.PathFinder.Benchmarks
             for (var i = 2; i < width - 2; i += 4)
             {
                 var offset = count++ % 2 == 0 ? 2 : -2;
-                mapBuilder.AddObstacle(Rectangle.Create(new Vector2(i, offset), new Vector2(2, height - 2)));
+                mapBuilder.AddObstacle(Rectangle.Create(new Vector2(i, offset), new Vector2(2, height - 2))
+                    .ToViewModel());
             }
 
             var mapResult = mapBuilder.Build();
@@ -79,7 +81,8 @@ namespace Aptacode.PathFinder.Benchmarks
 
                 for (var j = -5; j < height + 5; j += 5)
                 {
-                    mapBuilder.AddObstacle(Rectangle.Create(new Vector2(1 + i, offset + j), new Vector2(3, 3)));
+                    mapBuilder.AddObstacle(Rectangle.Create(new Vector2(1 + i, offset + j), new Vector2(3, 3))
+                        .ToViewModel());
                 }
             }
 

@@ -4,21 +4,21 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.2.5, )",
-        "resolved": "1.0.2.5",
-        "contentHash": "G7FcJPYVqqBmrOotvM2GUJK2r1S33BDonLjUC4iRsI3D0c1PsZx5XkpV9lXvffTCjM6pis8uWJblsyCoRgUyjw==",
+        "requested": "[1.0.2.7, )",
+        "resolved": "1.0.2.7",
+        "contentHash": "88MWFnWc4zZTBv53G6G3lbxE7ouuSwMst19fcundyXEo80hxSOgZ/C6DfyVqd+3/cmapBhTodqh5yoTgLRNN1w==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         }
       },
       "Aptacode.Geometry.Blazor": {
         "type": "Direct",
-        "requested": "[1.0.2.5, )",
-        "resolved": "1.0.2.5",
-        "contentHash": "CY4cY2S3dVuWjMN7ttBpIqMwrTRMEL45P2a+6TwBJ3PfP1lQGTyU/9BwpV/nG9OcCICqer5HOy8URvVvgBbrjQ==",
+        "requested": "[1.0.2.7, )",
+        "resolved": "1.0.2.7",
+        "contentHash": "2F/o85FoNFhCITpBsLPyDQEbLTuSmw4ZIL09WIWI45vjG7oAcNmcV9KznNZApqlDqAmX00hMX/dI0D51nxKPng==",
         "dependencies": {
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.2.5",
+          "Aptacode.Geometry": "1.0.2.7",
           "Excubo.Blazor.Canvas": "2.3.21",
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }
@@ -268,7 +268,8 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.Geometry": "1.0.2.5",
+          "Aptacode.Geometry": "1.0.2.7",
+          "Aptacode.Geometry.Blazor": "1.0.2.7",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

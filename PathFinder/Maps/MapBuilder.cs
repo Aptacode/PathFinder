@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using Aptacode.Geometry.Primitives;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.PathFinder.Maps.Validation;
 using Aptacode.PathFinder.Resources;
 
@@ -10,14 +9,14 @@ namespace Aptacode.PathFinder.Maps
 {
     public class MapBuilder
     {
-        private readonly Dictionary<Guid, Primitive> _obstacles;
+        private readonly List<ComponentViewModel> _obstacles;
         private Vector2 _dimensions;
         private Vector2 _end;
         private Vector2 _start;
 
         public MapBuilder()
         {
-            _obstacles = new Dictionary<Guid, Primitive>();
+            _obstacles = new List<ComponentViewModel>();
             _dimensions = new Vector2(0, 0);
             _start = Vector2.Zero;
             _end = Vector2.Zero;
@@ -59,10 +58,10 @@ namespace Aptacode.PathFinder.Maps
             return this;
         }
 
-        public MapBuilder AddObstacle(Primitive obstacle)
+        public MapBuilder AddObstacle(ComponentViewModel obstacle)
         {
             var newObstacle = obstacle;
-            _obstacles.Add(Guid.NewGuid(), newObstacle);
+            _obstacles.Add(newObstacle);
             return this;
         }
 
@@ -70,7 +69,7 @@ namespace Aptacode.PathFinder.Maps
         {
             try
             {
-                var map = new Map(_dimensions, _start, _end, _obstacles.Values.ToArray());
+                var map = new Map(_dimensions, _start, _end, _obstacles.ToArray());
                 return MapResult.Ok(map, GeneralMessages.Success);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;
@@ -12,7 +13,7 @@ namespace Aptacode.PathFinder.Maps
         public readonly Node Start;
         public CollisionDetector CollisionDetector = new FineCollisionDetector();
 
-        public Map(Vector2 dimensions, Vector2 start, Vector2 end, params Primitive[] obstacles)
+        public Map(Vector2 dimensions, Vector2 start, Vector2 end, params ComponentViewModel[] obstacles)
         {
             Dimensions = dimensions;
             End = Node.EndNode(end);
@@ -20,7 +21,7 @@ namespace Aptacode.PathFinder.Maps
             Obstacles = obstacles;
         }
 
-        public Primitive[] Obstacles { get; }
+        public ComponentViewModel[] Obstacles { get; }
 
         public bool HasCollision(Point point)
         {

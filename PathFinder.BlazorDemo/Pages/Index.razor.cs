@@ -5,7 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Aptacode.Geometry.Blazor.Components.ViewModels;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using Aptacode.Geometry.Blazor.Utilities;
 using Aptacode.Geometry.Primitives;
 using Aptacode.Geometry.Vertices;
@@ -18,7 +19,6 @@ namespace PathFinder.BlazorDemo.Pages
 {
     public class IndexBase : ComponentBase
     {
-
         protected override async Task OnInitializedAsync()
         {
             var componentBuilder = new ComponentBuilder();
@@ -36,13 +36,13 @@ namespace PathFinder.BlazorDemo.Pages
             foreach (var obstacle in map.Obstacles)
             {
                 obstacle.Scale(scale);
-                components.Add(componentBuilder.AddPrimitive(obstacle).SetFillColor(Color.Red).Build());
+                components.Add(componentBuilder.SetBase(obstacle).SetFillColor(Color.Red).Build());
             }
 
             var polyLinePath = new PolyLine(VertexArray.Create(path.ToArray()));
             polyLinePath.Scale(scale);
 
-            components.Add(componentBuilder.AddPrimitive(polyLinePath).Build());
+            components.Add(componentBuilder.SetBase(polyLinePath.ToViewModel()).Build());
             SceneController = new PathFinderSceneController(map.Dimensions * scale, components);
 
             await base.OnInitializedAsync();
@@ -64,7 +64,7 @@ namespace PathFinder.BlazorDemo.Pages
             {
                 var offset = count++ % 2 == 0 ? thickness : -thickness;
                 mapBuilder.AddObstacle(Rectangle.Create(new Vector2(i, offset),
-                    new Vector2(thickness, height - thickness)));
+                    new Vector2(thickness, height - thickness)).ToViewModel());
             }
 
             var mapResult = mapBuilder.Build();

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using Point = Aptacode.Geometry.Primitives.Point;
-using Polygon = Aptacode.Geometry.Primitives.Polygon;
 
 namespace PathFinder.ConsoleDemo
 {
@@ -47,12 +46,12 @@ namespace PathFinder.ConsoleDemo
             IPen pen = Pens.Solid(Color.Black, 2);
             foreach (var mapObstacle in result.Map.Obstacles)
             {
-                if (mapObstacle is Polygon polygon)
+                if (mapObstacle is PolygonViewModel polygon)
                 {
                     try
                     {
                         var lineSegments = new List<LinearLineSegment>();
-                        foreach (var edge in polygon.Edges)
+                        foreach (var edge in polygon.Polygon.Edges)
                         {
                             var p1 = edge.p1 * 10;
                             var p2 = edge.p2 * 10;
@@ -61,14 +60,14 @@ namespace PathFinder.ConsoleDemo
                             lineSegments.Add(new LinearLineSegment(p1, p2));
                         }
 
-                        IPath yourPolygon = new SixLabors.ImageSharp.Drawing.Polygon(lineSegments);
+                        IPath yourPolygon = new Polygon(lineSegments);
                         image.Mutate(x => x?.Fill(options, brush, yourPolygon)
                             .Draw(options, pen, yourPolygon));
                     }
                     catch { }
                 }
 
-                if (mapObstacle is Point point) { }
+                if (mapObstacle is PointViewModel point) { }
             }
 
 

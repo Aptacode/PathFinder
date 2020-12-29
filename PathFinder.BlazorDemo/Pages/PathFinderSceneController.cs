@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Aptacode.Geometry.Blazor.Components.ViewModels;
+using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Blazor.Extensions;
 
 namespace PathFinder.BlazorDemo.Pages
