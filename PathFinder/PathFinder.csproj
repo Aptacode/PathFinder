@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aptacode.Geometry" Version="1.0.1.37" />
-    <PackageReference Include="Aptacode.Geometry.Blazor" Version="1.0.2.7" />
+    <PackageReference Include="Aptacode.Geometry.Blazor" Version="1.0.2.8" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
