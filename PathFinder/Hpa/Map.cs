@@ -6,6 +6,7 @@ using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.Geometry.Primitives.Polygons;
+using Aptacode.PathFinder.Geometry.Neighbours;
 
 namespace Aptacode.PathFinder.Hpa
 {
@@ -98,75 +99,122 @@ namespace Aptacode.PathFinder.Hpa
 
         public void UpdateCluster(Cluster cluster)
         {
-            var i = cluster.Column;
-            var j = cluster.Row;
-            var topCluster = j >= 1 ? _clusters[i][j - 1] : Cluster.Empty;
-            var rightCluster = i < _clusterColumnCount ? _clusters[i + 1][j] : Cluster.Empty;
-            var bottomCluster = j < _clusterRowCount ? _clusters[i][j + 1] : Cluster.Empty;
-            var leftCluster = i >= 1 ? _clusters[i - 1][j] : Cluster.Empty;
-            var middleCluster = _clusters[i][j];
-
-            middleCluster.ClearEntrances();
-            //ToDo Interpolate over the edges to get a list of potential points
-            middleCluster.Entrances[topCluster.Id] = GetEntrances(middleCluster, topCluster, new List<Point>());
-            middleCluster.Entrances[rightCluster.Id] = GetEntrances(middleCluster, rightCluster, new List<Point>());
-            middleCluster.Entrances[bottomCluster.Id] = GetEntrances(middleCluster, bottomCluster, new List<Point>());
-            middleCluster.Entrances[leftCluster.Id] = GetEntrances(middleCluster, leftCluster, new List<Point>());
+            UpdateIntraEdges(cluster);
         }
 
-        public void UpdateIntraPaths(Cluster cluster)
+        public void UpdateIntraEdges(Cluster cluster)
         {
-            //Find paths between each entrance
-        }
-
-        public List<Entrance> GetEntrances(Cluster a, Cluster b, List<Point> edgePoints)
-        {
-            var entrances = new List<Entrance>();
-
-            var components = a.Children.Intersect(b.Children);
-
-            Point lastPoint = edgePoints[0];
-            Point lastPointAdded = null;
-            var wasColliding = true;
-
-            foreach (var edgePoint in edgePoints)
+            var doorPoints = GetDoorPointsInCluster(cluster);
+            foreach(var entranceId1 in doorPoints.Keys)
             {
-                var isColliding = components.All(c => !c.CollidesWith(edgePoint, _collisionDetector));
-
-                if (isColliding && !wasColliding)
+                foreach(var entranceId2 in doorPoints.Keys)
                 {
-                    //Add Last Point
-                    if (lastPointAdded != lastPoint)
+                    if(entranceId1 != entranceId2)
                     {
-                        lastPointAdded = lastPoint;
-                        entrances.Add(new Entrance(lastPoint));
+                        var entranceIntraEdges = new Dictionary<(Guid, Guid), List<IntraEdge>>()
+                        { 
+                            { 
+                                (entranceId1, entranceId2), new List<IntraEdge>()
+                            } 
+                        };
+                        var intraEdgeList = new List<IntraEdge>();
+                        var entrance1DoorPoints = doorPoints[entranceId1];
+                        var entrance2DoorPoints = doorPoints[entranceId2];
+                        for(var i = 0; i < entrance1DoorPoints.Count; i++)
+                        {
+                            for(var j = 0; j < entrance2DoorPoints.Count; j++)
+                            {
+                                var intraEdge = new IntraEdge(FindPath(entrance1DoorPoints[i], entrance2DoorPoints[j], cluster));
+                                intraEdgeList.Add(intraEdge);
+                            }
+                        }
+                        entranceIntraEdges[(entranceId1, entranceId2)] = intraEdgeList;
+                        ClusterIntraEdges.Add(cluster.Id, entranceIntraEdges);
                     }
                 }
-                else if (!isColliding && wasColliding)
-                {
-                    //Add current Point
-                    lastPointAdded = edgePoint;
-                    entrances.Add(new Entrance(edgePoint));
-                }
-
-                if (!isColliding)
-                {
-                    lastPoint = edgePoint;
-                }
-
-                wasColliding = isColliding;
             }
 
-            return entrances;
         }
 
-        public List<Point> FindPath(Point a, Point b)
+        public void UpdateEntrances()
+        {
+            foreach(var clusterColumn in _clusters)
+            {
+                foreach(var cluster in clusterColumn)
+                {
+                    var adjacentClusters = GetAdjacentClusters(cluster);
+                    foreach(var adjacentCluster in adjacentClusters)
+                    {
+                        UpdateEntrance(cluster, adjacentCluster.Value);
+                    }
+                }
+            }
+
+        }
+
+        public void UpdateEntrance(Cluster baseCluster, Cluster adjacentCluster)
+        {
+            var entrance = new Entrance(baseCluster, adjacentCluster);
+            Entrances.Add(entrance);
+            ClusterEntranceDictionary[baseCluster.Id].Add(entrance);
+        }
+
+        public Dictionary<Guid, List<Point>> GetDoorPointsInCluster(Cluster cluster)
+        {
+            var clusterEntrances = GetEntrances(cluster);
+            var doorPointDictionary = new Dictionary<Guid, List<Point>>();
+            foreach(var entrance in clusterEntrances)
+            {
+                var doorPointsInCluster = entrance.DoorPoints.Select(d => d.Item1).ToList();
+                doorPointDictionary.Add(entrance.Id, doorPointsInCluster);
+            }
+            return doorPointDictionary;
+        }
+        public List<Entrance> GetEntrances(Cluster cluster)
+        {
+            return ClusterEntranceDictionary[cluster.Id];
+        }
+
+        public List<Point> FindPath(Point a, Point b, Cluster cluster)
         {
             var path = new List<Point>();
-
-
+            var map = new Maps.Map(cluster.Region.Size, a.Position, b.Position, cluster.Children.ToArray());
+            var vectorPath = new Algorithm.PathFinder(map, DefaultNeighbourFinder.Straight(1.0f)).FindPath();
+            foreach(var pathPoint in vectorPath)
+            {
+                path.Add(new Point(pathPoint));
+            }
             return path;
         }
+
+        public Cluster GetCluster(int i, int j)
+        {
+            if (0 <= i && i <= _clusterColumnCount && 0 <= j && j <= _clusterRowCount)
+            {
+                return _clusters[i][j];
+            }
+            return Cluster.Empty;
+        }
+
+        public Dictionary<Direction, Cluster> GetAdjacentClusters(Cluster cluster)
+        {
+
+            var i = cluster.Column;
+            var j = cluster.Row;
+            var adjacentClusters = new Dictionary<Direction, Cluster>()
+            {   {Direction.Up, GetCluster(i, j - 1) },  //The cluster above this cluster
+                {Direction.Down, GetCluster(i, j - 1) },  //The cluster below this cluster
+                {Direction.Left, GetCluster(i - 1, j) },  //The cluster to the left of this cluster
+                {Direction.Right, GetCluster(i + 1, j) }  //The cluster to the right of this cluster
+            };
+            return adjacentClusters;
+        }
+
+        public void ClearEntrances()
+        {
+            Entrances.Clear();
+        }
+
 
         #region Props
 
@@ -175,7 +223,9 @@ namespace Aptacode.PathFinder.Hpa
         private readonly int _clusterColumnCount;
         private readonly int _clusterRowCount;
         private readonly Cluster[][] _clusters;
-
+        public List<Entrance> Entrances { get; set; }
+        public Dictionary<Guid, List<Entrance>> ClusterEntranceDictionary { get; set; }
+        public Dictionary<Guid, Dictionary<(Guid, Guid), List<IntraEdge>>> ClusterIntraEdges = new();
         private readonly Dictionary<Guid, List<Cluster>> _componentClusterDictionary = new();
         private readonly List<ComponentViewModel> _components = new();
         private readonly CollisionDetector _collisionDetector = new HybridCollisionDetector();
@@ -185,22 +235,12 @@ namespace Aptacode.PathFinder.Hpa
 
     public class Cluster : IEquatable<Cluster>
     {
-        public void SetEntrances(Guid clusterId, List<Entrance> entrances)
-        {
-            Entrances[clusterId] = entrances;
-        }
-
-        public void ClearEntrances()
-        {
-            Entrances.Clear();
-        }
-
         #region Props
 
         public Guid Id { get; set; }
         public Rectangle Region { get; private set; }
         public List<ComponentViewModel> Children { get; }
-        public Dictionary<Guid, List<Entrance>> Entrances { get; }
+        
         public int Row { get; }
         public int Column { get; }
 
@@ -215,7 +255,6 @@ namespace Aptacode.PathFinder.Hpa
             Id = Guid.NewGuid();
             Region = Rectangle.Create(new Vector2(column * clusterSize.X, row * clusterSize.Y), clusterSize);
             Children = new List<ComponentViewModel>();
-            Entrances = new Dictionary<Guid, List<Entrance>>();
         }
 
         protected Cluster()
@@ -240,21 +279,172 @@ namespace Aptacode.PathFinder.Hpa
         #endregion
     }
 
-    public class Entrance
+    public enum Direction
     {
-        public Entrance(Point point)
-        {
-            Point = point;
-            Paths = new List<Path>();
-        }
-
-        public Point Point { get; set; }
-        public List<Path> Paths { get; set; }
+        Up,
+        Right,
+        Down,
+        Left,
+        None
     }
 
-    public class Path
+    public class Entrance
     {
-        public List<Entrance> Entrances { get; set; }
-        public PolyLine PolyLine { get; set; }
+        public Entrance(Cluster a, Cluster b)
+        {
+            baseCluster = a;
+            adjacentCluster = b;
+            DoorPoints = SetDoorPoints(a, b);
+            Id = Guid.NewGuid();
+        }
+
+        private List<(Point, Point)> SetDoorPoints(Cluster a, Cluster b)
+        {
+            var collisionDetector = new HybridCollisionDetector();
+            var adjacentEdgePoints = GetAdjacentEdgePoints(a, b);
+
+            var doorPoints = new List<(Point, Point)>();
+
+            var aComponents = a.Children;
+            var bComponents = b.Children;
+
+            var lastPointPair = adjacentEdgePoints[0];
+            (Point, Point) lastPointPairAdded = (Point.Zero, Point.Zero);
+
+            var aWasColliding = true;
+            var bWasColliding = true;
+
+            foreach(var adjacentEdgePointPair in adjacentEdgePoints)
+            {
+                var aIsColliding = aComponents.All(c => !c.CollidesWith(adjacentEdgePointPair.Item1, collisionDetector));
+                var bIsColliding = bComponents.All(c => !c.CollidesWith(adjacentEdgePointPair.Item2, collisionDetector));
+
+                if((aIsColliding && !aWasColliding) || (bIsColliding && !bWasColliding))
+                {
+                    if (lastPointPairAdded != lastPointPair)
+                    {
+                        lastPointPairAdded = lastPointPair;
+                        doorPoints.Add(lastPointPair);
+                    }
+                }
+                else if((!aIsColliding && aWasColliding && !bIsColliding) || (!bIsColliding && bWasColliding && !aIsColliding))
+                {
+                    lastPointPairAdded = adjacentEdgePointPair;
+                    doorPoints.Add(adjacentEdgePointPair);
+                }
+                if(!aIsColliding && !bIsColliding)
+                {
+                    lastPointPair = adjacentEdgePointPair;
+                }
+
+                aIsColliding = aWasColliding;
+                bIsColliding = bWasColliding;
+
+            }
+            return doorPoints;
+        }
+
+        public List<Point> GetEdgePoints(Cluster cluster, Direction direction)
+        {
+            var edgePointList = new List<Point>();
+            var clusterWidth = cluster.Region.Width;
+            var clusterHeight = cluster.Region.Height;
+            var clusterTopLeft = cluster.Region.TopLeft;
+            var clusterTopRight = cluster.Region.TopRight;
+            var clusterBottomLeft = cluster.Region.BottomLeft;
+            switch (direction)
+            {
+                case Direction.Up:
+                    for (var i = 0; i < clusterWidth; i++)
+                    {
+                        edgePointList.Add(new Point(clusterTopLeft + new Vector2(i, 0)));
+                    }
+                    break;
+                case Direction.Down:
+                    for (var i = 0; i < clusterWidth; i++)
+                    {
+                        edgePointList.Add(new Point(clusterBottomLeft + new Vector2(i, 0)));
+                    }
+                    break;
+                case Direction.Left:
+                    for (var i = 0; i < clusterHeight; i++)
+                    {
+                        edgePointList.Add(new Point(clusterTopLeft + new Vector2(0, i)));
+                    }
+                    break;
+                case Direction.Right:
+                    for (var i = 0; i < clusterHeight; i++)
+                    {
+                        edgePointList.Add(new Point(clusterTopRight + new Vector2(0, i)));
+                    }
+                    break;
+
+            }
+            return edgePointList;
+
+        }
+        public List<(Point, Point)> GetAdjacentEdgePoints(Cluster a, Cluster b)
+        {
+            var adjacencyDirectionAB = GetAdjacencyDirection(a, b);
+            var adjacencyDirectionBA = GetAdjacencyDirection(a, b);
+
+            var aEdgePoints = GetEdgePoints(a, adjacencyDirectionAB);
+            var bEdgePoints = GetEdgePoints(b, adjacencyDirectionBA);
+
+            var adjacentEdgePoints = new List<(Point, Point)>();
+
+            for (var i = 0; i < a.Region.Width; i++)
+            {
+                adjacentEdgePoints.Add((aEdgePoints[i], bEdgePoints[i]));
+            }
+
+            return adjacentEdgePoints;
+
+
+        }
+
+        public Direction GetAdjacencyDirection(Cluster a, Cluster b)
+        {
+            var i1 = a.Column;
+            var i2 = b.Column;
+            var j1 = a.Row;
+            var j2 = b.Row;
+            if (j1 > j2)
+            {
+                return Direction.Up;
+            }
+            if (i1 < i2)
+            {
+                return Direction.Right;
+            }
+            if (j1 < j2)
+            {
+                return Direction.Down;
+            }
+            if (i1 > i2)
+            {
+                return Direction.Left;
+            }
+            return Direction.None;
+        }
+
+        public Cluster baseCluster { get; }
+        public Cluster adjacentCluster { get; }
+
+        public Guid Id { get; set; }
+        public List<(Point, Point)> DoorPoints { get; set; }
+    }
+
+    public class IntraEdge
+    {
+        public List<Point> Path { get; set; }
+        public (Point, Point) EndPoints { get; set; }
+
+        public IntraEdge(List<Point> path)
+        {
+            Path = path;
+            EndPoints = (path.First(), path.Last());
+        }
+
     }
 }
