@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps;
+using Aptacode.PathFinder.Maps.Hpa;
 
 namespace Aptacode.PathFinder.Geometry
 {

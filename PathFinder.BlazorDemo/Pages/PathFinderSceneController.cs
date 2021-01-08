@@ -16,8 +16,7 @@ namespace PathFinder.BlazorDemo.Pages
 
         public PathFinderSceneController(Vector2 size, IEnumerable<ComponentViewModel> components) : base(
             new SceneViewModel(
-                size,
-                components
+                size
             ))
         {
             UserInteractionController.OnMouseDown += UserInteractionControllerOnOnMouseDown;
