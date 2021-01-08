@@ -2,6 +2,9 @@
 
 PathFinder is an optimized C# implementation of the [A* Search Algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). In its current form it can be utilised to quickly find the shortest path between two points on a uniform grid with potential obstacles between the start and end point.
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e520860e7f64f17bb523e6b8fae72b6)](https://www.codacy.com/gh/Aptacode/PathFinder/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Aptacode/PathFinder&amp;utm_campaign=Badge_Grade)
+[![NuGet](https://img.shields.io/nuget/v/Aptacode.PathFinder.svg?style=flat)](https://www.nuget.org/packages/Aptacode.PathFinder/)
+![last commit](https://img.shields.io/github/last-commit/Aptacode/PathFinder?style=flat-square&cacheSeconds=86000)
 ## Overview
 
 The main `PathFinder` class consists of a `Map` and `INeighbourFinder`. The `Map` is the class that contains all the information about the grid in which a path is to be found:
