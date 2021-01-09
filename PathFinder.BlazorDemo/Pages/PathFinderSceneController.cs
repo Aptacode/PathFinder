@@ -14,7 +14,7 @@ namespace PathFinder.BlazorDemo.Pages
     {
         private DateTime lastTick = DateTime.Now;
 
-        public PathFinderSceneController(Vector2 size, IEnumerable<ComponentViewModel> components) : base(
+        public PathFinderSceneController(Vector2 size) : base(
             new SceneViewModel(
                 size
             ))

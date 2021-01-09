@@ -4,22 +4,22 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.3, )",
-        "resolved": "1.0.3",
-        "contentHash": "hNZmOEhvurGfGFCWJGQ1DFjhugqXFU7Xf+zUoU1mO8O6XH41dkkQl7q0e7XJEZmd8gyuxxfrAeMYt9fxyJSjag==",
+        "requested": "[1.0.7, )",
+        "resolved": "1.0.7",
+        "contentHash": "7uF8MlrZTVuykRA8HeamJw2PioxqaFgvM8eimI2ss6L2O73aGESfgWBMZTegmHQFxkTe+mzB6nGxAHE+QivAQw==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         }
       },
       "Aptacode.Geometry.Blazor": {
         "type": "Direct",
-        "requested": "[1.0.3, )",
-        "resolved": "1.0.3",
-        "contentHash": "8eeZ+9N2dlgIv3kNJ92kmq7Flpgpy6S3LuKreH44w5zVSdIaxIMQ/y9SmKxMi2Y+BzB/EhAMgJYv/372NUIxAQ==",
+        "requested": "[1.0.7, )",
+        "resolved": "1.0.7",
+        "contentHash": "d7HmsJyIw5ftKH55ucMVAeBaYzYwlFqn2WgvyKGKHsJJn9EYHtEL9txzgVRNtY45my2us319hvvOQkF/vbWYIA==",
         "dependencies": {
-          "Aptacode.BlazorCanvas": "1.0.0-CI-20210105-183331",
+          "Aptacode.BlazorCanvas": "1.0.0",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.3",
+          "Aptacode.Geometry": "1.0.7",
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }
       },
@@ -37,8 +37,8 @@
       },
       "Aptacode.BlazorCanvas": {
         "type": "Transitive",
-        "resolved": "1.0.0-CI-20210105-183331",
-        "contentHash": "ajaiTqzIjCfFG1CE/a88n5bGcUJDG9/0zGbe721zZstOSXJwjm6XpiUwPBPjvRqzwNp2vvXuu/9cyx1lhr0sLA==",
+        "resolved": "1.0.0",
+        "contentHash": "FDYleyVl5Ck17PYDUBU2jiriql/+x0JxV57uOL+26Fg9d4a76P5WfI/rTHREA+TIltGUxsqCNa4jsA2Gp8gt0w==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }

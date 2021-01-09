@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Aptacode.CSharp.Common.Utilities.Extensions;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using Aptacode.Geometry.Blazor.Utilities;
@@ -13,6 +14,7 @@ using Aptacode.Geometry.Vertices;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Maps;
 using Microsoft.AspNetCore.Components;
+using Point = Aptacode.Geometry.Primitives.Point;
 using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
 
 namespace PathFinder.BlazorDemo.Pages
@@ -24,7 +26,6 @@ namespace PathFinder.BlazorDemo.Pages
             var componentBuilder = new ComponentBuilder();
             var components = new List<ComponentViewModel>();
             var map = GenerateVerticalBars();
-            var scale = new Vector2(10, 10);
 
             var timer = new Stopwatch();
             timer.Start();
@@ -33,17 +34,24 @@ namespace PathFinder.BlazorDemo.Pages
             timer.Stop();
 
             Console.WriteLine(timer.ElapsedMilliseconds);
-            foreach (var obstacle in map.Obstacles)
-            {
-                obstacle.Scale(scale);
-                components.Add(componentBuilder.SetBase(obstacle).SetFillColor(Color.Red).Build());
-            }
+            components.AddRange(map.Obstacles);
 
             var polyLinePath = new PolyLine(VertexArray.Create(path.ToArray()));
-            polyLinePath.Scale(scale);
 
-            components.Add(componentBuilder.SetBase(polyLinePath.ToViewModel()).Build());
-            SceneController = new PathFinderSceneController(map.Dimensions * scale, components);
+            components.Add(polyLinePath.ToViewModel());
+            SceneController = new PathFinderSceneController(map.Dimensions);
+            SceneController.Scene.Components.AddRange(components);
+
+
+            var startPoint = Point.Create(15, 15).ToViewModel();
+            startPoint.FillColor = Color.Green;
+            startPoint.CollisionDetectionEnabled = false;
+            SceneController.Scene.Components.Add(startPoint);
+
+            var endPoint = Point.Create(70, 70).ToViewModel();
+            endPoint.FillColor = Color.Red;
+            endPoint.CollisionDetectionEnabled = false;
+            SceneController.Scene.Components.Add(endPoint);
 
             await base.OnInitializedAsync();
         }
@@ -54,18 +62,28 @@ namespace PathFinder.BlazorDemo.Pages
             var mapBuilder = new MapBuilder();
             const int width = 100;
             const int height = 100;
-            const int thickness = 5;
             mapBuilder.SetDimensions(width, height);
-            mapBuilder.SetStart(0, 0);
-            mapBuilder.SetEnd(width, height);
+            mapBuilder.SetStart(15,15);
+            mapBuilder.SetEnd(70,70);
+            
 
-            var count = 0;
-            for (var i = thickness; i < width - thickness; i += 2 * thickness)
-            {
-                var offset = count++ % 2 == 0 ? thickness : -thickness;
-                mapBuilder.AddObstacle(Rectangle.Create(new Vector2(i, offset),
-                    new Vector2(thickness, height - thickness)).ToViewModel());
-            }
+            var obstacle1 = Rectangle.Create(new Vector2(20,20 ),
+                new Vector2(20,20)).ToViewModel();
+            obstacle1.FillColor = Color.Gray;
+
+
+            var obstacle2 = Rectangle.Create(new Vector2(60, 20),
+                new Vector2(20, 20)).ToViewModel();
+            obstacle2.FillColor = Color.Gray;
+
+
+            var obstacle3 = Rectangle.Create(new Vector2(20, 60),
+                new Vector2(20, 20)).ToViewModel();
+            obstacle3.FillColor = Color.Gray;
+            
+            mapBuilder.AddObstacle(obstacle1);
+            mapBuilder.AddObstacle(obstacle2);
+            mapBuilder.AddObstacle(obstacle3);
 
             var mapResult = mapBuilder.Build();
             return mapResult.Map;
