@@ -36,10 +36,15 @@ namespace Aptacode.PathFinder.Maps
             return false;
         }
 
-        public bool IsOutOfBounds(Point point) =>
-            point.Position.X < 0 || point.Position.Y < 0 || point.Position.X > Dimensions.X ||
-            point.Position.Y > Dimensions.Y;
+        public bool IsOutOfBounds(Point point)
+        {
+            return point.Position.X < 0 || point.Position.Y < 0 || point.Position.X > Dimensions.X ||
+                   point.Position.Y > Dimensions.Y;
+        }
 
-        public bool IsInvalidPosition(Point point) => IsOutOfBounds(point) || HasCollision(point);
+        public bool IsInvalidPosition(Point point)
+        {
+            return IsOutOfBounds(point) || HasCollision(point);
+        }
     }
 }

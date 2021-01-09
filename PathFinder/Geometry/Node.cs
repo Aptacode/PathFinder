@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Aptacode.PathFinder.Maps.Hpa;
 using Aptacode.PathFinder.Utilities;
 
 namespace Aptacode.PathFinder.Geometry
@@ -57,21 +56,35 @@ namespace Aptacode.PathFinder.Geometry
             CostDistance = Cost + Distance;
         }
 
-        public bool IsInline(Vector2 position) =>
-            Math.Abs(position.X - Position.X) < Constants.Tolerance ||
-            Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
+        public bool IsInline(Vector2 position)
+        {
+            return Math.Abs(position.X - Position.X) < Constants.Tolerance ||
+                   Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
+        }
 
-        public static Node StartNode(Vector2 position, Vector2 target) => new(position, target);
-        public static Node EndNode(Vector2 position) => new(position);
+        public static Node StartNode(Vector2 position, Vector2 target)
+        {
+            return new(position, target);
+        }
+
+        public static Node EndNode(Vector2 position)
+        {
+            return new(position);
+        }
 
         #region IEquatable
 
-        public override int GetHashCode() => (Position, Cost, Distance).GetHashCode();
+        public override int GetHashCode()
+        {
+            return (Position, Cost, Distance).GetHashCode();
+        }
 
-        public virtual bool Equals(Node other) =>
-            Position == other?.Position &&
-            Math.Abs(Distance - other.Distance) < Constants.Tolerance &&
-            Math.Abs(Cost - other.Cost) < Constants.Tolerance;
+        public virtual bool Equals(Node other)
+        {
+            return Position == other?.Position &&
+                   Math.Abs(Distance - other.Distance) < Constants.Tolerance &&
+                   Math.Abs(Cost - other.Cost) < Constants.Tolerance;
+        }
 
         #endregion
     }

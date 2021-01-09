@@ -64,10 +64,14 @@ namespace PathFinder.ConsoleDemo
                         image.Mutate(x => x?.Fill(options, brush, yourPolygon)
                             .Draw(options, pen, yourPolygon));
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
 
-                if (mapObstacle is PointViewModel point) { }
+                if (mapObstacle is PointViewModel point)
+                {
+                }
             }
 
 

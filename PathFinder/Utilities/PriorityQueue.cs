@@ -16,7 +16,10 @@ namespace Aptacode.PathFinder.Utilities
             _all = new List<TItem>();
         }
 
-        public bool IsEmpty() => _all.Count == 0;
+        public bool IsEmpty()
+        {
+            return _all.Count == 0;
+        }
 
         public TItem Dequeue()
         {
@@ -87,6 +90,9 @@ namespace Aptacode.PathFinder.Utilities
             return true;
         }
 
-        public IEnumerable<TItem> GetAll() => _all;
+        public IEnumerable<TItem> GetAll()
+        {
+            return _all;
+        }
     }
 }

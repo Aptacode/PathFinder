@@ -5,10 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Aptacode.CSharp.Common.Utilities.Extensions;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
-using Aptacode.Geometry.Blazor.Utilities;
 using Aptacode.Geometry.Primitives;
 using Aptacode.Geometry.Vertices;
 using Aptacode.PathFinder.Geometry.Neighbours;
@@ -21,9 +19,14 @@ namespace PathFinder.BlazorDemo.Pages
 {
     public class IndexBase : ComponentBase
     {
+        #region Properties
+
+        public PathFinderSceneController SceneController { get; set; }
+
+        #endregion
+
         protected override async Task OnInitializedAsync()
         {
-            var componentBuilder = new ComponentBuilder();
             var components = new List<ComponentViewModel>();
             var map = GenerateVerticalBars();
 
@@ -41,7 +44,6 @@ namespace PathFinder.BlazorDemo.Pages
             components.Add(polyLinePath.ToViewModel());
             SceneController = new PathFinderSceneController(map.Dimensions);
             SceneController.Scene.Components.AddRange(components);
-
 
             var startPoint = Point.Create(15, 15).ToViewModel();
             startPoint.FillColor = Color.Green;
@@ -63,24 +65,21 @@ namespace PathFinder.BlazorDemo.Pages
             const int width = 100;
             const int height = 100;
             mapBuilder.SetDimensions(width, height);
-            mapBuilder.SetStart(15,15);
-            mapBuilder.SetEnd(70,70);
-            
+            mapBuilder.SetStart(15, 15);
+            mapBuilder.SetEnd(70, 70);
 
-            var obstacle1 = Rectangle.Create(new Vector2(20,20 ),
-                new Vector2(20,20)).ToViewModel();
+            var obstacle1 = Rectangle.Create(new Vector2(20, 20),
+                new Vector2(20, 20)).ToViewModel();
             obstacle1.FillColor = Color.Gray;
-
 
             var obstacle2 = Rectangle.Create(new Vector2(60, 20),
                 new Vector2(20, 20)).ToViewModel();
             obstacle2.FillColor = Color.Gray;
 
-
             var obstacle3 = Rectangle.Create(new Vector2(20, 60),
                 new Vector2(20, 20)).ToViewModel();
             obstacle3.FillColor = Color.Gray;
-            
+
             mapBuilder.AddObstacle(obstacle1);
             mapBuilder.AddObstacle(obstacle2);
             mapBuilder.AddObstacle(obstacle3);
@@ -88,12 +87,5 @@ namespace PathFinder.BlazorDemo.Pages
             var mapResult = mapBuilder.Build();
             return mapResult.Map;
         }
-
-        #region Properties
-
-        public PathFinderSceneController SceneController { get; set; }
-        private readonly Random _rand = new();
-
-        #endregion
     }
 }

@@ -12,30 +12,30 @@
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+<div id="app">Loading...</div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+<script src="_framework/blazor.webassembly.js"></script>
 <script src="_content/Aptacode.BlazorCanvas/BlazorCanvasInterop.js"></script>
-    <script>
-        window.SetFocusToElement = (element) => {
-            element.focus();
-        };
+<script>
+    window.SetFocusToElement = (element) => {
+        element.focus();
+    };
 
-        function gameLoop(timeStamp) {
-            window.requestAnimationFrame(gameLoop);
-            theInstance.invokeMethodAsync('GameLoop', timeStamp);
-        }
+    function gameLoop(timeStamp) {
+        window.requestAnimationFrame(gameLoop);
+        theInstance.invokeMethodAsync('GameLoop', timeStamp);
+    }
 
-        window.initGame = (instance) => {
-            window.theInstance = instance;
-            window.requestAnimationFrame(gameLoop);
-        };
-    </script>
+    window.initGame = (instance) => {
+        window.theInstance = instance;
+        window.requestAnimationFrame(gameLoop);
+    };
+</script>
 </body>
 
 </html>

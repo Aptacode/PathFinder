@@ -11,10 +11,14 @@
         public string Message { get; }
         public bool Success { get; }
 
-        public static MapValidationResult Fail(string message) =>
-            new(message, false);
+        public static MapValidationResult Fail(string message)
+        {
+            return new(message, false);
+        }
 
-        public static MapValidationResult Ok(string message) =>
-            new(message, true);
+        public static MapValidationResult Ok(string message)
+        {
+            return new(message, true);
+        }
     }
 }

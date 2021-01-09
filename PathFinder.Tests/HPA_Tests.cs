@@ -1,9 +1,7 @@
+using System.Numerics;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Primitives;
-using Aptacode.PathFinder.Maps;
 using Aptacode.PathFinder.Maps.Hpa;
-using Aptacode.PathFinder.Maps.Validation;
-using System.Numerics;
 using Xunit;
 
 namespace PathFinder.Tests
@@ -20,7 +18,6 @@ namespace PathFinder.Tests
         }
 
         [Fact]
-
         public void HierachicalMap_PathFinding_Test()
         {
             var map = new HierachicalMap(new Vector2(100, 100), new ComponentViewModel[0], 1);

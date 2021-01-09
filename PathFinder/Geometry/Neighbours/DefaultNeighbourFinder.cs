@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps;
-using Aptacode.PathFinder.Maps.Hpa;
 
 namespace Aptacode.PathFinder.Geometry.Neighbours
 {
@@ -51,13 +47,19 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
             }
         }
 
-        public static DefaultNeighbourFinder Diagonal(float cost) =>
-            new(AllowedDirections.Diagonal, 0.0f, cost);
+        public static DefaultNeighbourFinder Diagonal(float cost)
+        {
+            return new(AllowedDirections.Diagonal, 0.0f, cost);
+        }
 
-        public static DefaultNeighbourFinder Straight(float cost) =>
-            new(AllowedDirections.Straight, cost, 0.0f);
+        public static DefaultNeighbourFinder Straight(float cost)
+        {
+            return new(AllowedDirections.Straight, cost, 0.0f);
+        }
 
-        public static DefaultNeighbourFinder All(float straightCost, float diagonalCost) =>
-            new(AllowedDirections.All, straightCost, diagonalCost);
+        public static DefaultNeighbourFinder All(float straightCost, float diagonalCost)
+        {
+            return new(AllowedDirections.All, straightCost, diagonalCost);
+        }
     }
 }

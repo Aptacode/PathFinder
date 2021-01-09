@@ -19,7 +19,9 @@ namespace Aptacode.PathFinder.Algorithm
             _neighbourFinder = neighbourFinder;
         }
 
-        public PathFinder(Map map) : this(map, JumpPointSearchNeighbourFinder.All(1.0f, 2.0f)) { }
+        public PathFinder(Map map) : this(map, JumpPointSearchNeighbourFinder.All(1.0f, 2.0f))
+        {
+        }
 
         public Vector2[] FindPath()
         {

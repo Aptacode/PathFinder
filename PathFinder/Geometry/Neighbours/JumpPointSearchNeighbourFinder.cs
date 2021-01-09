@@ -42,14 +42,20 @@ namespace Aptacode.PathFinder.Geometry.Neighbours
             return successors;
         }
 
-        public static JumpPointSearchNeighbourFinder Diagonal(float cost) =>
-            new(AllowedDirections.Diagonal, 0.0f, cost);
+        public static JumpPointSearchNeighbourFinder Diagonal(float cost)
+        {
+            return new(AllowedDirections.Diagonal, 0.0f, cost);
+        }
 
-        public static JumpPointSearchNeighbourFinder Straight(float cost) =>
-            new(AllowedDirections.Straight, cost, 0.0f);
+        public static JumpPointSearchNeighbourFinder Straight(float cost)
+        {
+            return new(AllowedDirections.Straight, cost, 0.0f);
+        }
 
-        public static JumpPointSearchNeighbourFinder All(float straightCost, float diagonalCost) =>
-            new(AllowedDirections.All, straightCost, diagonalCost);
+        public static JumpPointSearchNeighbourFinder All(float straightCost, float diagonalCost)
+        {
+            return new(AllowedDirections.All, straightCost, diagonalCost);
+        }
 
         private Node Jump(Map map, Node currentNode, Vector2 delta, Node start, Node end,
             Vector2 forcedNeighbourCheck)

@@ -36,8 +36,14 @@ namespace PathFinder.Tests
             }
         };
 
-        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            return _data.GetEnumerator();
+        }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

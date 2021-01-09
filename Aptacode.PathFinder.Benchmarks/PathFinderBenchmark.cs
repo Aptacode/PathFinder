@@ -91,31 +91,45 @@ namespace Aptacode.PathFinder.Benchmarks
         }
 
         [Benchmark]
-        public Vector2[] NoObstacles() =>
-            new Algorithm.PathFinder(_noObstacles, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] NoObstacles()
+        {
+            return new Algorithm.PathFinder(_noObstacles, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] OneObstacle() =>
-            new Algorithm.PathFinder(_oneObstacle, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] OneObstacle()
+        {
+            return new Algorithm.PathFinder(_oneObstacle, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] ThreeObstacles() =>
-            new Algorithm.PathFinder(_threeSmallCubes, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] ThreeObstacles()
+        {
+            return new Algorithm.PathFinder(_threeSmallCubes, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] SmallIShape() =>
-            new Algorithm.PathFinder(_smallIShape, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] SmallIShape()
+        {
+            return new Algorithm.PathFinder(_smallIShape, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] LargeIShape() =>
-            new Algorithm.PathFinder(_largeIShape, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] LargeIShape()
+        {
+            return new Algorithm.PathFinder(_largeIShape, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] CubeField() =>
-            new Algorithm.PathFinder(_cubeField, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] CubeField()
+        {
+            return new Algorithm.PathFinder(_cubeField, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
 
         [Benchmark]
-        public Vector2[] VerticalBars() =>
-            new Algorithm.PathFinder(_verticalBars, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        public Vector2[] VerticalBars()
+        {
+            return new Algorithm.PathFinder(_verticalBars, DefaultNeighbourFinder.Straight(0.5f)).FindPath();
+        }
     }
 }

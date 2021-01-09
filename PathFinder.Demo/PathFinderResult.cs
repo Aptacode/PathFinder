@@ -24,7 +24,9 @@ namespace PathFinder.ConsoleDemo
             Path = path;
         }
 
-        public override string ToString() =>
-            $"Map: {Name}\t Duration: {TotalTime}ms\t Length: {TotalLength}\t Nodes: {TotalPoints}";
+        public override string ToString()
+        {
+            return $"Map: {Name}\t Duration: {TotalTime}ms\t Length: {TotalLength}\t Nodes: {TotalPoints}";
+        }
     }
 }

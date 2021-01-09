@@ -16,7 +16,7 @@ namespace PathFinder.BlazorDemo
 
             builder.Services.AddScoped(
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
-            
+
             builder.Services.AddSingleton<BlazorCanvasInterop>();
 
             await builder.Build().RunAsync();

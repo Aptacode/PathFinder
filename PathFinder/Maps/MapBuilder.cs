@@ -71,10 +71,8 @@ namespace Aptacode.PathFinder.Maps
             {
                 var map = new Map(_dimensions, _start, _end, _obstacles.ToArray());
                 var mapValidationResult = map.IsValid();
-                
-                return mapValidationResult.Success ?
-                    MapResult.Ok(map, GeneralMessages.Success) :
-                    MapResult.Fail(mapValidationResult.Message);
+
+                return mapValidationResult.Success ? MapResult.Ok(map, GeneralMessages.Success) : MapResult.Fail(mapValidationResult.Message);
             }
             catch (Exception ex)
             {

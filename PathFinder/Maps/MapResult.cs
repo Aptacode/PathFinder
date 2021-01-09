@@ -13,9 +13,14 @@
             Map = map;
         }
 
-        public static MapResult Fail(string message) => new(message, false, null);
+        public static MapResult Fail(string message)
+        {
+            return new(message, false, null);
+        }
 
-        public static MapResult Ok(Map map, string message) =>
-            new(message, true, map);
+        public static MapResult Ok(Map map, string message)
+        {
+            return new(message, true, map);
+        }
     }
 }
