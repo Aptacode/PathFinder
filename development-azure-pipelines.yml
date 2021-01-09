@@ -54,7 +54,7 @@ steps:
     versioningScheme: 'byPrereleaseNumber'
     majorVersion: '1'
     minorVersion: '0'
-    patchVersion: '4'
+    patchVersion: '5'
 
 - task: NuGetCommand@2
   displayName: 'Push'
