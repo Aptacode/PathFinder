@@ -17,7 +17,7 @@ namespace Aptacode.PathFinder.Maps
         public MapBuilder()
         {
             _obstacles = new List<ComponentViewModel>();
-            _dimensions = new Vector2(0, 0);
+            _dimensions = Vector2.Zero;
             _start = Vector2.Zero;
             _end = Vector2.Zero;
         }
@@ -70,7 +70,11 @@ namespace Aptacode.PathFinder.Maps
             try
             {
                 var map = new Map(_dimensions, _start, _end, _obstacles.ToArray());
-                return MapResult.Ok(map, GeneralMessages.Success);
+                var mapValidationResult = map.IsValid();
+                
+                return mapValidationResult.Success ?
+                    MapResult.Ok(map, GeneralMessages.Success) :
+                    MapResult.Fail(mapValidationResult.Message);
             }
             catch (Exception ex)
             {
@@ -81,24 +85,14 @@ namespace Aptacode.PathFinder.Maps
         public MapResult Build()
         {
             var mapResult = CreateMap();
-            var map = mapResult.Map;
             Reset();
-
-            if (!mapResult.Success)
-            {
-                return mapResult;
-            }
-
-            var mapValidationResult = map.IsValid();
-            return !mapValidationResult.Success
-                ? MapResult.Fail(mapResult.Message)
-                : MapResult.Ok(map, mapResult.Message);
+            return mapResult;
         }
 
         public void Reset()
         {
             _obstacles.Clear();
-            _dimensions = new Vector2(0, 0);
+            _dimensions = Vector2.Zero;
             _start = Vector2.Zero;
             _end = Vector2.Zero;
         }

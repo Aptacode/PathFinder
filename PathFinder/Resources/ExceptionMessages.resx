@@ -123,6 +123,9 @@
   <data name="EndPointOutOfBounds" xml:space="preserve">
     <value>End position was outside the bounds of the map.</value>
   </data>
+  <data name="InvalidMapDimensions" xml:space="preserve">
+    <value>Map dimensions must be greater than 0.</value>
+  </data>
   <data name="ObstacleOutOfBounds" xml:space="preserve">
     <value>An obstacles starting position is outside the bounds of the map.</value>
   </data>

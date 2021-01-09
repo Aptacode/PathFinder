@@ -7,6 +7,11 @@ namespace Aptacode.PathFinder.Maps.Validation
     {
         public static MapValidationResult IsValid(this Map map)
         {
+            if (map.Dimensions.X <= 0 || map.Dimensions.Y <= 0)
+            {
+                return MapValidationResult.Fail(ExceptionMessages.InvalidMapDimensions);
+            }
+
             if (map.IsOutOfBounds(new Point(map.Start.Position)))
             {
                 return MapValidationResult.Fail(ExceptionMessages.StartPointOutOfBounds);

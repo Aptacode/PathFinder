@@ -79,6 +79,15 @@ namespace Aptacode.PathFinder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Map dimensions must be greater than 0..
+        /// </summary>
+        public static string InvalidMapDimensions {
+            get {
+                return ResourceManager.GetString("InvalidMapDimensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An obstacles starting position is outside the bounds of the map..
         /// </summary>
         public static string ObstacleOutOfBounds {

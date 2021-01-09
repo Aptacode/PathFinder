@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Aptacode.PathFinder.Geometry;
 using Aptacode.PathFinder.Geometry.Neighbours;
@@ -76,7 +77,7 @@ namespace Aptacode.PathFinder.Algorithm
                 }
             }
 
-            return new Vector2[0];
+            return Array.Empty<Vector2>();
         }
     }
 }
