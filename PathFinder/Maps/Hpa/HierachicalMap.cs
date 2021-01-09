@@ -33,7 +33,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             _dimensions = dimensions;
             _maxLevel = maxLevel;
-            for (var i = 0; i <= maxLevel; i++)
+            for (var i = 0; i <= _maxLevel; i++)
             {
                 var clusterSize = new Vector2((int)Math.Pow(10, i)); //Using 10^x where x is the level, could be changed, might not be necessary.
                 var clusterColumnCount = (int)(_dimensions.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
@@ -299,9 +299,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return _clusters[level][clusterColumn][clusterRow];
         }
 
-        public List<Point> RefineAbstractPath(List<Node> abstractPath, Point endPoint)
+        public List<Point> RefineAbstractPath(List<Node> abstractPath, Point endPoint, int level)
         {
-            if(abstractPath[0].Cluster.Level == 0) //This path is the refined path, just need to convert and stitch it together
+            if(abstractPath.Count == 0)
+            {
+                return new List<Point>();
+            }
+            if(level == 0) //This path is the refined path, just need to convert and stitch it together
             {
                 var refinedPath = new List<Point>();
                 for (var i = 0; i < abstractPath.Count; i++)
@@ -315,14 +319,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 var refinedPath = new List<Point>();
                 for(var i = abstractPath.Count - 2; i >= 0; i--) //Start node has no parent and hence no parent intraEdge
                 {
-                    refinedPath.Concat(abstractPath[i].ParentIntraEdge.Path);
+                    refinedPath = refinedPath.Concat(abstractPath[i].ParentIntraEdge.Path).ToList(); //This is ugly.
                 } //Construct path up to final node adjacent DoorPoint;
 
+                //Paths are backwards so some of this isn't right
 
                 var endNode = abstractPath[0];
                 var endNodeDoorPoint = endNode.DoorPoint;
                 var endNodePath = FindPath(endPoint, endNodeDoorPoint, abstractPath[0].Cluster.Level - 1); //do it this way so you don't have to flip the list befor concat
-                refinedPath.Concat(endNodePath);
+                refinedPath = refinedPath.Concat(endNodePath).ToList();
 
                 return refinedPath;
             }
@@ -392,14 +397,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public List<Point> FindPath(Point startPoint, Point endPoint, int level)
         {
-            var abstractPath = FindAbstractPath(startPoint, endPoint, level); //This is causing problems.
-            var path = RefineAbstractPath(abstractPath, endPoint);
+            var abstractPath = FindAbstractPath(startPoint, endPoint, level);
+            var path = RefineAbstractPath(abstractPath, endPoint, level);
             return path;
         }
 
         public Node SetStartNode(Point point, Node target, int level)
         {
             var cluster = GetClusterContainingPoint(point, level);
+            AddIntraEdgeInEachValidDirection(point, cluster);
             return new Node(Node.Empty, target, cluster, point, IntraEdge.Empty, 0);
         }
 
@@ -433,16 +439,14 @@ namespace Aptacode.PathFinder.Maps.Hpa
             var adjacentClusters = GetAdjacentClusters(currentCluster);
             foreach (var adjacentCluster in adjacentClusters)
             {
-                var neighbourDoorPoint = Point.Zero; //Need an empty point.
-                var neighbourCost = currentNode.Cost;
-                var parentIntraEdge = IntraEdge.Empty;
+
                 var intraEdge = currentCluster.GetIntraEdge(currentNode.DoorPoint, adjacentCluster.Key);
                 if (intraEdge != IntraEdge.Empty)
                 {
-                    neighbourDoorPoint = GetAdjacentPoint(intraEdge.Path.Last(), intraEdge.AdjacencyDirection);
-                    neighbourCost = neighbourCost + intraEdge.Path.Count; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
-                    parentIntraEdge = intraEdge;
-                    yield return new Node(currentNode, targetNode, adjacentCluster.Value, neighbourDoorPoint, parentIntraEdge, neighbourCost);
+                    var neighbourDoorPoint = GetAdjacentPoint(intraEdge.Path[0], intraEdge.AdjacencyDirection);
+                    var neighbourCost = currentNode.Cost + intraEdge.Path.Count; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
+
+                    yield return new Node(currentNode, targetNode, adjacentCluster.Value, neighbourDoorPoint, intraEdge, neighbourCost);
                 }
 
                 
@@ -563,7 +567,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             {
                 if (DoorPoints[i].AdjacencyDirection == direction)
                 {
-                    doorPointsInGivenDirection.Add(EdgePoints[i]);
+                    doorPointsInGivenDirection.Add(DoorPoints[i]);
                 }
             }
             return doorPointsInGivenDirection;
@@ -573,7 +577,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].StartPoint.Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
+                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.Last().Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
                 {
                     return IntraEdges[i];
                 }
@@ -627,20 +631,17 @@ namespace Aptacode.PathFinder.Maps.Hpa
     public class IntraEdge
     {
         public List<Point> Path { get; }
-        public Point StartPoint { get; }
         public Direction AdjacencyDirection { get; }
 
         public IntraEdge(Direction adjacencyDirection, params Point[] points)
         {
-            Path = points.ToList();
-            StartPoint = points[0];
+            Path = points.ToList(); //Paths are constructed backwards
             AdjacencyDirection = adjacencyDirection;
         }
 
         public IntraEdge()
         {
             Path = new List<Point>();
-            StartPoint = Point.Zero;
             AdjacencyDirection = Direction.None;
         }
 
@@ -673,7 +674,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Parent = parent;
             Cluster = cluster;
             DoorPoint = doorPoint;
-            Cost = parent.Cost + cost;
+            Cost = cost;
             ParentIntraEdge = parentIntraEdge;
             var distanceVector = Vector2.Abs(target.DoorPoint.Position - DoorPoint.Position);
             Distance = distanceVector.X + distanceVector.Y;
