@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Aptacode.Geometry.Blazor.Components.ViewModels;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
@@ -14,15 +15,19 @@ namespace Aptacode.PathFinder.Maps.Hpa
     {
         #region Ctor
 
-        public HierachicalMap(Vector2 dimensions, List<ComponentViewModel> components, int maxLevel)
+        public HierachicalMap(Scene scene, int maxLevel)
         {
-            _dimensions = dimensions;
+            _scene = scene;
             _maxLevel = maxLevel;
+
+            _scene.OnComponentAdded += SceneOnOnComponentAdded;
+            _scene.OnComponentRemoved += SceneOnOnComponentRemoved;
+
             for (var i = 0; i <= _maxLevel; i++)
             {
                 var clusterSize = new Vector2((int) Math.Pow(10, i)); //Using 10^x where x is the level, could be changed, might not be necessary.
-                var clusterColumnCount = (int) (_dimensions.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
-                var clusterRowCount = (int) (_dimensions.Y / clusterSize.Y);
+                var clusterColumnCount = (int) (_scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
+                var clusterRowCount = (int) (_scene.Size.Y / clusterSize.Y);
                 var clusters = new Cluster[clusterColumnCount][];
                 _clusterSize.Add(i, clusterSize);
                 _clusterColumnCount.Add(i, clusterColumnCount);
@@ -37,7 +42,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
 
                 _clusters.Add(i, clusters);
-                foreach(var component in components)
+                foreach(var component in _scene.Components)
                 {
                     Add(component);
                 }
@@ -46,6 +51,21 @@ namespace Aptacode.PathFinder.Maps.Hpa
         }
 
         #endregion
+
+        #region Events
+
+        private void SceneOnOnComponentAdded(object? sender, ComponentViewModel component)
+        {
+            Add(component);
+        }
+        
+        private void SceneOnOnComponentRemoved(object? sender, ComponentViewModel component)
+        {
+            Remove(component);
+        }
+
+        #endregion
+
         #region DoorPoints
 
         public void UpdateDoorPointsInCluster(Cluster cluster)
@@ -258,7 +278,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
         #region Props
 
-        private readonly Vector2 _dimensions;
+        private readonly Scene _scene;
         private readonly int _maxLevel;
         private readonly Dictionary<int, Vector2> _clusterSize = new();
         private readonly Dictionary<int, int> _clusterColumnCount = new(); //Key is the level
@@ -460,10 +480,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     var path = FindPath(point, doorPoint, cluster.Level - 1);  
 
                     if (path.Count < shortestIntraEdgeLength) //We only want the shortest intraedge in this direction.
-                        {
-                            shortestIntraEdgeLength = path.Count;
-                            shortestPathInDirection = path;
-                        }
+                    {
+                        shortestIntraEdgeLength = path.Count;
+                        shortestPathInDirection = path;
+                    }
                 }
             }
             if(shortestPathInDirection.Count > 0)
