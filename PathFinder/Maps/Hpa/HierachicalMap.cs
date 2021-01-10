@@ -14,7 +14,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
     {
         #region Ctor
 
-        public HierachicalMap(Vector2 dimensions, ComponentViewModel[] components, int maxLevel)
+        public HierachicalMap(Vector2 dimensions, List<ComponentViewModel> components, int maxLevel)
         {
             _dimensions = dimensions;
             _maxLevel = maxLevel;
@@ -37,15 +37,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
 
                 _clusters.Add(i, clusters);
+                foreach(var component in components)
+                {
+                    Add(component);
+                }
                 UpdateClusters(i);
             }
-
-            _components = components.ToList();
         }
 
         #endregion
-
-
         #region DoorPoints
 
         public void UpdateDoorPointsInCluster(Cluster cluster)
@@ -93,8 +93,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         }
 
         #endregion
-
-
+        #region Path Finding
         public Cluster GetClusterContainingPoint(Point point, int level)
         {
             var clusterSize = _clusterSize[level];
@@ -243,7 +242,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public IEnumerable<Node> GetNeighbours(Node currentNode, Node targetNode)
         {
             var currentCluster = currentNode.Cluster;
-            var currentClusterLevel = currentCluster.Level;
             var adjacentClusters = GetAdjacentClusters(currentCluster);
             foreach (var adjacentCluster in adjacentClusters)
             {
@@ -257,7 +255,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
             }
         }
-
+        #endregion
         #region Props
 
         private readonly Vector2 _dimensions;
@@ -271,8 +269,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         private readonly CollisionDetector _collisionDetector = new HybridCollisionDetector();
 
         #endregion
-
-        #region ComponentViewModel
+        #region ComponentViewModels
 
         public void Add(ComponentViewModel component)
         {
@@ -299,7 +296,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             var currentClusters = _componentClusterDictionary[component.Id];
             foreach (var currentCluster in currentClusters)
             {
-                currentCluster.Children.Remove(component);
+                currentCluster.Components.Remove(component);
                 invalidatedClusters.Add(currentCluster);
             }
 
@@ -314,7 +311,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                         if (component.CollidesWith(cluster.Region, _collisionDetector))
                         {
                             _componentClusterDictionary[component.Id].Add(cluster);
-                            cluster.Children.Add(component);
+                            cluster.Components.Add(component);
                             invalidatedClusters.Add(cluster);
                         }
                     }
@@ -328,7 +325,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         }
 
         #endregion
-
         #region Cluster
 
         public void UpdateClusters(int level)
@@ -403,7 +399,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         }
 
         #endregion
-
         #region IntraEdges
 
         public void UpdateIntraEdges(Cluster cluster)
@@ -483,6 +478,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
     public class Cluster : IEquatable<Cluster>
     {
+        #region EdgePoints
         public List<EdgePoint> SetEdgePoints()
         {
             var clusterWidth = Region.Width;
@@ -544,9 +540,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             var collisionDetector = new FineCollisionDetector();
 
-            return Children.Any(c => c.CollidesWith(edgePoint, collisionDetector));
+            return Components.Any(c => c.CollidesWith(edgePoint, collisionDetector));
         }
-
+        #endregion
+        #region DoorPoints
         public List<EdgePoint> GetDoorPoints(Direction direction)
         {
             var doorPointsInGivenDirection = new List<EdgePoint>();
@@ -560,7 +557,8 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             return doorPointsInGivenDirection;
         }
-
+        #endregion
+        #region IntraEdges
         public IntraEdge GetIntraEdge(Point startPoint, Direction direction)
         {
             for (var i = 0; i < IntraEdges.Count; i++)
@@ -622,12 +620,12 @@ namespace Aptacode.PathFinder.Maps.Hpa
             }
             return false;
         }
-
+        #endregion
         #region Props
 
         public Guid Id { get; set; }
         public Rectangle Region { get; private set; }
-        public List<ComponentViewModel> Children { get; }
+        public List<ComponentViewModel> Components { get; }
 
         public List<IntraEdge> IntraEdges { get; set; }
         public List<EdgePoint> DoorPoints { get; set; }
@@ -637,7 +635,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public int Column { get; }
 
         #endregion
-
         #region Ctor
 
         public Cluster(int level, int column, int row, Vector2 clusterSize)
@@ -648,7 +645,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Level = level;
             var rectSize = clusterSize - new Vector2(1, 1); //We want the rectangle to contain as many points as the cluster size along its edge hence -1
             Region = Rectangle.Create(new Vector2(column * clusterSize.X, row * clusterSize.Y), rectSize);
-            Children = new List<ComponentViewModel>();
+            Components = new List<ComponentViewModel>();
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint>();
             IntraEdges = new List<IntraEdge>();
@@ -665,7 +662,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         };
 
         #endregion
-
         #region IEquatable
 
         public override int GetHashCode()

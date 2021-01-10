@@ -28,12 +28,12 @@ namespace PathFinder.BlazorDemo.Pages
             UserInteractionController.OnMouseUp += UserInteractionControllerOnOnMouseUp;
             UserInteractionController.OnMouseMoved += UserInteractionControllerOnOnMouseMoved;
 
-            var obstacle1 = Aptacode.Geometry.Primitives.Polygons.Rectangle.Create(new Vector2(20, 20),
+            var obstacle1 = Rectangle.Create(new Vector2(20, 20),
                 new Vector2(20, 20)).ToViewModel();
             obstacle1.FillColor = Color.Gray;
             Scene.Components.Add(obstacle1);
 
-            var obstacle2 = Aptacode.Geometry.Primitives.Polygons.Rectangle.Create(new Vector2(60, 20),
+            var obstacle2 = Rectangle.Create(new Vector2(60, 20),
                 new Vector2(20, 20)).ToViewModel();
             obstacle2.FillColor = Color.Gray;
             Scene.Components.Add(obstacle2);
