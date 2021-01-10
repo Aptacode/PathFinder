@@ -142,7 +142,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             if (abstractPath.Length == 0)
             {
-                return new Point[0];
+                return Array.Empty<Point>();
             }
 
             if (level == 0) //This path is the refined path, just need to convert and stitch it together
@@ -157,11 +157,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
             }
             else
             {
-                //Todo remove usage of Concat, construct an array of known length then build the path
                 var refinedPath = new List<Point>();
                 for (var i = 1; i < abstractPath.Length; i++) //The first node does not have a parentIntraEdge of relevance
                 {
-                    refinedPath = refinedPath.Concat(abstractPath[i].ParentIntraEdge.Path).ToList();
+                    refinedPath.AddRange(abstractPath[i].ParentIntraEdge.Path);
                 }
 
                 //Paths are backwards so some of this isn't right
@@ -169,7 +168,8 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 var endNode = abstractPath.Last();
                 var endNodeDoorPoint = endNode.DoorPoint;
                 var endNodePath = FindPath(endNodeDoorPoint, endPoint, abstractPath.Last().Cluster.Level - 1); //do it this way so you don't have to flip the list befor concat
-                return refinedPath.Concat(endNodePath).ToArray();
+                refinedPath.AddRange(endNodePath);
+                return refinedPath.ToArray();
             }
         }
 
@@ -232,7 +232,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
             }
 
-            return new Node[0]; //need to be wary of this.
+            return Array.Empty<Node>(); //need to be wary of this.
         }
 
         public Point[] FindPath(Point startPoint, Point endPoint, int level)
@@ -469,7 +469,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 return;
             }
 
-            var shortestPathInDirection = new Point[0];
+            var shortestPathInDirection = Array.Empty<Point>();
             var shortestIntraEdgeLength = int.MaxValue;
 
             foreach (var doorPoint in cluster.GetDoorPoints(adjacencyDirection))
@@ -493,9 +493,9 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     {
                         var path = FindPath(point, doorPoint, cluster.Level - 1);
 
-                        if (path.Count() < shortestIntraEdgeLength) //We only want the shortest intraedge in this direction.
+                        if (path.Length < shortestIntraEdgeLength) //We only want the shortest intraedge in this direction.
                         {
-                            shortestIntraEdgeLength = path.Count();
+                            shortestIntraEdgeLength = path.Length;
                             shortestPathInDirection = path;
                         }
 
@@ -535,11 +535,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         #region EdgePoints
 
-        public List<EdgePoint> SetEdgePoints()
+        public EdgePoint[] SetEdgePoints()
         {
             var clusterWidth = Region.Width;
             var clusterHeight = Region.Height;
-            var edgePoints = new List<EdgePoint>();
+            var edgePoints = new EdgePoint[(int)((clusterWidth + 1) * 4)];
+
+            var edgeIndex = 0;
             for (var i = 0; i <= 3; i++)
             {
                 var direction = (Direction) i;
@@ -548,30 +550,26 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     case Direction.Up:
                         for (var j = 0; j <= clusterWidth; j++)
                         {
-                            edgePoints.Add(new EdgePoint(direction, Region.TopLeft + new Vector2(j, 0)));
+                            edgePoints[edgeIndex++] = new EdgePoint(direction, Region.TopLeft + new Vector2(j, 0));
                         }
-
                         continue;
                     case Direction.Down:
                         for (var j = 0; j <= clusterWidth; j++)
                         {
-                            edgePoints.Add(new EdgePoint(direction, Region.BottomLeft + new Vector2(j, 0)));
+                            edgePoints[edgeIndex++] = new EdgePoint(direction, Region.BottomLeft + new Vector2(j, 0));
                         }
-
                         continue;
                     case Direction.Left:
                         for (var j = 0; j <= clusterHeight; j++)
                         {
-                            edgePoints.Add(new EdgePoint(direction, Region.TopLeft + new Vector2(0, j)));
+                            edgePoints[edgeIndex++] = new EdgePoint(direction, Region.TopLeft + new Vector2(0, j));
                         }
-
                         continue;
                     case Direction.Right:
                         for (var j = 0; j <= clusterHeight; j++)
                         {
-                            edgePoints.Add(new EdgePoint(direction, Region.TopRight + new Vector2(0, j)));
+                            edgePoints[edgeIndex++] = new EdgePoint(direction, Region.TopRight + new Vector2(0, j));
                         }
-
                         continue;
                 }
             }
@@ -582,7 +580,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public List<EdgePoint> GetEdgePoints(Direction direction) //Should test to see if linq is faster??
         {
             var edgePointsInGivenDirection = new List<EdgePoint>();
-            for (var i = 0; i < EdgePoints.Count; i++)
+            for (var i = 0; i < EdgePoints.Length; i++)
             {
                 if (EdgePoints[i].AdjacencyDirection == direction)
                 {
@@ -593,11 +591,16 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return edgePointsInGivenDirection;
         }
 
-        public bool EdgePointHasCollision(EdgePoint edgePoint) //I don't like that this news up a collision detector every time.
+        public bool EdgePointHasCollision(EdgePoint edgePoint)
         {
-            var collisionDetector = new FineCollisionDetector();
-
-            return Components.Any(c => c.CollidesWith(edgePoint, collisionDetector));
+            for (var i = 0; i < Components.Count; i++)
+            {
+                if (Components[i].CollidesWith(edgePoint, CollisionDetector))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
@@ -608,7 +611,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.First().Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
+                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path[0].Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
                 {
                     return IntraEdges[i];
                 }
@@ -621,7 +624,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path.First().Position == startPoint.Position)
+                if (IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path[0].Position == startPoint.Position)
                 {
                     return IntraEdges[i];
                 }
@@ -634,7 +637,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path.First().Position == startPoint.Position)
+                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path[0].Position == startPoint.Position)
                 {
                     return true;
                 }
@@ -647,7 +650,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].Path.First().Position == endPoint.Position && IntraEdges[i].Path.Last().Position == startPoint.Position)
+                if (IntraEdges[i].Path[0].Position == endPoint.Position && IntraEdges[i].Path.Last().Position == startPoint.Position)
                 {
                     return true;
                 }
@@ -673,14 +676,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
 
         #region Props
+        public static readonly FineCollisionDetector CollisionDetector = new();
 
         public Guid Id { get; set; }
         public Rectangle Region { get; private init; }
-        public List<ComponentViewModel> Components { get; }
+        public List<ComponentViewModel> Components { get; init; }
 
-        public List<IntraEdge> IntraEdges { get; set; }
-        public List<EdgePoint> DoorPoints { get; set; }
-        public List<EdgePoint> EdgePoints { get; set; }
+        public List<IntraEdge> IntraEdges { get; init; }
+        public List<EdgePoint> DoorPoints { get; init; }
+        public EdgePoint[] EdgePoints { get; init; }
         public int Level { get; }
         public int Row { get; }
         public int Column { get; }
@@ -777,13 +781,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public IntraEdge(Direction adjacencyDirection, Point point)
         {
-            Path = new Point[1] {point};
+            Path = new[] {point};
             AdjacencyDirection = adjacencyDirection;
         }
 
         public IntraEdge()
         {
-            Path = new Point[0];
+            Path = Array.Empty<Point>();
             AdjacencyDirection = Direction.None;
         }
 
