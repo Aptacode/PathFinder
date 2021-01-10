@@ -125,16 +125,16 @@ namespace Aptacode.PathFinder.Maps.Hpa
             else
             {
                 var refinedPath = new List<Point>();
-                for (var i = abstractPath.Count - 2; i >= 0; i--) //Start node has no parent and hence no parent intraEdge
+                for (var i = 1; i < abstractPath.Count; i++) //The first node does not have a parentIntraEdge of relevance
                 {
-                    refinedPath = refinedPath.Concat(abstractPath[i].ParentIntraEdge.Path).ToList(); //This is ugly.
-                } //Construct path up to final node adjacent DoorPoint;
+                    refinedPath = refinedPath.Concat(abstractPath[i].ParentIntraEdge.Path).ToList();
+                }
 
                 //Paths are backwards so some of this isn't right
 
-                var endNode = abstractPath[0];
+                var endNode = abstractPath.Last();
                 var endNodeDoorPoint = endNode.DoorPoint;
-                var endNodePath = FindPath(endPoint, endNodeDoorPoint, abstractPath[0].Cluster.Level - 1); //do it this way so you don't have to flip the list befor concat
+                var endNodePath = FindPath(endNodeDoorPoint, endPoint, abstractPath.Last().Cluster.Level - 1); //do it this way so you don't have to flip the list befor concat
                 refinedPath = refinedPath.Concat(endNodePath).ToList();
 
                 return refinedPath;
@@ -169,7 +169,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                         node = node.Parent;
                         if (node == Node.Empty)
                         {
-                            return abstractPath;
+                            return abstractPath.Backwards(); //Flip it here and then we don't need to worry using it.
                         }
                     }
                 }
@@ -250,7 +250,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 var intraEdge = currentCluster.GetIntraEdge(currentNode.DoorPoint, adjacentCluster.Key);
                 if (intraEdge != IntraEdge.Empty)
                 {
-                    var neighbourDoorPoint = GetAdjacentPoint(intraEdge.Path[0], intraEdge.AdjacencyDirection);
+                    var neighbourDoorPoint = GetAdjacentPoint(intraEdge.Path.Last(), intraEdge.AdjacencyDirection);
                     var neighbourCost = currentNode.Cost + intraEdge.Path.Count; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
 
                     yield return new Node(currentNode, targetNode, adjacentCluster.Value, neighbourDoorPoint, intraEdge, neighbourCost);
@@ -428,34 +428,54 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public void AddIntraEdge(Point point, Cluster cluster, Direction adjacencyDirection)
         {
-            var clusterDoorPointsInDirection = cluster.GetDoorPoints(adjacencyDirection);
-            if (clusterDoorPointsInDirection.Count > 0)
+            if (cluster.HasIntraEdgeWithStartPoint(point, adjacencyDirection)) //No need to find the same intra edges again.
             {
+                return;
+            }
+
+            if(point is EdgePoint edgeP && edgeP.AdjacencyDirection == adjacencyDirection) //Don't waste time finding the shortest path, this has to be it.
+            {
+                cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, edgeP));
+                return;
+            }
+
+            var shortestPathInDirection = new List<Point>();
+            var shortestIntraEdgeLength = int.MaxValue;
+
+            foreach (var doorPoint in cluster.GetDoorPoints(adjacencyDirection))
+            {
+                if (point is EdgePoint edgePoint 
+                    && cluster.HasIntraEdge(doorPoint, point) //Check to see if we've already calculated an IntraEdge between these two points.
+                    && doorPoint.AdjacencyDirection != adjacencyDirection) //But make sure they aren't different points with the same adjacency direction
+                {
+                    var intraEdge = cluster.GetIntraEdge(doorPoint, point); //This is necessarily the correct intraEdge because only the shortest intraEdge in this direction for the door point is saved.
+                    var path = intraEdge.Path.Backwards();
+                    cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, path));
+                    return; //Now we don't need to calculate the path again.
+                }
                 if (cluster.Level == 0)
                 {
-                    cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, clusterDoorPointsInDirection[0]));
+                    cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, doorPoint));
+                    return;
                 }
 
                 else if (cluster.Level > 0)
                 {
-                    var shortestPathInDirection = new List<Point>();
-                    var shortestIntraEdgeLength = int.MaxValue;
-                    foreach (var clusterDoorPoint in clusterDoorPointsInDirection)
-                    {
-                        var path = FindPath(point, clusterDoorPoint, cluster.Level - 1);
 
-                        if (path.Count < shortestIntraEdgeLength)
+                    var path = FindPath(point, doorPoint, cluster.Level - 1);  
+
+                    if (path.Count < shortestIntraEdgeLength) //We only want the shortest intraedge in this direction.
                         {
                             shortestIntraEdgeLength = path.Count;
                             shortestPathInDirection = path;
                         }
-
-                        //get the shortest path and then add that as an intraedge only.
-                    }
-
-                    cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, shortestPathInDirection.ToArray()));
                 }
             }
+            if(shortestPathInDirection.Count > 0)
+            {
+                cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, shortestPathInDirection));
+            }
+            
         }
 
         #endregion
@@ -503,7 +523,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
                         continue;
                 }
             }
-
             return edgePoints;
         }
 
@@ -546,13 +565,62 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             for (var i = 0; i < IntraEdges.Count; i++)
             {
-                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.Last().Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
+                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.First().Position == startPoint.Position) //Need point equality or to move away from using points, probably this one.
                 {
                     return IntraEdges[i];
                 }
             }
 
             return IntraEdge.Empty;
+        }
+
+        public IntraEdge GetIntraEdge(Point startPoint, Point endPoint)
+        {
+            for (var i = 0; i < IntraEdges.Count; i++)
+            {
+                if (IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path.First().Position == startPoint.Position)
+                {
+                    return IntraEdges[i];
+                }
+            }
+            return IntraEdge.Empty;
+        }
+
+        public bool HasIntraEdge(Point startPoint, Point endPoint, Direction direction)
+        {
+            for (var i = 0; i < IntraEdges.Count; i++)
+            {
+                if (IntraEdges[i].AdjacencyDirection == direction && IntraEdges[i].Path.Last().Position == endPoint.Position && IntraEdges[i].Path.First().Position == startPoint.Position)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        public bool HasIntraEdge(Point startPoint, Point endPoint)
+        {
+            for (var i = 0; i < IntraEdges.Count; i++)
+            {
+                if (IntraEdges[i].Path.First().Position == endPoint.Position && IntraEdges[i].Path.Last().Position == startPoint.Position)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public bool HasIntraEdgeWithStartPoint(Point startPoint, Direction direction)
+        {
+            for (var i = 0; i < IntraEdges.Count; i++)
+            {
+                if (IntraEdges[i].Path[0].Position == startPoint.Position && IntraEdges[i].AdjacencyDirection == direction)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #region Props
@@ -649,9 +717,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
     {
         public static IntraEdge Empty = new();
 
-        public IntraEdge(Direction adjacencyDirection, params Point[] points)
+        public IntraEdge(Direction adjacencyDirection, List<Point> points)
         {
-            Path = points.ToList(); //Paths are constructed backwards
+            Path = points; //Paths are constructed backwards
+            AdjacencyDirection = adjacencyDirection;
+        }
+
+        public IntraEdge(Direction adjacencyDirection, Point point)
+        {
+            Path = new List<Point>() { point };
             AdjacencyDirection = adjacencyDirection;
         }
 
@@ -663,6 +737,16 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public List<Point> Path { get; }
         public Direction AdjacencyDirection { get; }
+    }
+
+    public static class IntraEdgeExtensions
+    {
+        public static IntraEdge Reverse(this IntraEdge intraEdge)
+        {
+            var reversePath = intraEdge.Path.Backwards();
+            var reverseDirection = intraEdge.AdjacencyDirection.Inverse();
+            return new(reverseDirection, reversePath);
+        }
     }
 
     public record EdgePoint : Point
@@ -716,6 +800,19 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Cluster = Cluster.Empty;
             DoorPoint = Point.Zero;
             ParentIntraEdge = IntraEdge.Empty;
+        }
+    }
+
+    public static class ListExtensions
+    {
+        public static List<T> Backwards<T>(this List<T> list)
+        {
+            var reverseList = new List<T>();
+            for(var i = list.Count; --i >= 0;)
+            {
+                reverseList.Add(list[i]);
+            }
+            return reverseList;
         }
     }
 }
