@@ -12,7 +12,7 @@ namespace PathFinder.BlazorDemo.Pages
     {
         #region PathFinding
 
-        public static List<Vector2> GetPath(this SceneViewModel scene, Vector2 startPoint, Vector2 endPoint)
+        public static List<Vector2> GetPath(this Scene scene, Vector2 startPoint, Vector2 endPoint)
         {
             var points = new List<Vector2>();
 

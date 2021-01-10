@@ -13,14 +13,14 @@ using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
 
 namespace PathFinder.BlazorDemo.Pages
 {
-    public class PathFinderSceneController : SceneControllerViewModel
+    public class PathFinderSceneController : SceneController
     {
         private DateTime lastTick = DateTime.Now;
         private ConnectionPointViewModel StartPoint;
         private ConnectionPointViewModel EndPoint;
         private ConnectionViewModel Connection;
         public PathFinderSceneController(Vector2 size) : base(
-            new SceneViewModel(
+            new Scene(
                 size
             ))
         {
@@ -31,28 +31,28 @@ namespace PathFinder.BlazorDemo.Pages
             var obstacle1 = Rectangle.Create(new Vector2(20, 20),
                 new Vector2(20, 20)).ToViewModel();
             obstacle1.FillColor = Color.Gray;
-            Scene.Components.Add(obstacle1);
+            Scene.Add(obstacle1);
 
             var obstacle2 = Rectangle.Create(new Vector2(60, 20),
                 new Vector2(20, 20)).ToViewModel();
             obstacle2.FillColor = Color.Gray;
-            Scene.Components.Add(obstacle2);
+            Scene.Add(obstacle2);
 
             var obstacle3 = Rectangle.Create(new Vector2(20, 60),
                 new Vector2(20, 20)).ToViewModel();
             obstacle3.FillColor = Color.Gray;
-            Scene.Components.Add(obstacle3);
+            Scene.Add(obstacle3);
 
             StartPoint = new ConnectionPointViewModel(Ellipse.Create(15, 15, 2, 2, 0));
             StartPoint.FillColor = Color.Green;
-            Scene.Components.Add(StartPoint);
+            Scene.Add(StartPoint);
 
             EndPoint = new ConnectionPointViewModel(Ellipse.Create(70, 70, 2, 2, 0));
             EndPoint.FillColor = Color.Red;
-            Scene.Components.Add(EndPoint);
+            Scene.Add(EndPoint);
 
             Connection = ConnectionViewModel.Connect(Scene, StartPoint, EndPoint);
-            Scene.Components.Add(Connection);
+            Scene.Add(Connection);
         }
 
         public bool Running { get; set; }

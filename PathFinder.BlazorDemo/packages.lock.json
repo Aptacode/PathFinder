@@ -4,22 +4,22 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.7, )",
-        "resolved": "1.0.7",
-        "contentHash": "7uF8MlrZTVuykRA8HeamJw2PioxqaFgvM8eimI2ss6L2O73aGESfgWBMZTegmHQFxkTe+mzB6nGxAHE+QivAQw==",
+        "requested": "[1.0.10, )",
+        "resolved": "1.0.10",
+        "contentHash": "7oZmX4jrYXR1GCTg+ur0DTKQO7HGyEy6BkcFiFB0/L7L+c88d/81/WybaGpaF+n2GSnD01sFW3XZtpDbrAVAUg==",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         }
       },
       "Aptacode.Geometry.Blazor": {
         "type": "Direct",
-        "requested": "[1.0.7, )",
-        "resolved": "1.0.7",
-        "contentHash": "d7HmsJyIw5ftKH55ucMVAeBaYzYwlFqn2WgvyKGKHsJJn9EYHtEL9txzgVRNtY45my2us319hvvOQkF/vbWYIA==",
+        "requested": "[1.0.10, )",
+        "resolved": "1.0.10",
+        "contentHash": "PmbvxfK+mTlYdusazQZ703sfbmGrQPJO6IALajMcWX0/5w7+oxJSA35Qy3qKetvzxjE7ZhRrVrkLmcUoHqefFA==",
         "dependencies": {
-          "Aptacode.BlazorCanvas": "1.0.0",
+          "Aptacode.BlazorCanvas": "1.0.6",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.7",
+          "Aptacode.Geometry": "1.0.10",
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }
       },
@@ -50,8 +50,8 @@
       },
       "Aptacode.BlazorCanvas": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "FDYleyVl5Ck17PYDUBU2jiriql/+x0JxV57uOL+26Fg9d4a76P5WfI/rTHREA+TIltGUxsqCNa4jsA2Gp8gt0w==",
+        "resolved": "1.0.6",
+        "contentHash": "62FwNOMGPWExTA1/GMoqZHNTPVPxf5QNSGPf3i6fJi+FWdUC03CGMjnlz2UgoBvlSrq0mQyS3vwFnVj+bBVc5A==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }
@@ -255,8 +255,8 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.Geometry": "1.0.7",
-          "Aptacode.Geometry.Blazor": "1.0.7",
+          "Aptacode.Geometry": "1.0.10",
+          "Aptacode.Geometry.Blazor": "1.0.10",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

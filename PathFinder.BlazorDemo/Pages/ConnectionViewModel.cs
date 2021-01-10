@@ -9,7 +9,7 @@ namespace PathFinder.BlazorDemo.Pages
     {
         #region Ctor
 
-        protected ConnectionViewModel(SceneViewModel scene, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(new PolyLine(VertexArray.Create(new[]
+        protected ConnectionViewModel(Scene scene, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(new PolyLine(VertexArray.Create(new[]
         {
             startPoint.Ellipse.BoundingCircle.Center,
             endPoint.Ellipse.BoundingCircle.Center
@@ -24,7 +24,7 @@ namespace PathFinder.BlazorDemo.Pages
 
         #endregion
 
-        public static ConnectionViewModel Connect(SceneViewModel scene, ConnectionPointViewModel connectionPoint1, ConnectionPointViewModel connectionPoint2)
+        public static ConnectionViewModel Connect(Scene scene, ConnectionPointViewModel connectionPoint1, ConnectionPointViewModel connectionPoint2)
         {
             var connection = new ConnectionViewModel(scene, connectionPoint1, connectionPoint2);
             connectionPoint1.Connection = connection;
@@ -46,7 +46,7 @@ namespace PathFinder.BlazorDemo.Pages
 
         #region Prop
 
-        public SceneViewModel Scene { get; set; }
+        public Scene Scene { get; set; }
         public ConnectionPointViewModel StartPoint { get; set; }
         public ConnectionPointViewModel EndPoint { get; set; }
 
