@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using System.Threading;
-using System.Threading.Tasks;
 using Aptacode.Geometry.Blazor.Components.ViewModels;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using Aptacode.Geometry.Blazor.Extensions;
 using Aptacode.Geometry.Primitives;
+using Aptacode.PathFinder.Maps.Hpa;
 using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
 
 namespace PathFinder.BlazorDemo.Pages
 {
     public class PathFinderSceneController : SceneController
     {
-        private DateTime lastTick = DateTime.Now;
-        private ConnectionPointViewModel StartPoint;
-        private ConnectionPointViewModel EndPoint;
-        private ConnectionViewModel Connection;
         public PathFinderSceneController(Vector2 size) : base(
             new Scene(
                 size
@@ -43,29 +38,29 @@ namespace PathFinder.BlazorDemo.Pages
             obstacle3.FillColor = Color.Gray;
             Scene.Add(obstacle3);
 
-            StartPoint = new ConnectionPointViewModel(Ellipse.Create(15, 15, 2, 2, 0));
-            StartPoint.FillColor = Color.Green;
-            Scene.Add(StartPoint);
+            _startPoint = new ConnectionPointViewModel(Ellipse.Create(15, 15, 2, 2, 0))
+            {
+                FillColor = Color.Green,
+                CollisionDetectionEnabled = false
+            };
+            // Scene.Add(_startPoint);
 
-            EndPoint = new ConnectionPointViewModel(Ellipse.Create(70, 70, 2, 2, 0));
-            EndPoint.FillColor = Color.Red;
-            Scene.Add(EndPoint);
+            _endPoint = new ConnectionPointViewModel(Ellipse.Create(70, 70, 2, 2, 0))
+            {
+                FillColor = Color.Red,
+                CollisionDetectionEnabled = false
+            };
+            // Scene.Add(_endPoint);
 
-            Connection = ConnectionViewModel.Connect(Scene, StartPoint, EndPoint);
-            Scene.Add(Connection);
+            Map = new HierachicalMap(Scene, 1);
+
+            _connection = new ConnectionViewModel(Map, _startPoint, _endPoint);
+            _startPoint.Connection = _connection;
+            _endPoint.Connection = _connection;
+            Scene.Add(_connection);
         }
-
-        public bool Running { get; set; }
 
         public ComponentViewModel SelectedComponent { get; set; }
-
-        public override async Task Tick()
-        {
-            var currentTime = DateTime.Now;
-            var delta = currentTime - lastTick;
-            lastTick = currentTime;
-            await base.Tick();
-        }
 
         private void UserInteractionControllerOnOnMouseMoved(object? sender, Vector2 e)
         {
@@ -78,8 +73,8 @@ namespace PathFinder.BlazorDemo.Pages
 
             Translate(SelectedComponent, delta, new List<ComponentViewModel> {SelectedComponent},
                 new CancellationTokenSource());
-            
-            Connection.RecalculatePath();
+
+            _connection.RecalculatePath();
         }
 
         private void UserInteractionControllerOnOnMouseUp(object? sender, Vector2 e)
@@ -104,5 +99,14 @@ namespace PathFinder.BlazorDemo.Pages
 
             Scene.BringToFront(SelectedComponent);
         }
+
+        #region Props
+
+        public readonly HierachicalMap Map;
+        private readonly ConnectionPointViewModel _startPoint;
+        private readonly ConnectionPointViewModel _endPoint;
+        private readonly ConnectionViewModel _connection;
+
+        #endregion
     }
 }

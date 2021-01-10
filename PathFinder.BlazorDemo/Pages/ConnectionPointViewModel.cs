@@ -15,6 +15,12 @@ namespace PathFinder.BlazorDemo.Pages
 
         #endregion
 
+        #region Prop
+
+        public ConnectionViewModel Connection { get; set; }
+
+        #endregion
+
         public override void Translate(Vector2 delta)
         {
             base.Translate(delta);
@@ -25,11 +31,5 @@ namespace PathFinder.BlazorDemo.Pages
         {
             Connection?.RecalculatePath();
         }
-
-        #region Prop
-
-        public ConnectionViewModel Connection { get; set; }
-        
-        #endregion
     }
 }

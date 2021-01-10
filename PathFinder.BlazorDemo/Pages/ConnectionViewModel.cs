@@ -1,7 +1,9 @@
-﻿using Aptacode.Geometry.Blazor.Components.ViewModels;
+﻿using System.Linq;
 using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
 using Aptacode.Geometry.Primitives;
+using Aptacode.Geometry.Primitives.Extensions;
 using Aptacode.Geometry.Vertices;
+using Aptacode.PathFinder.Maps.Hpa;
 
 namespace PathFinder.BlazorDemo.Pages
 {
@@ -9,13 +11,13 @@ namespace PathFinder.BlazorDemo.Pages
     {
         #region Ctor
 
-        protected ConnectionViewModel(Scene scene, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(new PolyLine(VertexArray.Create(new[]
+        public ConnectionViewModel(HierachicalMap map, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(new PolyLine(VertexArray.Create(new[]
         {
             startPoint.Ellipse.BoundingCircle.Center,
             endPoint.Ellipse.BoundingCircle.Center
         })))
         {
-            Scene = scene;
+            Map = map;
             StartPoint = startPoint;
             EndPoint = endPoint;
             CollisionDetectionEnabled = false;
@@ -24,17 +26,12 @@ namespace PathFinder.BlazorDemo.Pages
 
         #endregion
 
-        public static ConnectionViewModel Connect(Scene scene, ConnectionPointViewModel connectionPoint1, ConnectionPointViewModel connectionPoint2)
-        {
-            var connection = new ConnectionViewModel(scene, connectionPoint1, connectionPoint2);
-            connectionPoint1.Connection = connection;
-            connectionPoint2.Connection = connection;
-            return connection;
-        }
-
         public void RecalculatePath()
         {
-            var path = Scene.GetPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position);
+            var points = Map.FindPath(StartPoint.Ellipse.Position.ToPoint(), EndPoint.Ellipse.Position.ToPoint(), 1);
+
+            var path = points.Select(p => p.Position).ToList();
+            ;
 
             path.Insert(0, EndPoint.Ellipse.Position);
             path.Add(StartPoint.Ellipse.Position);
@@ -46,7 +43,7 @@ namespace PathFinder.BlazorDemo.Pages
 
         #region Prop
 
-        public Scene Scene { get; set; }
+        public HierachicalMap Map { get; set; }
         public ConnectionPointViewModel StartPoint { get; set; }
         public ConnectionPointViewModel EndPoint { get; set; }
 
