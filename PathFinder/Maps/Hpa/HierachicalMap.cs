@@ -167,7 +167,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
                 var endNode = abstractPath.Last();
                 var endNodeDoorPoint = endNode.DoorPoint;
-                var endNodePath = FindPath(endNodeDoorPoint, endPoint, abstractPath.Last().Cluster.Level - 1); //do it this way so you don't have to flip the list befor concat
+                var endNodePath = FindPath(endNodeDoorPoint, endPoint, abstractPath.Last().Cluster.Level - 1);
                 refinedPath.AddRange(endNodePath);
                 return refinedPath.ToArray();
             }
@@ -678,16 +678,16 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #region Props
         public static readonly FineCollisionDetector CollisionDetector = new();
 
-        public Guid Id { get; set; }
-        public Rectangle Region { get; private init; }
-        public List<ComponentViewModel> Components { get; init; }
+        public readonly Guid Id;
+        public readonly Rectangle Region;
+        public readonly List<ComponentViewModel> Components;
 
-        public List<IntraEdge> IntraEdges { get; init; }
-        public List<EdgePoint> DoorPoints { get; init; }
-        public EdgePoint[] EdgePoints { get; init; }
-        public int Level { get; }
-        public int Row { get; }
-        public int Column { get; }
+        public readonly List<IntraEdge> IntraEdges;
+        public readonly List<EdgePoint> DoorPoints;
+        public readonly EdgePoint[] EdgePoints;
+        public readonly int Level;
+        public readonly int Row;
+        public readonly int Column;
 
         #endregion
 
@@ -721,10 +721,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             IntraEdges = new List<IntraEdge>();
         }
 
-        public static readonly Cluster Empty = new()
-        {
-            Region = Rectangle.Zero
-        };
+        public static readonly Cluster Empty = new();
 
         #endregion
 
@@ -791,8 +788,8 @@ namespace Aptacode.PathFinder.Maps.Hpa
             AdjacencyDirection = Direction.None;
         }
 
-        public Point[] Path { get; }
-        public Direction AdjacencyDirection { get; }
+        public readonly Point[] Path;
+        public readonly Direction AdjacencyDirection;
     }
 
     public static class IntraEdgeExtensions
@@ -812,7 +809,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             AdjacencyDirection = adjacencyDirection;
         }
 
-        public Direction AdjacencyDirection { get; }
+        public readonly Direction AdjacencyDirection;
     }
 
     public record Node
