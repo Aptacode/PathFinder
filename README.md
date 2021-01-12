@@ -1,5 +1,9 @@
 # PathFinder
 
+<p align="center">
+  <img width="640" height="320" src="https://raw.githubusercontent.com/Aptacode/PathFinder/Production/Resources/Images/Banner.jpg">
+</p>
+
 PathFinder is an optimized C# implementation of the [A* Search Algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). In its current form it can be utilised to quickly find the shortest path between two points on a uniform grid with potential obstacles between the start and end point.
 
 [Live Demo](https://aptacode.github.io/PathFinder/)
