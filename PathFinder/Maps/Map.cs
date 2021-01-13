@@ -27,7 +27,7 @@ namespace Aptacode.PathFinder.Maps
         {
             for (var i = 0; i < Obstacles.Length; i++)
             {
-                if (Obstacles[i].CollidesWith(point, CollisionDetector))
+                if (Obstacles[i].CollidesWith(point))
                 {
                     return true;
                 }

@@ -91,7 +91,7 @@ namespace PathFinder.BlazorDemo.Pages
         {
             SelectedComponent = null;
 
-            foreach (var componentViewModel in Scene.Components.CollidingWith(e, CollisionDetector))
+            foreach (var componentViewModel in Scene.Components.CollidingWith(e))
             {
                 SelectedComponent = componentViewModel;
                 componentViewModel.BorderColor = Color.Green;
