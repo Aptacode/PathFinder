@@ -15,9 +15,9 @@
     <RepositoryType />
     <PackageTags>Aptacode A* PathFinding</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.7</Version>
-    <AssemblyVersion>1.0.7</AssemblyVersion>
-    <FileVersion>1.0.7</FileVersion>
+    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.8</AssemblyVersion>
+    <FileVersion>1.0.8</FileVersion>
     <Nullable>enable</Nullable>
     <Langversion>9.0</Langversion>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
@@ -25,8 +25,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aptacode.AppFramework" Version="1.0.2" />
     <PackageReference Include="Aptacode.Geometry" Version="1.0.7" />
-    <PackageReference Include="Aptacode.Geometry.Blazor" Version="1.0.13" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>

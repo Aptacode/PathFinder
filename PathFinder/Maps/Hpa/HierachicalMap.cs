@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components;
+using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Collision;
-using Aptacode.Geometry.Primitives;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Utilities;
 

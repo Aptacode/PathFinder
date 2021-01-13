@@ -2,10 +2,10 @@
 using System.Drawing;
 using System.Numerics;
 using System.Threading;
-using Aptacode.Geometry.Blazor.Components.ViewModels;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
-using Aptacode.Geometry.Blazor.Extensions;
+using Aptacode.AppFramework.Components;
+using Aptacode.AppFramework.Components.Primitives;
+using Aptacode.AppFramework.Extensions;
+using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps.Hpa;
 using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;

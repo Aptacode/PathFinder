@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;

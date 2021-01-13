@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
+using Aptacode.AppFramework.Components;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;

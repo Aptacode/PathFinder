@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives;
 
 namespace PathFinder.BlazorDemo.Pages

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives;
-using Aptacode.Geometry.Primitives.Extensions;
 using Aptacode.Geometry.Vertices;
 using Aptacode.PathFinder.Maps.Hpa;
 
