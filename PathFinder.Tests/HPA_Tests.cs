@@ -1,7 +1,6 @@
 using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
-using Aptacode.Geometry.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
+using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Maps.Hpa;
 using Xunit;
@@ -14,7 +13,7 @@ namespace PathFinder.Tests
         public void HierachicalMap_Initialization_Test()
         {
             var mapIsConstructed = false;
-            var map = new HierachicalMap(new Scene(new Vector2(200, 200)), 2);
+            var map = new HierachicalMap(new Scene(new Vector2(100, 100)), 1);
             mapIsConstructed = true;
             Assert.True(mapIsConstructed);
         }
@@ -23,7 +22,7 @@ namespace PathFinder.Tests
         public void HierachicalMap_PathFinding_Test()
         {
             var map = new HierachicalMap(new Scene(new Vector2(100, 100)), 1);
-            var path = map.FindPath(new Point(new Vector2(33, 33)), new Point(new Vector2(77, 77)), 1);
+            var path = map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
 
             Assert.True(path.Length > 0);
         }
@@ -35,7 +34,7 @@ namespace PathFinder.Tests
             scene.Add(Rectangle.Create(new Vector2(50, 50), new Vector2(10, 10)).ToViewModel());
 
             var map = new HierachicalMap(scene, 1);
-            var path = map.FindPath(new Point(new Vector2(33, 33)), new Point(new Vector2(77, 77)), 1);
+            var path = map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
 
             Assert.True(path.Length > 0);
         }

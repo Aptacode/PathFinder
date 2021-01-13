@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives;
-using Aptacode.Geometry.Primitives.Extensions;
 using Aptacode.Geometry.Vertices;
 using Aptacode.PathFinder.Maps.Hpa;
 
@@ -28,9 +27,9 @@ namespace PathFinder.BlazorDemo.Pages
 
         public void RecalculatePath()
         {
-            var points = Map.FindPath(StartPoint.Ellipse.Position.ToPoint(), EndPoint.Ellipse.Position.ToPoint(), 1);
+            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position, 1);
 
-            var path = points.Select(p => p.Position).ToList();
+            var path = points.ToList();
             ;
 
             path.Insert(0, EndPoint.Ellipse.Position);

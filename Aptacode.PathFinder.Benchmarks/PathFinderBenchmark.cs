@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
+using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Geometry.Neighbours;
 using Aptacode.PathFinder.Maps;

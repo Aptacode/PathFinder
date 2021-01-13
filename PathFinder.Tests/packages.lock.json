@@ -2,25 +2,25 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v5.0": {
-      "Aptacode.Geometry": {
+      "Aptacode.AppFramework": {
         "type": "Direct",
-        "requested": "[1.0.10, )",
-        "resolved": "1.0.10",
-        "contentHash": "7oZmX4jrYXR1GCTg+ur0DTKQO7HGyEy6BkcFiFB0/L7L+c88d/81/WybaGpaF+n2GSnD01sFW3XZtpDbrAVAUg==",
-        "dependencies": {
-          "System.Numerics.Vectors": "4.5.0"
-        }
-      },
-      "Aptacode.Geometry.Blazor": {
-        "type": "Direct",
-        "requested": "[1.0.10, )",
-        "resolved": "1.0.10",
-        "contentHash": "PmbvxfK+mTlYdusazQZ703sfbmGrQPJO6IALajMcWX0/5w7+oxJSA35Qy3qKetvzxjE7ZhRrVrkLmcUoHqefFA==",
+        "requested": "[1.0.2, )",
+        "resolved": "1.0.2",
+        "contentHash": "I4x7RA9jkEPQZ9HIgXKJbgehDDt/EAv+ZpK6nbQS5yMrhgefoaexsKcdEtlEY8AChmdyh5/txMb2UUA/1pbNqQ==",
         "dependencies": {
           "Aptacode.BlazorCanvas": "1.0.7",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.10",
-          "Microsoft.AspNetCore.Components.Web": "5.0.1"
+          "Aptacode.Geometry": "1.0.13",
+          "Microsoft.AspNetCore.Components.Web": "5.0.2"
+        }
+      },
+      "Aptacode.Geometry": {
+        "type": "Direct",
+        "requested": "[1.0.13, )",
+        "resolved": "1.0.13",
+        "contentHash": "aNQ58gCkI2VaOTVjl4s+hawJeZ1P0Dke8Xnhcuvp4IW1edZC2g88tjbhshNhOu9sRWnJMLTcPKQRaD2UR7zgzA==",
+        "dependencies": {
+          "System.Numerics.Vectors": "4.5.0"
         }
       },
       "coverlet.collector": {
@@ -59,7 +59,7 @@
       "Aptacode.BlazorCanvas": {
         "type": "Transitive",
         "resolved": "1.0.7",
-        "contentHash": "62FwNOMGPWExTA1/GMoqZHNTPVPxf5QNSGPf3i6fJi+FWdUC03CGMjnlz2UgoBvlSrq0mQyS3vwFnVj+bBVc5A==",
+        "contentHash": "nyB4Hd3YzDkrfwDWret7o8Np6gXwZLKiDBf8dATcR4zgMo7nL8eXsi2mFjfmUPDmekqMXxtIPn5BUjPR8z69dA==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "5.0.1"
         }
@@ -71,52 +71,52 @@
       },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "uqElO13Qq+t9BNkJWqtja3uSkFhbQ5Rej1MiJw6FOF1r77w9szQzuo75u2ddUnZUWUS2shKW9LpuKOnGuMxHGA==",
+        "resolved": "5.0.2",
+        "contentHash": "yNRS94no3W9npaoy0tmrHu0XXgWKlKkNwx6/M4lti5EZthWg0LjRKj2BhXzZaT1y3R+CdGJg7Eh+n9dbpOvG7Q==",
         "dependencies": {
-          "Microsoft.AspNetCore.Metadata": "5.0.1",
+          "Microsoft.AspNetCore.Metadata": "5.0.2",
           "Microsoft.Extensions.Logging.Abstractions": "5.0.0",
           "Microsoft.Extensions.Options": "5.0.0"
         }
       },
       "Microsoft.AspNetCore.Components": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "wKzIbnqOHlca2eNKhbvR+myhZR4BdV6ln0B8V4sBgrS+s4YHKH3vlFQFd3ADLlekLVM14u/Va5/jrZKelfxzCQ==",
+        "resolved": "5.0.2",
+        "contentHash": "EbBz1HL0iRPPbKLGP++iLRXkyCKBkv27jKJFbxOxK8W55YNj83/Ulg7qctqhc5p4da/jA8nVVwdVy4zhVXy3gQ==",
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "5.0.1",
-          "Microsoft.AspNetCore.Components.Analyzers": "5.0.1"
+          "Microsoft.AspNetCore.Authorization": "5.0.2",
+          "Microsoft.AspNetCore.Components.Analyzers": "5.0.2"
         }
       },
       "Microsoft.AspNetCore.Components.Analyzers": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "cNlDQfxgH+YVLI24KvEKxT7uJ5KRGCpuGr/iif7ib12+7RF7Z1huOOklRcxfKG3m5qVkZZ2/Bl3JadCLN/5XhA=="
+        "resolved": "5.0.2",
+        "contentHash": "ExSftmxt3fvMiwCUMwpU1+ooEcsDNxn/f6299oiWyaMb+jmbdh0YMisUAMNqWNLvFNyq0xi2p/5O1xy8orhbWA=="
       },
       "Microsoft.AspNetCore.Components.Forms": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "V53j58uowxM/ksCGG1L9EKb5E2sTy1BFrfGdQmrxfjqZof5OwZujXF5eepnEb/OSPyYkRc8HS8DPzxvxGZbvwg==",
+        "resolved": "5.0.2",
+        "contentHash": "fIeEfyL2xMcedNnRhEFLxyb5xF9gQ3FFpvJDVtfofcHNY7ezLuNaWgKnxnGRJlY3L7yl+++xjL1YFMTDqlAH4g==",
         "dependencies": {
-          "Microsoft.AspNetCore.Components": "5.0.1"
+          "Microsoft.AspNetCore.Components": "5.0.2"
         }
       },
       "Microsoft.AspNetCore.Components.Web": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "V6xFfvYBEpHdKGrLJL9Dk3tRkV3Fke1rMOQ9j24gwKTU+kRNlLgbnPmJLDpFfJ5TcXAhX8VYMhFHlMWZgR0/hA==",
+        "resolved": "5.0.2",
+        "contentHash": "7A7BJHAFK3SK/qUACdCHLgA6hJ1YKvZQjh3qD5aBI4+u6F6Una8awdE9A1FJxizxKsclpsixK6cdUtZgMNnQmA==",
         "dependencies": {
-          "Microsoft.AspNetCore.Components": "5.0.1",
-          "Microsoft.AspNetCore.Components.Forms": "5.0.1",
+          "Microsoft.AspNetCore.Components": "5.0.2",
+          "Microsoft.AspNetCore.Components.Forms": "5.0.2",
           "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "Microsoft.JSInterop": "5.0.1",
+          "Microsoft.JSInterop": "5.0.2",
           "System.IO.Pipelines": "5.0.1"
         }
       },
       "Microsoft.AspNetCore.Metadata": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "7IQHvkskzVn3S7kzboT0CMptRuSep49+sWbvYcZ3u4fiVFvrZEsOxQPCCZ8Tt6RZqHQmtoS77h9GY76j3hkjCw=="
+        "resolved": "5.0.2",
+        "contentHash": "zi0jWOO1QCv20IC6t1FrW6oaeLZrjb9x0i5ryxhaIB0gih8n1l5b9JXE25LlaZKWyd7iE/dyKezlNDdvVYb8QQ=="
       },
       "Microsoft.CodeCoverage": {
         "type": "Transitive",
@@ -180,8 +180,8 @@
       },
       "Microsoft.JSInterop": {
         "type": "Transitive",
-        "resolved": "5.0.1",
-        "contentHash": "5IaWDj9izG3Kfd/mckiTDzUGt7d+Tl4QFtsjlG0Wr0b2D0nlMoW+rZ76BB1ovC/oFo84JLxMIeVIQv7BkbzJIA=="
+        "resolved": "5.0.2",
+        "contentHash": "OGQho7CauR1C6D6rrPZW6LJ0B5mWULLr6X1qN+L2CIIl5ZAQp96c7YfNvfhlvKxxX5/Ip/thuY4XaqtBziP3ew=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -1233,8 +1233,8 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.Geometry": "1.0.10",
-          "Aptacode.Geometry.Blazor": "1.0.10",
+          "Aptacode.AppFramework": "1.0.2",
+          "Aptacode.Geometry": "1.0.13",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

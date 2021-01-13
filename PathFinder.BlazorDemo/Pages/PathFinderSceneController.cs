@@ -2,10 +2,10 @@
 using System.Drawing;
 using System.Numerics;
 using System.Threading;
-using Aptacode.Geometry.Blazor.Components.ViewModels;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components.Primitives;
-using Aptacode.Geometry.Blazor.Extensions;
+using Aptacode.AppFramework.Components;
+using Aptacode.AppFramework.Components.Primitives;
+using Aptacode.AppFramework.Extensions;
+using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps.Hpa;
 using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
@@ -91,7 +91,7 @@ namespace PathFinder.BlazorDemo.Pages
         {
             SelectedComponent = null;
 
-            foreach (var componentViewModel in Scene.Components.CollidingWith(e, CollisionDetector))
+            foreach (var componentViewModel in Scene.Components.CollidingWith(e))
             {
                 SelectedComponent = componentViewModel;
                 componentViewModel.BorderColor = Color.Green;

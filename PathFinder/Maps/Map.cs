@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using Aptacode.Geometry.Blazor.Components.ViewModels.Components;
+using Aptacode.AppFramework.Components;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;
@@ -27,7 +27,7 @@ namespace Aptacode.PathFinder.Maps
         {
             for (var i = 0; i < Obstacles.Length; i++)
             {
-                if (Obstacles[i].CollidesWith(point, CollisionDetector))
+                if (Obstacles[i].CollidesWith(point))
                 {
                     return true;
                 }
