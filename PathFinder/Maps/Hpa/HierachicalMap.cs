@@ -1,4 +1,4 @@
-﻿using System;
+﻿|Zusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,6 +7,7 @@ using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Utilities;
+using Constants = Aptacode.Geometry.Constants;
 
 namespace Aptacode.PathFinder.Maps.Hpa
 {
@@ -17,8 +18,8 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public HierachicalMap(Scene scene, int maxLevel)
         {
             _scene = scene;
-            _scene.OnComponentAdded += SceneOnOnComponentAdded;
-            _scene.OnComponentRemoved += SceneOnOnComponentRemoved;
+            //_scene.OnComponentAdded += SceneOnOnComponentAdded;
+            //_scene.OnComponentRemoved += SceneOnOnComponentRemoved;
 
             for (var i = 0; i <= maxLevel; i++)
             {
@@ -39,12 +40,12 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
 
                 _clusters.Add(i, clusters);
-                foreach (var component in scene.Components)
-                {
-                    Add(component);
-                }
-
                 UpdateClusters(i);
+            }
+
+            foreach (var componentViewModel in scene.Components)
+            {
+                Update(componentViewModel);
             }
         }
 
@@ -64,15 +65,19 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public void UpdateDoorPointsInCluster(Cluster cluster)
         {
-            foreach (var (key, adjacentCluster) in GetAdjacentClusters(cluster))
+            var clusters = GetAdjacentClusters(cluster);
+            for (var index = 0; index < 4; index++)
             {
+                var adjacentCluster = clusters[index];
+                var direction = (Direction)index;
+                
                 if (adjacentCluster == Cluster.Empty)
                 {
                     continue;
                 }
 
-                var baseClusterEdgePoints = cluster.GetEdgePoints(key);
-                var adjacentClusterEdgePoints = adjacentCluster.GetEdgePoints(key.Inverse());
+                var baseClusterEdgePoints = cluster.GetEdgePoints(direction);
+                var adjacentClusterEdgePoints = adjacentCluster.GetEdgePoints(direction.Inverse());
                 var j = 0;
                 for (var i = 0; i < baseClusterEdgePoints.Count; i++)
                 {
@@ -268,9 +273,14 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public IEnumerable<Node> GetNeighbours(Node currentNode, Node targetNode)
         {
             var currentCluster = currentNode.Cluster;
-            foreach (var adjacentCluster in GetAdjacentClusters(currentCluster))
+
+            var clusters = GetAdjacentClusters(currentCluster);
+            for (var index = 0; index < 4; index++)
             {
-                var intraEdge = currentCluster.GetIntraEdge(currentNode.DoorPoint, adjacentCluster.Key);
+                var adjacentCluster = clusters[index];
+                var direction = (Direction)index;
+                
+                var intraEdge = currentCluster.GetIntraEdge(currentNode.DoorPoint, direction);
                 if (intraEdge == IntraEdge.Empty)
                 {
                     continue;
@@ -279,7 +289,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 var neighbourDoorPoint = GetAdjacentPoint(intraEdge.Path.Last(), intraEdge.AdjacencyDirection);
                 var neighbourCost = currentNode.Cost + intraEdge.Path.Length; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
 
-                yield return new Node(currentNode, targetNode, adjacentCluster.Value, neighbourDoorPoint, intraEdge, neighbourCost);
+                yield return new Node(currentNode, targetNode, adjacentCluster, neighbourDoorPoint, intraEdge, neighbourCost);
             }
         }
 
@@ -293,7 +303,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         private readonly Dictionary<int, int> _clusterRowCount = new(); //Key is the level
         private readonly Dictionary<int, Cluster[][]> _clusters = new();
         private readonly Dictionary<Guid, List<Cluster>> _componentClusterDictionary = new();
-        private readonly List<ComponentViewModel> _components = new();
         private readonly CollisionDetector _collisionDetector = new HybridCollisionDetector();
 
         #endregion
@@ -302,34 +311,33 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public void Add(ComponentViewModel component)
         {
-            if (_componentClusterDictionary.TryAdd(component.Id, new List<Cluster>()))
-            {
-                _components.Add(component);
-            }
-
             Update(component);
         }
 
         public void Remove(ComponentViewModel component)
         {
-            if (_componentClusterDictionary.Remove(component.Id))
-            {
-                _components.Remove(component);
-            }
+            Update(component);
         }
 
         public void Update(ComponentViewModel component)
         {
             var invalidatedClusters = new HashSet<Cluster>();
 
-            var currentClusters = _componentClusterDictionary[component.Id];
-            foreach (var currentCluster in currentClusters)
+            if (_componentClusterDictionary.TryGetValue(component.Id, out var currentClusters))
             {
-                currentCluster.Components.Remove(component);
-                invalidatedClusters.Add(currentCluster);
+                foreach (var currentCluster in currentClusters)
+                {
+                    currentCluster.Components.Remove(component);
+                    invalidatedClusters.Add(currentCluster);
+                }
+                currentClusters.Clear();
+            }
+            else
+            {
+                currentClusters = new List<Cluster>();
+                _componentClusterDictionary.Add(component.Id, currentClusters);
             }
 
-            currentClusters.Clear();
 
             foreach (var clusterArray in _clusters.Values)
             {
@@ -342,7 +350,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                             continue;
                         }
 
-                        _componentClusterDictionary[component.Id].Add(cluster);
+                        currentClusters.Add(cluster);
                         cluster.Components.Add(component);
                         invalidatedClusters.Add(cluster);
                     }
@@ -386,17 +394,18 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return Cluster.Empty;
         }
 
-        public Dictionary<Direction, Cluster> GetAdjacentClusters(Cluster cluster)
+        public Cluster[] GetAdjacentClusters(Cluster cluster)
         {
             var i = cluster.Column;
             var j = cluster.Row;
             var level = cluster.Level;
-            return new Dictionary<Direction, Cluster>
+            
+            return new Cluster[4]
             {
-                {Direction.Up, GetCluster(level, i, j - 1)}, //The cluster above this cluster
-                {Direction.Down, GetCluster(level, i, j + 1)}, //The cluster below this cluster
-                {Direction.Left, GetCluster(level, i - 1, j)}, //The cluster to the left of this cluster
-                {Direction.Right, GetCluster(level, i + 1, j)} //The cluster to the right of this cluster
+                GetCluster(level, i, j - 1),//The cluster above this cluster
+                GetCluster(level, i + 1, j),//The cluster to the right of this cluster
+                GetCluster(level, i, j + 1),//The cluster below this cluster
+                GetCluster(level, i - 1, j)//The cluster to the left of this cluster
             };
         }
 
@@ -511,7 +520,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
     }
 
-    public class Cluster : IEquatable<Cluster>
+    public class Cluster
     {
         #region DoorPoints
 
@@ -674,8 +683,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
 
         #region Props
-        public static readonly FineCollisionDetector CollisionDetector = new();
-
         public readonly Guid Id;
         public readonly Rectangle Region;
         public readonly List<ComponentViewModel> Components;
@@ -713,7 +720,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Id = Guid.NewGuid();
             Level = 0;
             Region = Rectangle.Zero;
-            Components = new List<ComponentViewModel>();
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint>();
             IntraEdges = new List<IntraEdge>();
@@ -722,29 +728,15 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public static readonly Cluster Empty = new();
 
         #endregion
-
-        #region IEquatable
-
-        public override int GetHashCode()
-        {
-            return Region.GetHashCode();
-        }
-
-        public virtual bool Equals(Cluster other)
-        {
-            return Region == other.Region;
-        }
-
-        #endregion
     }
 
     public enum Direction
     {
-        Up,
-        Right,
-        Down,
-        Left,
-        None
+        Up = 0,
+        Right = 1,
+        Down = 2,
+        Left = 3,
+        None = 4
     }
 
     public static class DirectionExtensions

@@ -23,29 +23,29 @@ namespace PathFinder.BlazorDemo.Pages
             UserInteractionController.OnMouseUp += UserInteractionControllerOnOnMouseUp;
             UserInteractionController.OnMouseMoved += UserInteractionControllerOnOnMouseMoved;
 
-            var obstacle1 = Rectangle.Create(new Vector2(20, 20),
-                new Vector2(20, 20)).ToViewModel();
-            obstacle1.FillColor = Color.Gray;
-            Scene.Add(obstacle1);
+            //var obstacle1 = Rectangle.Create(new Vector2(2, 2),
+            //    new Vector2(2, 2)).ToViewModel();
+            //obstacle1.FillColor = Color.Gray;
+            //Scene.Add(obstacle1);
 
-            var obstacle2 = Rectangle.Create(new Vector2(60, 20),
-                new Vector2(20, 20)).ToViewModel();
+            var obstacle2 = Rectangle.Create(new Vector2(6, 2),
+                new Vector2(2, 2)).ToViewModel();
             obstacle2.FillColor = Color.Gray;
             Scene.Add(obstacle2);
 
-            var obstacle3 = Rectangle.Create(new Vector2(20, 60),
-                new Vector2(20, 20)).ToViewModel();
-            obstacle3.FillColor = Color.Gray;
-            Scene.Add(obstacle3);
+            //var obstacle3 = Rectangle.Create(new Vector2(2, 6),
+            //    new Vector2(2, 2)).ToViewModel();
+            //obstacle3.FillColor = Color.Gray;
+            //Scene.Add(obstacle3);
 
-            _startPoint = new ConnectionPointViewModel(Ellipse.Create(15, 15, 2, 2, 0))
+            _startPoint = new ConnectionPointViewModel(Ellipse.Create(1f, 8f, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Green,
                 CollisionDetectionEnabled = false
             };
             // Scene.Add(_startPoint);
 
-            _endPoint = new ConnectionPointViewModel(Ellipse.Create(70, 70, 2, 2, 0))
+            _endPoint = new ConnectionPointViewModel(Ellipse.Create(7, 7, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Red,
                 CollisionDetectionEnabled = false
@@ -71,8 +71,15 @@ namespace PathFinder.BlazorDemo.Pages
 
             var delta = e - UserInteractionController.LastMousePosition;
 
-            Translate(SelectedComponent, delta, new List<ComponentViewModel> {SelectedComponent},
+
+            var movedItems = new List<ComponentViewModel>() {SelectedComponent};
+            Translate(SelectedComponent, delta, movedItems,
                 new CancellationTokenSource());
+
+            foreach (var componentViewModel in movedItems)
+            {
+                Map.Update(componentViewModel);
+            }
 
             _connection.RecalculatePath();
         }

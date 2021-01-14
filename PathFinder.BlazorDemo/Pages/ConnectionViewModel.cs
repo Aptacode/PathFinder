@@ -27,13 +27,12 @@ namespace PathFinder.BlazorDemo.Pages
 
         public void RecalculatePath()
         {
-            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position, 1);
+            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position, 0);
 
             var path = points.ToList();
-            ;
 
-            path.Insert(0, EndPoint.Ellipse.Position);
-            path.Add(StartPoint.Ellipse.Position);
+            //path.Insert(0, EndPoint.Ellipse.Position);
+            //path.Add(StartPoint.Ellipse.Position);
 
             PolyLine = new PolyLine(VertexArray.Create(path.ToArray()));
             UpdateBoundingRectangle();
