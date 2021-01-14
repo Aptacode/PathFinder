@@ -45,7 +45,7 @@ namespace PathFinder.BlazorDemo.Pages
             };
             // Scene.Add(_startPoint);
 
-            _endPoint = new ConnectionPointViewModel(Ellipse.Create(7, 7, 0.2f, 0.2f, 0))
+            _endPoint = new ConnectionPointViewModel(Ellipse.Create(17, 7, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Red,
                 CollisionDetectionEnabled = false
@@ -71,15 +71,11 @@ namespace PathFinder.BlazorDemo.Pages
 
             var delta = e - UserInteractionController.LastMousePosition;
 
-
-            var movedItems = new List<ComponentViewModel>() {SelectedComponent};
+            var movedItems = new List<ComponentViewModel> {SelectedComponent};
             Translate(SelectedComponent, delta, movedItems,
                 new CancellationTokenSource());
-
-            foreach (var componentViewModel in movedItems)
-            {
-                Map.Update(componentViewModel);
-            }
+            
+            Map.Update(SelectedComponent);
 
             _connection.RecalculatePath();
         }

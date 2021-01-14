@@ -94,5 +94,11 @@ namespace Aptacode.PathFinder.Utilities
         {
             return _all;
         }
+
+        public void Clear()
+        {
+            _storage.Clear();
+            _all.Clear();
+        }
     }
 }
