@@ -297,7 +297,11 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public Node SetStartNode(Vector2 point, Node target, int level)
         {
             var cluster = GetClusterContainingPoint(point, level);
-            AddIntraEdgeInEachValidDirection(new EdgePoint(Direction.None, point), cluster);
+            var edgePoint = new EdgePoint(Direction.None, point);
+            AddIntraEdge(edgePoint, cluster, Direction.Up);
+            AddIntraEdge(edgePoint, cluster, Direction.Right);
+            AddIntraEdge(edgePoint, cluster, Direction.Down);
+            AddIntraEdge(edgePoint, cluster, Direction.Left);
             return new Node(Node.Empty, target, cluster, point, IntraEdge.Empty, 0);
         }
 
@@ -307,14 +311,20 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return new Node(cluster, point);
         }
 
+
+        private readonly Vector2 _up = new(0, -1);
+        private readonly Vector2 _down = new(0, 1);
+        private readonly Vector2 _left = new(-1, 0);
+        private readonly Vector2 _right = new(1, 0);
+        
         public Vector2 GetAdjacentPoint(Vector2 point, Direction adjacencyDirection)
         {
             return adjacencyDirection switch
             {
-                Direction.Up => point + new Vector2(0, -1),
-                Direction.Down => point + new Vector2(0, 1),
-                Direction.Left => point + new Vector2(-1, 0),
-                Direction.Right => point + new Vector2(1, 0),
+                Direction.Up => point + _up,
+                Direction.Down => point + _down,
+                Direction.Left => point + _left,
+                Direction.Right => point + _right,
                 _ => point
             };
         }
@@ -471,34 +481,23 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public void UpdateIntraEdges(Cluster cluster)
         {
             cluster.IntraEdges.Clear();
-
-            foreach (var doorPoint in cluster.DoorPoints)
-            {
-                AddIntraEdgeInEachValidDirection(doorPoint, cluster);
-            }
-        }
-
-        public void AddIntraEdgeInEachValidDirection(EdgePoint point, Cluster cluster)
-        {
             if (cluster.DoorPoints.Count == 0)
             {
                 return;
             }
-
-            AddIntraEdge(point, cluster, Direction.Up);
-            AddIntraEdge(point, cluster, Direction.Right);
-            AddIntraEdge(point, cluster, Direction.Down);
-            AddIntraEdge(point, cluster, Direction.Left);
+            
+            foreach (var doorPoint in cluster.DoorPoints)
+            {
+                AddIntraEdge(doorPoint, cluster, Direction.Up);
+                AddIntraEdge(doorPoint, cluster, Direction.Right);
+                AddIntraEdge(doorPoint, cluster, Direction.Down);
+                AddIntraEdge(doorPoint, cluster, Direction.Left);
+            }
         }
 
         public void AddIntraEdge(EdgePoint point, Cluster cluster, Direction adjacencyDirection)
         {
-            if (cluster.HasIntraEdgeWithStartPoint(point.Position, adjacencyDirection)) //No need to find the same intra edges again.
-            {
-                return;
-            }
-
-            if (point.AdjacencyDirection == adjacencyDirection) //Don't waste time finding the shortest path, this has to be it.
+            if (cluster.Level == 0 || point.AdjacencyDirection == adjacencyDirection)//Don't waste time finding the shortest path, this has to be it.
             {
                 cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, point.Position));
                 return;
@@ -509,38 +508,35 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             foreach (var doorPoint in cluster.DoorPoints)
             {
-                if (doorPoint.AdjacencyDirection != adjacencyDirection)
+                if (doorPoint.AdjacencyDirection != adjacencyDirection)//But make sure they aren't different points with the same adjacency direction
                 {
                     continue;
                 }
 
-                if (cluster.HasIntraEdge(doorPoint.Position, point.Position) //Check to see if we've already calculated an IntraEdge between these two points.
-                    && doorPoint.AdjacencyDirection != adjacencyDirection) //But make sure they aren't different points with the same adjacency direction
+                //Check to see if we've already calculated an IntraEdge between these two points. 
+                for (var i = 0; i < cluster.IntraEdges.Count; i++)
                 {
-                    var intraEdge = cluster.GetIntraEdge(doorPoint.Position, point.Position); //This is necessarily the correct intraEdge because only the shortest intraEdge in this direction for the door point is saved.
-                    var path = intraEdge.Path.Backwards();
+                    var edge = cluster.IntraEdges[i];
+                    //This is necessarily the correct intraEdge because only the shortest intraEdge in this direction for the door point is saved.
+                    if (edge.Path.Last() != point.Position || edge.Path[0] != doorPoint.Position)
+                    {
+                        continue;
+                    }
+
+                    var path = edge.Path.Backwards();
                     cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, path));
                     return; //Now we don't need to calculate the path again.
                 }
 
-                switch (cluster.Level)
+                var path1 = FindPath(point.Position, doorPoint.Position, cluster.Level - 1);
+
+                if (path1.Length >= shortestIntraEdgeLength)
                 {
-                    case 0:
-                        cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, doorPoint.Position));
-                        return;
-                    case > 0:
-                    {
-                        var path = FindPath(point.Position, doorPoint.Position, cluster.Level - 1);
-
-                        if (path.Length < shortestIntraEdgeLength) //We only want the shortest intraedge in this direction.
-                        {
-                            shortestIntraEdgeLength = path.Length;
-                            shortestPathInDirection = path;
-                        }
-
-                        break;
-                    }
+                    continue;
                 }
+
+                shortestIntraEdgeLength = path1.Length;
+                shortestPathInDirection = path1;
             }
 
             if (shortestPathInDirection.Length > 0)
@@ -631,49 +627,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             }
 
             return IntraEdge.Empty;
-        }
-
-        public IntraEdge GetIntraEdge(Vector2 startPoint, Vector2 endPoint)
-        {
-            for (var i = 0; i < IntraEdges.Count; i++)
-            {
-                var edge = IntraEdges[i];
-                if (edge.Path.Last() == endPoint && edge.Path[0] == startPoint)
-                {
-                    return edge;
-                }
-            }
-
-            return IntraEdge.Empty;
-        }
-
-        public bool HasIntraEdge(Vector2 startPoint, Vector2 endPoint)
-        {
-            for (var i = 0; i < IntraEdges.Count; i++)
-            {
-                var edge = IntraEdges[i];
-                if (edge.Path[0] == endPoint && edge.Path.Last() == startPoint)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-
-        public bool HasIntraEdgeWithStartPoint(Vector2 startPoint, Direction direction)
-        {
-            for (var i = 0; i < IntraEdges.Count; i++)
-            {
-                var edge = IntraEdges[i];
-                if (edge.Path[0] == startPoint && edge.AdjacencyDirection == direction)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         #endregion
