@@ -16,8 +16,8 @@ namespace PathFinder.BlazorDemo.Pages
         #region Properties
 
         public PathFinderSceneController SceneController { get; set; }
-        private const int Width = 10;
-        private const int Height = 10;
+        private const int Width = 50;
+        private const int Height = 50;
 
         #endregion
     }
