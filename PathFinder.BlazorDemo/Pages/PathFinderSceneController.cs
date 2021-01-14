@@ -38,14 +38,14 @@ namespace PathFinder.BlazorDemo.Pages
             //obstacle3.FillColor = Color.Gray;
             //Scene.Add(obstacle3);
 
-            _startPoint = new ConnectionPointViewModel(Ellipse.Create(1f, 8f, 0.2f, 0.2f, 0))
+            _startPoint = new ConnectionPointViewModel(Ellipse.Create(3f, 3f, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Green,
                 CollisionDetectionEnabled = false
             };
             // Scene.Add(_startPoint);
 
-            _endPoint = new ConnectionPointViewModel(Ellipse.Create(17, 7, 0.2f, 0.2f, 0))
+            _endPoint = new ConnectionPointViewModel(Ellipse.Create(7, 47, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Red,
                 CollisionDetectionEnabled = false
