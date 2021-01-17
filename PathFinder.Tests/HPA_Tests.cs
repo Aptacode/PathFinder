@@ -38,5 +38,14 @@ namespace PathFinder.Tests
 
             Assert.True(path.Length > 0);
         }
+
+        [Fact]
+        public void ConcretePathfinding_Test()
+        {
+            var cluster = new Cluster(new Vector2(10, 10));
+            var path = cluster.FindConcretePath(new Vector2(11, 11), new Vector2(18, 18));
+
+            Assert.True(path.Length > 0);
+        }
     }
 }
