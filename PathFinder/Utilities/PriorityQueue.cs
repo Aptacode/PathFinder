@@ -5,20 +5,20 @@ using System.Linq;
 
 namespace Aptacode.PathFinder.Utilities
 {
-    public class PriorityQueue<TPriority, TItem>
+    public class PriorityQueue<TPriority, TItem> where TItem : IEquatable<TItem>
     {
-        private readonly List<TItem> _all;
         private readonly SortedDictionary<TPriority, List<TItem>> _storage;
+        private int _itemCount;
 
         public PriorityQueue()
         {
             _storage = new SortedDictionary<TPriority, List<TItem>>();
-            _all = new List<TItem>();
+            _itemCount = 0;
         }
 
         public bool IsEmpty()
         {
-            return _all.Count == 0;
+            return _itemCount == 0;
         }
 
         public TItem Dequeue()
@@ -28,17 +28,16 @@ namespace Aptacode.PathFinder.Utilities
                 throw new Exception("Please check that priorityQueue is not empty before dequeing");
             }
 
-            foreach (var q in _storage.Values.Where(q => q.Count > 0))
+            var (key, value) = _storage.ElementAt(0);
+            var element = value[0];
+            value.RemoveAt(0);
+            if (value.Count == 0)
             {
-                var item = q.First();
-                q.Remove(item);
-                _all.Remove(item);
-                return item;
+                _storage.Remove(key);
             }
 
-            Debug.Assert(false, "not supposed to reach here. problem with changing total_size");
-
-            return default; // not supposed to reach here.
+            _itemCount--;
+            return element;
         }
 
         // same as above, except for peek.
@@ -50,9 +49,10 @@ namespace Aptacode.PathFinder.Utilities
                 throw new Exception("Please check that priorityQueue is not empty before peeking");
             }
 
-            foreach (var q in _storage.Values.Where(q => q.Count > 0))
+            var (key, value) = _storage.ElementAt(0);
+            if (value.Count > 0)
             {
-                return q.First();
+                return value[0];
             }
 
             Debug.Assert(false, "not supposed to reach here. problem with changing total_size");
@@ -62,43 +62,57 @@ namespace Aptacode.PathFinder.Utilities
 
         public TItem Dequeue(TPriority priority)
         {
-            var item = _storage[priority].First();
-            _storage[priority].Remove(item);
-            _all.Remove(item);
-            return item;
+            if (_storage.TryGetValue(priority, out var items))
+            {
+                var element = items[0];
+                items.RemoveAt(0);
+                if (items.Count == 0)
+                {
+                    _storage.Remove(priority);
+                }
+
+                _itemCount--;
+                return element;
+            }
+
+            return default;
         }
 
         public void Enqueue(TItem item, TPriority priority)
         {
-            if (!_storage.ContainsKey(priority))
+            if (!_storage.TryGetValue(priority, out var items))
             {
-                _storage.Add(priority, new List<TItem>());
+                items = new List<TItem>();
+                _storage.Add(priority, items);
             }
 
-            _storage[priority].Add(item);
-            _all.Add(item);
+            items.Add(item);
+            _itemCount++;
         }
 
         public bool Remove(TItem item, TPriority priority)
         {
-            if (!_storage[priority].Remove(item))
+            if (_storage.TryGetValue(priority, out var items))
             {
-                return false;
+                if (items.Remove(item))
+                {
+                    if (items.Count == 0)
+                    {
+                        _storage.Remove(priority);
+                    }
+
+                    _itemCount--;
+                    return true;
+                }
             }
 
-            _all.Remove(item);
-            return true;
-        }
-
-        public IEnumerable<TItem> GetAll()
-        {
-            return _all;
+            return false;
         }
 
         public void Clear()
         {
             _storage.Clear();
-            _all.Clear();
+            _itemCount = 0;
         }
     }
 }

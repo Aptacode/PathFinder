@@ -74,7 +74,7 @@ namespace PathFinder.BlazorDemo.Pages
             var movedItems = new List<ComponentViewModel> {SelectedComponent};
             Translate(SelectedComponent, delta, movedItems,
                 new CancellationTokenSource());
-            
+
             Map.Update(SelectedComponent);
 
             _connection.RecalculatePath();

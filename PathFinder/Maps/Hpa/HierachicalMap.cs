@@ -27,7 +27,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             for (var i = 0; i < maxLevel; i++)
             {
-                var clusterSize = new Vector2((int) Math.Pow(10, i+1)); //Using 10^x where x is the level, could be changed, might not be necessary.
+                var clusterSize = new Vector2((int) Math.Pow(10, i + 1)); //Using 10^x where x is the level, could be changed, might not be necessary.
                 var clusterColumnCount = (int) (scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
                 var clusterRowCount = (int) (scene.Size.Y / clusterSize.Y);
                 var clusters = new Cluster[clusterColumnCount][];
@@ -222,24 +222,21 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 return refinedPath.ToArray();
             }
         }
-        private readonly Dictionary<Vector2, AbstractNode> _closedAbstractNodes = new();
-        private readonly Dictionary<Vector2, AbstractNode> _openAbstractNodes = new();
-        private readonly PriorityQueue<float, AbstractNode> _sortedOpenAbstractNodes = new();
 
         public AbstractNode[] FindAbstractPath(Vector2 startPoint, Vector2 endPoint, int level) //This is A* on Hierachical map clusters as nodes
         {
-            _sortedOpenAbstractNodes.Clear();
-            _closedAbstractNodes.Clear();
-            _openAbstractNodes.Clear();
-            
+            List<AbstractNode> closedAbstractNodes = new();
+            List<AbstractNode> openAbstractNodes = new();
+            PriorityQueue<float, AbstractNode> sortedOpenAbstractNodes = new();
+
             var endNode = SetEndNode(endPoint, level);
             var startNode = SetStartNode(startPoint, endNode, level);
-            _sortedOpenAbstractNodes.Enqueue(startNode, startNode.CostDistance);
-            _openAbstractNodes.Add(startNode.DoorPoint, startNode);
-            
-            while (!_sortedOpenAbstractNodes.IsEmpty())
+            sortedOpenAbstractNodes.Enqueue(startNode, startNode.CostDistance);
+            openAbstractNodes.Add(startNode);
+
+            while (!sortedOpenAbstractNodes.IsEmpty())
             {
-                var currentNode = _sortedOpenAbstractNodes.Dequeue();
+                var currentNode = sortedOpenAbstractNodes.Dequeue();
                 if (currentNode.Cluster == endNode.Cluster) //if we've reached the end node a path has been found.
                 {
                     var node = currentNode;
@@ -255,29 +252,29 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     }
                 }
 
-                _closedAbstractNodes[currentNode.DoorPoint] = currentNode;
-                _openAbstractNodes.Remove(currentNode.DoorPoint);
+                closedAbstractNodes.Add(currentNode);
+                openAbstractNodes.Remove(currentNode);
 
                 foreach (var node in GetNeighbours(currentNode, endNode))
                 {
-                    if (_closedAbstractNodes.ContainsKey(node.DoorPoint)
+                    if (closedAbstractNodes.Contains(node)
                     ) //Don't need to recheck node if it's already be looked at
                     {
                         continue;
                     }
 
-                    if (_openAbstractNodes.TryGetValue(node.DoorPoint, out var existingOpenNode))
+                    if (openAbstractNodes.Contains(node))
                     {
-                        if (!(existingOpenNode.CostDistance > node.CostDistance))
+                        if (!(node.CostDistance > node.CostDistance))
                         {
                             continue;
                         }
 
-                        _sortedOpenAbstractNodes.Remove(existingOpenNode, existingOpenNode.CostDistance);
+                        sortedOpenAbstractNodes.Remove(node, node.CostDistance);
                     }
 
-                    _sortedOpenAbstractNodes.Enqueue(node, node.CostDistance);
-                    _openAbstractNodes[node.DoorPoint] = node;
+                    sortedOpenAbstractNodes.Enqueue(node, node.CostDistance);
+                    openAbstractNodes.Add(node);
                 }
             }
 
@@ -307,10 +304,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return new AbstractNode(cluster, point);
         }
 
-
-
-
-
         public IEnumerable<AbstractNode> GetNeighbours(AbstractNode currentNode, AbstractNode targetNode)
         {
             var neighbours = new List<AbstractNode>();
@@ -324,7 +317,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 var direction = (Direction) index;
 
                 var intraEdge = currentCluster.GetIntraEdge(currentNode.DoorPoint, direction);
-                if (intraEdge == IntraEdge.Empty)
+                if (intraEdge.Equals(IntraEdge.Empty))
                 {
                     continue;
                 }
@@ -337,10 +330,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             return neighbours;
         }
-
-
-
-
 
         #endregion
 
@@ -368,12 +357,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             Update(component);
         }
+
         private readonly HashSet<Cluster> _invalidatedClusters = new();
 
         public void Update(ComponentViewModel component)
         {
             _invalidatedClusters.Clear();
-            
+
             if (_componentClusterDictionary.TryGetValue(component.Id, out var currentClusters))
             {
                 foreach (var currentCluster in currentClusters)
@@ -471,7 +461,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             {
                 return;
             }
-            
+
             foreach (var doorPoint in cluster.DoorPoints)
             {
                 AddIntraEdge(doorPoint, cluster, Direction.Up);
@@ -483,7 +473,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public void AddIntraEdge(EdgePoint point, Cluster cluster, Direction adjacencyDirection)
         {
-
             for (var i = 0; i < cluster.IntraEdges.Count; i++)
             {
                 var edge = cluster.IntraEdges[i];
@@ -493,7 +482,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
             }
 
-            if (point.AdjacencyDirection == adjacencyDirection)//Don't waste time finding the shortest path, this has to be it.
+            if (point.AdjacencyDirection == adjacencyDirection) //Don't waste time finding the shortest path, this has to be it.
             {
                 cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, point.Position));
                 return;
@@ -517,6 +506,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     {
                         continue;
                     }
+
                     var reversePath = edge.Path.Backwards();
                     cluster.IntraEdges.Add(new IntraEdge(adjacencyDirection, reversePath));
                     return; //Now we don't need to calculate the path again.
@@ -528,7 +518,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 {
                     continue;
                 }
-                
+
                 shortestIntraEdgeLength = path.Length;
                 shortestPathInDirection = path;
 
@@ -548,8 +538,26 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
     }
 
-    public class Cluster
+    public record Cluster
     {
+        #region IntraEdges
+
+        public IntraEdge GetIntraEdge(Vector2 startPoint, Direction direction)
+        {
+            for (var i = 0; i < IntraEdges.Count; i++)
+            {
+                var edge = IntraEdges[i];
+                if (edge.AdjacencyDirection == direction && edge.Path[0] == startPoint) //Need point equality or to move away from using points, probably this one.
+                {
+                    return edge;
+                }
+            }
+
+            return IntraEdge.Empty;
+        }
+
+        #endregion
+
         #region EdgePoints
 
         public EdgePoint[] SetEdgePoints()
@@ -626,24 +634,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         #endregion
 
-        #region IntraEdges
-
-        public IntraEdge GetIntraEdge(Vector2 startPoint, Direction direction)
-        {
-            for (var i = 0; i < IntraEdges.Count; i++)
-            {
-                var edge = IntraEdges[i];
-                if (edge.AdjacencyDirection == direction && edge.Path[0] == startPoint) //Need point equality or to move away from using points, probably this one.
-                {
-                    return edge;
-                }
-            }
-
-            return IntraEdge.Empty;
-        }
-
-        #endregion
-
         #region Concrete Pathfinding
 
         public bool HasCollision(Vector2 point)
@@ -658,6 +648,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             return false;
         }
+
         public bool IsInCluster(Vector2 point)
         {
             return Region.Contains(point);
@@ -736,8 +727,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             for (var index = 0; index < 4; index++)
             {
-
-                var direction = (Direction)index;
+                var direction = (Direction) index;
 
                 var neighbour = currentNode.Position.GetAdjacentPoint(direction);
 
@@ -810,9 +800,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Region = Rectangle.Create(new Vector2(1, 1), rectSize);
             Components = new List<ComponentViewModel>();
             EdgePoints = SetEdgePoints();
-            DoorPoints = new List<EdgePoint>() { EdgePoints[0], EdgePoints[9], EdgePoints[10], EdgePoints[19], EdgePoints[20], EdgePoints[29], EdgePoints[30], EdgePoints[39] };
+            DoorPoints = new List<EdgePoint> {EdgePoints[0], EdgePoints[9], EdgePoints[10], EdgePoints[19], EdgePoints[20], EdgePoints[29], EdgePoints[30], EdgePoints[39]};
             IntraEdges = new List<IntraEdge>();
         }
+
         #endregion
     }
 
@@ -820,12 +811,12 @@ namespace Aptacode.PathFinder.Maps.Hpa
     {
         public static ConcreteNode SetStartConcreteNode(this Cluster cluster, Vector2 point, Vector2 target)
         {
-            return new ConcreteNode(cluster, point, target);
+            return new(cluster, point, target);
         }
 
-        public static ConcreteNode SetEndConcreteNode(this Cluster cluster, Vector2 point) 
+        public static ConcreteNode SetEndConcreteNode(this Cluster cluster, Vector2 point)
         {
-            return new ConcreteNode(cluster, point);
+            return new(cluster, point);
         }
     }
 
@@ -838,9 +829,9 @@ namespace Aptacode.PathFinder.Maps.Hpa
         None = 4
     }
 
-    public class IntraEdge
+    public record IntraEdge
     {
-        public static IntraEdge Empty = new();
+        public static IntraEdge Empty = new(Direction.None, Array.Empty<Vector2>());
         public readonly Direction AdjacencyDirection;
 
         public readonly Vector2[] Path;
@@ -855,12 +846,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         {
             Path = new[] {point};
             AdjacencyDirection = adjacencyDirection;
-        }
-
-        public IntraEdge()
-        {
-            Path = Array.Empty<Vector2>();
-            AdjacencyDirection = Direction.None;
         }
     }
 
@@ -924,13 +909,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
     public record ConcreteNode
     {
         public static readonly ConcreteNode Empty = new();
+        public readonly Cluster Cluster;
 
         public readonly float Cost;
         public readonly float CostDistance;
         public readonly float Distance;
-        public readonly Vector2 Position;
         public readonly ConcreteNode Parent;
-        public readonly Cluster Cluster;
+        public readonly Vector2 Position;
 
         public ConcreteNode(Cluster cluster, ConcreteNode parent, ConcreteNode target, Vector2 position, float cost)
         {
@@ -977,12 +962,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return new(cluster, position);
         }
 
-
         public static ConcreteNode StartNode(Cluster cluster, Vector2 position, Vector2 target)
         {
             return new(cluster, position, target);
         }
-
     }
 
     public static class ListExtensions
