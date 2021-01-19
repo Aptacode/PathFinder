@@ -35,12 +35,6 @@ namespace PathFinder.Tests
 
             var map = new HierachicalMap(scene, 1);
             var path = map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            var path2 = map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
-            map.FindPath(new Vector2(33, 33), new Vector2(77, 77), 1);
             Assert.True(path.Length > 0);
         }
 

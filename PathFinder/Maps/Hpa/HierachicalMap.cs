@@ -6,6 +6,7 @@ using Aptacode.AppFramework.Components;
 using Aptacode.AppFramework.Scene;
 using Aptacode.Geometry.Primitives.Polygons;
 using Aptacode.PathFinder.Utilities;
+using Priority_Queue;
 
 namespace Aptacode.PathFinder.Maps.Hpa
 {
@@ -267,7 +268,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     return;
                 }
 
-                _sortedOpenAbstractNodes.Remove(node, node.CostDistance);
+                _sortedOpenAbstractNodes.Remove(node);
             }
 
             _sortedOpenAbstractNodes.Enqueue(node, node.CostDistance);
@@ -276,7 +277,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         private readonly HashSet<AbstractNode> _closedAbstractNodes = new();
         private readonly Dictionary<Vector2, AbstractNode> _openAbstractNodes = new();
-        private readonly PriorityQueue<float, AbstractNode> _sortedOpenAbstractNodes = new();
+        private readonly FastPriorityQueue<AbstractNode> _sortedOpenAbstractNodes = new(200);
 
         public AbstractNode[] FindAbstractPath(Vector2 startPoint, Vector2 endPoint, int level) //This is A* on Hierachical map clusters as nodes
         {
@@ -289,7 +290,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             _sortedOpenAbstractNodes.Enqueue(startNode, startNode.CostDistance);
             _openAbstractNodes.Add(startNode.DoorPoint, startNode);
 
-            while (!_sortedOpenAbstractNodes.IsEmpty())
+            while (_sortedOpenAbstractNodes.Count > 0)
             {
                 var currentNode = _sortedOpenAbstractNodes.Dequeue();
                 if (currentNode.Cluster == endNode.Cluster) //if we've reached the end node a path has been found.
@@ -654,7 +655,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         private readonly HashSet<Vector2> _closedConcreteNodes = new();
         private readonly Dictionary<Vector2, ConcreteNode> _openConcreteNodes = new();
-        private readonly PriorityQueue<float, ConcreteNode> _sortedOpenConcreteNodes = new();
+        private readonly FastPriorityQueue<ConcreteNode> _sortedOpenConcreteNodes = new(200);
 
         public Vector2[] FindConcretePath(Vector2 startPoint, Vector2 endPoint) //This is A* as normal within the confines of a cluster.
         {
@@ -667,7 +668,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             _sortedOpenConcreteNodes.Enqueue(startNode, startNode.CostDistance);
             _openConcreteNodes.Add(startNode.Position, startNode);
 
-            while (!_sortedOpenConcreteNodes.IsEmpty())
+            while (_sortedOpenConcreteNodes.Count > 0)
             {
                 var currentNode = _sortedOpenConcreteNodes.Dequeue();
                 if (currentNode.Position == endNode.Position) //if we've reached the end node a path has been found.
@@ -714,7 +715,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                             continue;
                         }
 
-                        _sortedOpenConcreteNodes.Remove(existingOpenNode, existingOpenNode.CostDistance);
+                        _sortedOpenConcreteNodes.Remove(existingOpenNode);
                     }
 
                     _sortedOpenConcreteNodes.Enqueue(node, node.CostDistance);
@@ -833,7 +834,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public static readonly EdgePoint Empty = new(Direction.None, Vector2.Zero);
     }
 
-    public record AbstractNode
+    public class AbstractNode : FastPriorityQueueNode
     {
         public static readonly AbstractNode Empty = new();
         public readonly Cluster Cluster;
@@ -877,7 +878,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         }
     }
 
-    public record ConcreteNode
+    public class ConcreteNode : FastPriorityQueueNode
     {
         public static readonly ConcreteNode Empty = new();
         public readonly Cluster Cluster;

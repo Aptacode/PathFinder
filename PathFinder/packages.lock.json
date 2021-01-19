@@ -23,6 +23,12 @@
           "System.Numerics.Vectors": "4.5.0"
         }
       },
+      "OptimizedPriorityQueue": {
+        "type": "Direct",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "P697wMak7fu1b+dbulF7lUbitE3s459oQlYSLA+1HPibItPF6chE9639D42P+BV3c5JNQ4FxdB+w0pMP4+nyjw=="
+      },
       "System.Numerics.Vectors": {
         "type": "Direct",
         "requested": "[4.5.0, )",
