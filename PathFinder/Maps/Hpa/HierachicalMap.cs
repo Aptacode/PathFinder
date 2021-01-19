@@ -15,9 +15,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public HierachicalMap(Scene scene, int maxLevel)
         {
             _scene = scene;
-            //_scene.OnComponentAdded += SceneOnOnComponentAdded;
-            //_scene.OnComponentRemoved += SceneOnOnComponentRemoved;
-
+            
             _clusters = new Cluster[maxLevel][][];
             _clusterSize = new Vector2[maxLevel];
             _clusterColumnCount = new int[maxLevel];
@@ -50,6 +48,9 @@ namespace Aptacode.PathFinder.Maps.Hpa
             {
                 Update(componentViewModel);
             }
+
+            _scene.OnComponentAdded += SceneOnOnComponentAdded;
+            _scene.OnComponentRemoved += SceneOnOnComponentRemoved;
         }
 
         #endregion

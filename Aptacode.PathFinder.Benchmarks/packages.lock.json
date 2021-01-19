@@ -4,13 +4,13 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.AppFramework": {
         "type": "Direct",
-        "requested": "[1.0.9, )",
-        "resolved": "1.0.9",
-        "contentHash": "K50vrE2lTgv36qbZdlkoyiY6WyEciUGQ+q/mziVscuxe0pGr2orY6vnO8gj/XB3Ouwzkd1SZLOJG6D/A+l0HcQ==",
+        "requested": "[1.0.11, )",
+        "resolved": "1.0.11",
+        "contentHash": "BWXt5TkhgEsq/A64rMvOQRQklZRuP7oOgJUtHzFp7EGLqrlN3i4xcRFbfW6LAe6w+8M81iA6Iz6x+rRHlFEWTw==",
         "dependencies": {
           "Aptacode.BlazorCanvas": "1.0.7",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.18",
+          "Aptacode.Geometry": "1.0.19",
           "Microsoft.AspNetCore.Components.Web": "5.0.2"
         }
       },
@@ -1200,7 +1200,7 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.AppFramework": "1.0.9",
+          "Aptacode.AppFramework": "1.0.11",
           "Aptacode.Geometry": "1.0.19",
           "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0",
