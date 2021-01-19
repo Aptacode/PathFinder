@@ -45,7 +45,7 @@ namespace PathFinder.BlazorDemo.Pages
             };
             // Scene.Add(_startPoint);
 
-            _endPoint = new ConnectionPointViewModel(Ellipse.Create(190, 190, 0.2f, 0.2f, 0))
+            _endPoint = new ConnectionPointViewModel(Ellipse.Create(80, 80, 0.2f, 0.2f, 0))
             {
                 FillColor = Color.Red,
                 CollisionDetectionEnabled = false

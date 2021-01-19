@@ -31,8 +31,8 @@ namespace PathFinder.BlazorDemo.Pages
 
             var path = points.ToList();
 
-            //path.Insert(0, EndPoint.Ellipse.Position);
-            //path.Add(StartPoint.Ellipse.Position);
+            path.Insert(0, StartPoint.Ellipse.Position);
+            path.Add(EndPoint.Ellipse.Position);
 
             PolyLine = new PolyLine(VertexArray.Create(path.ToArray()));
             UpdateBoundingRectangle();

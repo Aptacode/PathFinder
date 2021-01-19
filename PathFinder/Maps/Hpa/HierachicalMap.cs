@@ -228,7 +228,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
             }
 
-            for (var i = 1; i < endNodePath.Length; i++) //The first node does not have a parentIntraEdge of relevance
+            for (var i = 0; i < endNodePath.Length; i++) //The first node does not have a parentIntraEdge of relevance
             {
                 output[index++] = endNodePath[i];
             }
