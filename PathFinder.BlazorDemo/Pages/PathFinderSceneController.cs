@@ -6,6 +6,7 @@ using Aptacode.AppFramework.Components;
 using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.AppFramework.Extensions;
 using Aptacode.AppFramework.Scene;
+using Aptacode.AppFramework.Scene.Events;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps.Hpa;
 using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
@@ -19,9 +20,7 @@ namespace PathFinder.BlazorDemo.Pages
                 size
             ))
         {
-            UserInteractionController.OnMouseDown += UserInteractionControllerOnOnMouseDown;
-            UserInteractionController.OnMouseUp += UserInteractionControllerOnOnMouseUp;
-            UserInteractionController.OnMouseMoved += UserInteractionControllerOnOnMouseMoved;
+            UserInteractionController.OnMouseEvent += UserInteractionControllerOnOnMouseEvent;
 
             //var obstacle1 = Rectangle.Create(new Vector2(2, 2),
             //    new Vector2(2, 2)).ToViewModel();
@@ -30,6 +29,7 @@ namespace PathFinder.BlazorDemo.Pages
 
             var obstacle2 = Rectangle.Create(new Vector2(6, 2),
                 new Vector2(2, 2)).ToViewModel();
+            obstacle2.Margin = 0.0f;
             obstacle2.FillColor = Color.Gray;
             Scene.Add(obstacle2);
 
@@ -61,6 +61,22 @@ namespace PathFinder.BlazorDemo.Pages
         }
 
         public ComponentViewModel SelectedComponent { get; set; }
+
+        private void UserInteractionControllerOnOnMouseEvent(object? sender, MouseEvent e)
+        {
+            switch (e)
+            {
+                case MouseMoveEvent mouseMove:
+                    UserInteractionControllerOnOnMouseMoved(this, mouseMove.Position);
+                    break;
+                case MouseUpEvent mouseUp:
+                    UserInteractionControllerOnOnMouseUp(this, mouseUp.Position);
+                    break;
+                case MouseDownEvent mouseDown:
+                    UserInteractionControllerOnOnMouseDown(this, mouseDown.Position);
+                    break;
+            }
+        }
 
         private void UserInteractionControllerOnOnMouseMoved(object? sender, Vector2 e)
         {

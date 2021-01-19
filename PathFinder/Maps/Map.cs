@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using Aptacode.AppFramework.Components;
-using Aptacode.Geometry.Collision;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Geometry;
 
@@ -11,7 +10,6 @@ namespace Aptacode.PathFinder.Maps
         public readonly Vector2 Dimensions;
         public readonly Node End;
         public readonly Node Start;
-        public CollisionDetector CollisionDetector = new FineCollisionDetector();
 
         public Map(Vector2 dimensions, Vector2 start, Vector2 end, params ComponentViewModel[] obstacles)
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Aptacode.PathFinder.Utilities
@@ -23,12 +22,7 @@ namespace Aptacode.PathFinder.Utilities
 
         public TItem Dequeue()
         {
-            if (IsEmpty())
-            {
-                throw new Exception("Please check that priorityQueue is not empty before dequeing");
-            }
-
-            var (key, value) = _storage.ElementAt(0);
+            var (key, value) = _storage.First();
             var element = value[0];
             value.RemoveAt(0);
             if (value.Count == 0)
@@ -44,49 +38,38 @@ namespace Aptacode.PathFinder.Utilities
 
         public TItem Peek()
         {
-            if (IsEmpty())
-            {
-                throw new Exception("Please check that priorityQueue is not empty before peeking");
-            }
-
-            var (key, value) = _storage.ElementAt(0);
-            if (value.Count > 0)
-            {
-                return value[0];
-            }
-
-            Debug.Assert(false, "not supposed to reach here. problem with changing total_size");
-
-            return default; // not supposed to reach here.
+            return _storage.Values.First()[0];
         }
 
         public TItem Dequeue(TPriority priority)
         {
-            if (_storage.TryGetValue(priority, out var items))
+            if (!_storage.TryGetValue(priority, out var items))
             {
-                var element = items[0];
-                items.RemoveAt(0);
-                if (items.Count == 0)
-                {
-                    _storage.Remove(priority);
-                }
-
-                _itemCount--;
-                return element;
+                return default;
             }
 
-            return default;
+            var element = items[0];
+            items.RemoveAt(0);
+            if (items.Count == 0)
+            {
+                _storage.Remove(priority);
+            }
+
+            _itemCount--;
+            return element;
         }
 
         public void Enqueue(TItem item, TPriority priority)
         {
-            if (!_storage.TryGetValue(priority, out var items))
+            if (_storage.TryGetValue(priority, out var items))
             {
-                items = new List<TItem>();
-                _storage.Add(priority, items);
+                items.Add(item);
+            }
+            else
+            {
+                _storage.Add(priority, new List<TItem> {item});
             }
 
-            items.Add(item);
             _itemCount++;
         }
 
