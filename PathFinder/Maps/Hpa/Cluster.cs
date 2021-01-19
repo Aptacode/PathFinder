@@ -93,7 +93,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #endregion
 
         #region Concrete Pathfinding
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasCollision(Vector2 point)
         {
@@ -124,7 +124,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         private readonly HashSet<Vector2> _closedConcreteNodes = new();
         private readonly Dictionary<Vector2, ConcreteNode> _openConcreteNodes = new();
-        private readonly FastPriorityQueue<ConcreteNode> _sortedOpenConcreteNodes = new(1000);
+        private readonly FastPriorityQueue<ConcreteNode> _sortedOpenConcreteNodes = new(100);
 
         public Vector2[] FindConcretePath(Vector2 startPoint, Vector2 endPoint) //This is A* as normal within the confines of a cluster.
         {

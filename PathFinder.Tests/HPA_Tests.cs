@@ -42,7 +42,7 @@ namespace PathFinder.Tests
         public void ConcretePathfinding_Test()
         {
             var cluster = new Cluster(new Vector2(10, 10));
-            var path = cluster.FindConcretePath(new Vector2(11, 11), new Vector2(18, 18));
+            var path = cluster.FindConcretePath(new Vector2(1, 1), new Vector2(8, 8));
 
             Assert.True(path.Length > 0);
         }

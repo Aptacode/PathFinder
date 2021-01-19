@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using Aptacode.AppFramework.Components;
 using Aptacode.AppFramework.Scene;
-using Aptacode.PathFinder.Utilities;
 using Priority_Queue;
 
 namespace Aptacode.PathFinder.Maps.Hpa
@@ -26,7 +25,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             for (var i = 0; i < maxLevel; i++)
             {
-                var clusterSize = new Vector2(5); //Using 10^x where x is the level, could be changed, might not be necessary.
+                var clusterSize = new Vector2(10); //Using 10^x where x is the level, could be changed, might not be necessary.
                 var clusterColumnCount = (int) (scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
                 var clusterRowCount = (int) (scene.Size.Y / clusterSize.Y);
                 var clusters = new Cluster[clusterColumnCount][];
@@ -107,7 +106,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             for (var i = 0; i < edgeCount; i++)
             {
                 var edgePoint = cluster.EdgePoints[offset + i];
- 
+
                 var adjacentEdgePoint = adjacentCluster.EdgePoints[adjacencyOffset + i];
 
                 var baseClusterHasCollision = cluster.EdgePointHasCollision(edgePoint);
@@ -272,7 +271,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         private readonly HashSet<AbstractNode> _closedAbstractNodes = new();
         private readonly Dictionary<Vector2, AbstractNode> _openAbstractNodes = new();
-        private readonly FastPriorityQueue<AbstractNode> _sortedOpenAbstractNodes = new(1000);
+        private readonly FastPriorityQueue<AbstractNode> _sortedOpenAbstractNodes = new(2000);
 
         public AbstractNode[] FindAbstractPath(Vector2 startPoint, Vector2 endPoint, int level) //This is A* on Hierachical map clusters as nodes
         {
@@ -465,7 +464,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             {
                 bool addUp, addRight, addDown, addLeft;
                 addUp = addRight = addDown = addLeft = true;
-                
+
                 for (var i = 0; i < cluster.IntraEdges.Count; i++)
                 {
                     var edge = cluster.IntraEdges[i];
