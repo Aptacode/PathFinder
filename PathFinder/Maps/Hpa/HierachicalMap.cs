@@ -15,9 +15,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public HierachicalMap(Scene scene, int maxLevel)
         {
             _scene = scene;
-            //_scene.OnComponentAdded += SceneOnOnComponentAdded;
-            //_scene.OnComponentRemoved += SceneOnOnComponentRemoved;
-
+            
             _clusters = new Cluster[maxLevel][][];
             _clusterSize = new Vector2[maxLevel];
             _clusterColumnCount = new int[maxLevel];
@@ -50,6 +48,9 @@ namespace Aptacode.PathFinder.Maps.Hpa
             {
                 Update(componentViewModel);
             }
+
+            _scene.OnComponentAdded += SceneOnOnComponentAdded;
+            _scene.OnComponentRemoved += SceneOnOnComponentRemoved;
         }
 
         #endregion
@@ -228,7 +229,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
                 }
             }
 
-            for (var i = 1; i < endNodePath.Length; i++) //The first node does not have a parentIntraEdge of relevance
+            for (var i = 0; i < endNodePath.Length; i++) //The first node does not have a parentIntraEdge of relevance
             {
                 output[index++] = endNodePath[i];
             }
@@ -246,7 +247,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             var neighbourDoorPoint = intraEdge.Path.Last().GetAdjacentPoint(intraEdge.AdjacencyDirection);
             var neighbourCost = currentNode.Cost + intraEdge.Path.Length; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
-
+            neighbourCost += currentNode.ParentIntraEdge.AdjacencyDirection == direction ? -1 : 0;
             var node = new AbstractNode(currentNode, endNode, adjacentCluster, neighbourDoorPoint, intraEdge, neighbourCost);
 
             if (_closedAbstractNodes.Contains(node)
