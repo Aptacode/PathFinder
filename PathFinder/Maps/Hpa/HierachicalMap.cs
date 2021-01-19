@@ -247,7 +247,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             var neighbourDoorPoint = intraEdge.Path.Last().GetAdjacentPoint(intraEdge.AdjacencyDirection);
             var neighbourCost = currentNode.Cost + intraEdge.Path.Length; //This is 1 more than the actual path length but works for our purposes so we don't need to add inter-edge costs (1)
-
+            neighbourCost += currentNode.ParentIntraEdge.AdjacencyDirection == direction ? -1 : 0;
             var node = new AbstractNode(currentNode, endNode, adjacentCluster, neighbourDoorPoint, intraEdge, neighbourCost);
 
             if (_closedAbstractNodes.Contains(node)
