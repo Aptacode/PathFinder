@@ -15,9 +15,9 @@
     <RepositoryType />
     <PackageTags>Aptacode A* PathFinding</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.8</Version>
-    <AssemblyVersion>1.0.8</AssemblyVersion>
-    <FileVersion>1.0.8</FileVersion>
+    <Version>1.0.9</Version>
+    <AssemblyVersion>1.0.9</AssemblyVersion>
+    <FileVersion>1.0.9</FileVersion>
     <Nullable>enable</Nullable>
     <Langversion>9.0</Langversion>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
@@ -70,7 +70,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.18</Version>
+      <Version>1.0.19</Version>
     </PackageReference>
   </ItemGroup>
 
