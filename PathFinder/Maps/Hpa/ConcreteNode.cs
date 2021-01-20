@@ -22,7 +22,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Position = position;
             Cost = cost;
             var isInline = parent.IsInline(position);
-            Cost = cost - (isInline ? 0.1f : 0);
+            Cost = cost - (isInline ? 0.5f : 0);
             var distanceVector = Vector2.Abs(target.Position - Position);
             Distance = distanceVector.X + distanceVector.Y;
             CostDistance = Cost + Distance;
