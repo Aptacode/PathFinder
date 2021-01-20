@@ -16,10 +16,11 @@
       },
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.19, )",
-        "resolved": "1.0.19",
-        "contentHash": "YPE6Esp75++ernuIFdRpcu9EqbyHHXEf2EdnpRr9uYikhPe0P8TCpi/OH94YsLsnxpTSq+jLcDxbU+J6MwNvVw==",
+        "requested": "[1.0.22, )",
+        "resolved": "1.0.22",
+        "contentHash": "XNu/0rM+SyEzuCxmNZX42OC3IzOYiw6eUJisA1cWqMouZ3MBpkclH6c5Rz1qGJnUZXjC14WC++q35G1J14Db1Q==",
         "dependencies": {
+          "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0"
         }
       },

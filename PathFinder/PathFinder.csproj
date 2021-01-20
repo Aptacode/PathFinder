@@ -15,9 +15,9 @@
     <RepositoryType />
     <PackageTags>Aptacode A* PathFinding</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.11</Version>
-    <AssemblyVersion>1.0.11</AssemblyVersion>
-    <FileVersion>1.0.11</FileVersion>
+    <Version>1.0.12</Version>
+    <AssemblyVersion>1.0.12</AssemblyVersion>
+    <FileVersion>1.0.12</FileVersion>
     <Nullable>enable</Nullable>
     <Langversion>9.0</Langversion>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
@@ -30,30 +30,6 @@
     <PackageReference Include="OptimizedPriorityQueue" Version="5.0.0" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\ExceptionMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\GeneralMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GeneralMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\ExceptionMessages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\GeneralMessages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GeneralMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -70,7 +46,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.19</Version>
+      <Version>1.0.22</Version>
     </PackageReference>
   </ItemGroup>
 
