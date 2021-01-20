@@ -16,10 +16,11 @@
       },
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.19, )",
-        "resolved": "1.0.19",
-        "contentHash": "YPE6Esp75++ernuIFdRpcu9EqbyHHXEf2EdnpRr9uYikhPe0P8TCpi/OH94YsLsnxpTSq+jLcDxbU+J6MwNvVw==",
+        "requested": "[1.0.20, )",
+        "resolved": "1.0.20",
+        "contentHash": "b43JrZ3cpEYE7lfWLqvX0Z/pV+LUMdyF1d1T6rmTAf3fHVMpvrsNCIL/N+tWVLxjEAHmZHFmMbiFRuEYndc8tQ==",
         "dependencies": {
+          "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0"
         }
       },
@@ -1239,7 +1240,7 @@
         "type": "Project",
         "dependencies": {
           "Aptacode.AppFramework": "1.0.11",
-          "Aptacode.Geometry": "1.0.19",
+          "Aptacode.Geometry": "1.0.20",
           "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"

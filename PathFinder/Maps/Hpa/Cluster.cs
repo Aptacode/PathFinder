@@ -207,7 +207,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public readonly List<EdgePoint> DoorPoints;
         public readonly EdgePoint[] EdgePoints;
 
-        public readonly int Level;
         public readonly int Row;
         public readonly int Column;
 
@@ -215,12 +214,11 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         #region Ctor
 
-        public Cluster(int level, int column, int row, Vector2 clusterSize)
+        public Cluster(int column, int row, Vector2 clusterSize)
         {
             Column = column;
             Row = row;
             Id = Guid.NewGuid();
-            Level = level;
             var rectSize = clusterSize - new Vector2(1, 1); //We want the rectangle to contain as many points as the cluster size along its edge hence -1
             Region = Rectangle.Create(new Vector2(column * clusterSize.X, row * clusterSize.Y), rectSize);
             Components = new List<ComponentViewModel>();
@@ -235,7 +233,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Column = 0;
             Row = 0;
             Id = Guid.NewGuid();
-            Level = 0;
             Region = Rectangle.Zero;
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint>();
@@ -249,7 +246,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Column = 1;
             Row = 1;
             Id = Guid.NewGuid();
-            Level = 1;
             var rectSize = clusterSize - new Vector2(1, 1);
             Region = Rectangle.Create(new Vector2(1, 1), rectSize);
             Components = new List<ComponentViewModel>();

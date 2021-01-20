@@ -6,7 +6,6 @@ namespace Aptacode.PathFinder.Benchmarks
     {
         private static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<PathFinderBenchmark>();
         }
     }
 }

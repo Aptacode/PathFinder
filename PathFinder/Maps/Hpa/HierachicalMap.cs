@@ -12,37 +12,31 @@ namespace Aptacode.PathFinder.Maps.Hpa
     {
         #region Ctor
 
-        public HierachicalMap(Scene scene, int maxLevel)
+        public HierachicalMap(Scene scene)
         {
             _scene = scene;
             
-            _clusters = new Cluster[maxLevel][][];
-            _clusterSize = new Vector2[maxLevel];
-            _clusterColumnCount = new int[maxLevel];
-            _clusterRowCount = new int[maxLevel];
 
-            for (var i = 0; i < maxLevel; i++)
+            var clusterSize = new Vector2(10);
+            var clusterColumnCount = (int) (scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
+            var clusterRowCount = (int) (scene.Size.Y / clusterSize.Y);
+            var clusters = new Cluster[clusterColumnCount][];
+
+            _clusterSize = clusterSize;
+            _clusterColumnCount = clusterColumnCount;
+            _clusterRowCount = clusterRowCount;
+
+            for (var x = 0; x < clusterColumnCount; x++)
             {
-                var clusterSize = new Vector2(10); //Using 10^x where x is the level, could be changed, might not be necessary.
-                var clusterColumnCount = (int) (scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
-                var clusterRowCount = (int) (scene.Size.Y / clusterSize.Y);
-                var clusters = new Cluster[clusterColumnCount][];
-                _clusterSize[i] = clusterSize;
-                _clusterColumnCount[i] = clusterColumnCount;
-                _clusterRowCount[i] = clusterRowCount;
-
-                for (var x = 0; x < clusterColumnCount; x++)
+                clusters[x] = new Cluster[clusterRowCount];
+                for (var y = 0; y < clusterRowCount; y++)
                 {
-                    clusters[x] = new Cluster[clusterRowCount];
-                    for (var y = 0; y < clusterRowCount; y++)
-                    {
-                        clusters[x][y] = new Cluster(i, x, y, clusterSize);
-                    }
+                    clusters[x][y] = new Cluster(x, y, clusterSize);
                 }
-
-                _clusters[i] = clusters;
-                UpdateClusters(i);
             }
+
+            _clusters = clusters;
+            UpdateClusters();
 
             foreach (var componentViewModel in scene.Components)
             {
@@ -152,12 +146,11 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             var i = cluster.Column;
             var j = cluster.Row;
-            var level = cluster.Level;
 
-            UpdateDoorPoints(cluster, GetCluster(level, i, j - 1), Direction.Up, clusterWidth, clusterHeight);
-            UpdateDoorPoints(cluster, GetCluster(level, i + 1, j), Direction.Right, clusterWidth, clusterHeight);
-            UpdateDoorPoints(cluster, GetCluster(level, i, j + 1), Direction.Down, clusterWidth, clusterHeight);
-            UpdateDoorPoints(cluster, GetCluster(level, i - 1, j), Direction.Left, clusterWidth, clusterHeight);
+            UpdateDoorPoints(cluster, GetCluster(i, j - 1), Direction.Up, clusterWidth, clusterHeight);
+            UpdateDoorPoints(cluster, GetCluster(i + 1, j), Direction.Right, clusterWidth, clusterHeight);
+            UpdateDoorPoints(cluster, GetCluster(i, j + 1), Direction.Down, clusterWidth, clusterHeight);
+            UpdateDoorPoints(cluster, GetCluster(i - 1, j), Direction.Left, clusterWidth, clusterHeight);
         }
 
         #endregion
@@ -178,31 +171,20 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         #region Path Finding
 
-        public Cluster GetClusterContainingPoint(Vector2 point, int level)
+        public Cluster GetClusterContainingPoint(Vector2 point)
         {
-            var clusterSize = _clusterSize[level - 1];
+            var clusterSize = _clusterSize;
 
             var clusterColumn = (int) Math.Floor(point.X / clusterSize.X);
             var clusterRow = (int) Math.Floor(point.Y / clusterSize.Y);
-            return _clusters[level - 1][clusterColumn][clusterRow];
+            return _clusters[clusterColumn][clusterRow];
         }
 
-        public static Vector2[] RefineAbstractPath(AbstractNode[] abstractPath, Vector2 endPoint, int level)
+        public static Vector2[] RefineAbstractPath(AbstractNode[] abstractPath, Vector2 endPoint)
         {
             if (abstractPath.Length == 0)
             {
                 return Array.Empty<Vector2>();
-            }
-
-            if (level == 0) //This path is the refined path, just need to convert and stitch it together
-            {
-                var refinedPath = new Vector2[abstractPath.Length];
-                for (var i = 0; i < abstractPath.Length; i++)
-                {
-                    refinedPath[i] = abstractPath[i].DoorPoint;
-                }
-
-                return refinedPath;
             }
 
             var edgeCount = 0;
@@ -274,14 +256,14 @@ namespace Aptacode.PathFinder.Maps.Hpa
         private readonly Dictionary<Vector2, AbstractNode> _openAbstractNodes = new();
         private readonly FastPriorityQueue<AbstractNode> _sortedOpenAbstractNodes = new(2000);
 
-        public AbstractNode[] FindAbstractPath(Vector2 startPoint, Vector2 endPoint, int level) //This is A* on Hierachical map clusters as nodes
+        public AbstractNode[] FindAbstractPath(Vector2 startPoint, Vector2 endPoint) //This is A* on Hierachical map clusters as nodes
         {
             _closedAbstractNodes.Clear();
             _openAbstractNodes.Clear();
             _sortedOpenAbstractNodes.Clear();
 
-            var endNode = SetEndNode(endPoint, level);
-            var startNode = SetStartNode(startPoint, endNode, level);
+            var endNode = SetEndNode(endPoint);
+            var startNode = SetStartNode(startPoint, endNode);
             _sortedOpenAbstractNodes.Enqueue(startNode, startNode.CostDistance);
             _openAbstractNodes.Add(startNode.DoorPoint, startNode);
 
@@ -310,26 +292,25 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
                 var i = currentCluster.Column;
                 var j = currentCluster.Row;
-                var level2 = currentCluster.Level;
 
-                CheckCluster(currentCluster, GetCluster(level2, i, j - 1), currentNode, Direction.Up, endNode);
-                CheckCluster(currentCluster, GetCluster(level2, i + 1, j), currentNode, Direction.Right, endNode);
-                CheckCluster(currentCluster, GetCluster(level2, i, j + 1), currentNode, Direction.Down, endNode);
-                CheckCluster(currentCluster, GetCluster(level2, i - 1, j), currentNode, Direction.Left, endNode);
+                CheckCluster(currentCluster, GetCluster(i, j - 1), currentNode, Direction.Up, endNode);
+                CheckCluster(currentCluster, GetCluster(i + 1, j), currentNode, Direction.Right, endNode);
+                CheckCluster(currentCluster, GetCluster(i, j + 1), currentNode, Direction.Down, endNode);
+                CheckCluster(currentCluster, GetCluster(i - 1, j), currentNode, Direction.Left, endNode);
             }
 
             return Array.Empty<AbstractNode>(); //need to be wary of this.
         }
 
-        public Vector2[] FindPath(Vector2 startPoint, Vector2 endPoint, int level)
+        public Vector2[] FindPath(Vector2 startPoint, Vector2 endPoint)
         {
-            var abstractPath = FindAbstractPath(startPoint, endPoint, level);
-            return RefineAbstractPath(abstractPath, endPoint, level);
+            var abstractPath = FindAbstractPath(startPoint, endPoint);
+            return RefineAbstractPath(abstractPath, endPoint);
         }
 
-        public AbstractNode SetStartNode(Vector2 point, AbstractNode target, int level)
+        public AbstractNode SetStartNode(Vector2 point, AbstractNode target)
         {
-            var cluster = GetClusterContainingPoint(point, level);
+            var cluster = GetClusterContainingPoint(point);
             var edgePoint = new EdgePoint(Direction.None, point);
             AddIntraEdge(edgePoint, cluster, Direction.Up);
             AddIntraEdge(edgePoint, cluster, Direction.Right);
@@ -338,9 +319,9 @@ namespace Aptacode.PathFinder.Maps.Hpa
             return new AbstractNode(AbstractNode.Empty, target, cluster, point, IntraEdge.Empty, 0);
         }
 
-        public AbstractNode SetEndNode(Vector2 point, int level)
+        public AbstractNode SetEndNode(Vector2 point)
         {
-            var cluster = GetClusterContainingPoint(point, level);
+            var cluster = GetClusterContainingPoint(point);
             return new AbstractNode(cluster, point);
         }
 
@@ -350,11 +331,10 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         private readonly Scene _scene;
 
-        //Index is the level
-        private readonly Vector2[] _clusterSize;
-        private readonly int[] _clusterColumnCount;
-        private readonly int[] _clusterRowCount;
-        private readonly Cluster[][][] _clusters;
+        private readonly Vector2 _clusterSize;
+        private readonly int _clusterColumnCount;
+        private readonly int _clusterRowCount;
+        private readonly Cluster[][] _clusters;
         private readonly Dictionary<Guid, List<Cluster>> _componentClusterDictionary = new();
 
         #endregion
@@ -395,20 +375,18 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             for (var i = 0; i < _clusters.Length; i++)
             {
-                for (var j = 0; j < _clusters[i].Length; j++)
+                for (var j = 0; j < _clusters[i].Length; j++) 
                 {
-                    for (var k = 0; k < _clusters[i][j].Length; k++)
+                    var cluster = _clusters[i][j];
+                    if (!component.CollidesWith(cluster.Region))
                     {
-                        var cluster = _clusters[i][j][k];
-                        if (!component.CollidesWith(cluster.Region))
-                        {
-                            continue;
-                        }
-
-                        currentClusters.Add(cluster);
-                        cluster.Components.Add(component);
-                        _invalidatedClusters.Add(cluster);
+                        continue;
                     }
+
+                    currentClusters.Add(cluster);
+                    cluster.Components.Add(component);
+                    _invalidatedClusters.Add(cluster);
+
                 }
             }
 
@@ -422,13 +400,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         #region Cluster
 
-        public void UpdateClusters(int level)
+        public void UpdateClusters()
         {
-            for (var i = 0; i < _clusterColumnCount[level]; i++)
+            for (var i = 0; i < _clusterColumnCount; i++)
             {
-                for (var j = 0; j < _clusterRowCount[level]; j++)
+                for (var j = 0; j < _clusterRowCount; j++)
                 {
-                    UpdateCluster(_clusters[level][i][j]);
+                    UpdateCluster(_clusters[i][j]);
                 }
             }
         }
@@ -439,11 +417,11 @@ namespace Aptacode.PathFinder.Maps.Hpa
             UpdateIntraEdges(cluster);
         }
 
-        public Cluster GetCluster(int level, int x, int y)
+        public Cluster GetCluster(int x, int y)
         {
-            if (x >= 0 && x < _clusterColumnCount[level] && y >= 0 && y < _clusterRowCount[level])
+            if (x >= 0 && x < _clusterColumnCount && y >= 0 && y < _clusterRowCount)
             {
-                return _clusters[level][x][y];
+                return _clusters[x][y];
             }
 
             return Cluster.Empty;

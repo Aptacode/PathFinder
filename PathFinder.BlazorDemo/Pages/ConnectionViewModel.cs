@@ -27,7 +27,7 @@ namespace PathFinder.BlazorDemo.Pages
 
         public void RecalculatePath()
         {
-            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position, 1);
+            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position);
 
             var path = points.ToList();
 

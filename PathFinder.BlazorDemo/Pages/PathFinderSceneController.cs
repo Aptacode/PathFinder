@@ -51,7 +51,7 @@ namespace PathFinder.BlazorDemo.Pages
             };
             // Scene.Add(_endPoint);
 
-            Map = new HierachicalMap(PathFinderScene, 1);
+            Map = new HierachicalMap(PathFinderScene);
 
             _connection = new ConnectionViewModel(Map, _startPoint, _endPoint);
             _startPoint.Connection = _connection;
