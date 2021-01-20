@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aptacode.AppFramework" Version="1.0.11" />
-    <PackageReference Include="Aptacode.Geometry" Version="1.0.20" />
+    <PackageReference Include="Aptacode.Geometry" Version="1.0.22" />
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
   </ItemGroup>
 

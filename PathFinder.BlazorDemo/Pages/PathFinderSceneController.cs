@@ -56,7 +56,7 @@ namespace PathFinder.BlazorDemo.Pages
             _connection = new ConnectionViewModel(Map, _startPoint, _endPoint);
             _startPoint.Connection = _connection;
             _endPoint.Connection = _connection;
-            
+
             PathFinderScene.Add(_connection);
 
             Scenes.Add(PathFinderScene);

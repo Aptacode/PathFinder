@@ -15,7 +15,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         public HierachicalMap(Scene scene)
         {
             _scene = scene;
-            
+
 
             var clusterSize = new Vector2(10);
             var clusterColumnCount = (int) (scene.Size.X / clusterSize.X); //Map dimensions must be divisible by chosen cluster size
@@ -375,7 +375,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             for (var i = 0; i < _clusters.Length; i++)
             {
-                for (var j = 0; j < _clusters[i].Length; j++) 
+                for (var j = 0; j < _clusters[i].Length; j++)
                 {
                     var cluster = _clusters[i][j];
                     if (!component.CollidesWith(cluster.Region))
@@ -386,7 +386,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
                     currentClusters.Add(cluster);
                     cluster.Components.Add(component);
                     _invalidatedClusters.Add(cluster);
-
                 }
             }
 

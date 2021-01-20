@@ -28,12 +28,6 @@ namespace Aptacode.PathFinder.Maps.Hpa
             CostDistance = Cost + Distance;
             Cluster = cluster;
         }
-        public bool IsInline(Vector2 position)
-        {
-            return Math.Abs(position.X - Position.X) < Constants.Tolerance ||
-                   Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
-        }
-
 
         protected ConcreteNode()
         {
@@ -62,6 +56,12 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Distance = delta.X + delta.Y;
 
             CostDistance = Cost + Distance;
+        }
+
+        public bool IsInline(Vector2 position)
+        {
+            return Math.Abs(position.X - Position.X) < Constants.Tolerance ||
+                   Math.Abs(position.Y - Position.Y) < Constants.Tolerance;
         }
 
         #region IEquatable

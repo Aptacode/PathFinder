@@ -46,7 +46,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="Aptacode.Geometry">
-      <Version>1.0.20</Version>
+      <Version>1.0.22</Version>
     </PackageReference>
   </ItemGroup>
 
