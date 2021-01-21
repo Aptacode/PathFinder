@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Aptacode.AppFramework.Components;
-using Aptacode.Geometry.Primitives.Polygons;
+using Aptacode.Geometry.Collision.Rectangles;
 using Priority_Queue;
 
 namespace Aptacode.PathFinder.Maps.Hpa
@@ -32,8 +32,8 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public EdgePoint[] SetEdgePoints()
         {
-            var clusterWidth = Region.Width;
-            var clusterHeight = Region.Height;
+            var clusterWidth = Region.Size.X;
+            var clusterHeight = Region.Size.Y;
             var edgePoints = new EdgePoint[(int) ((clusterWidth + 1) * 4)];
 
             var edgeIndex = 0;
@@ -200,7 +200,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
         #region Props
 
         public readonly Guid Id;
-        public readonly Rectangle Region;
+        public readonly BoundingRectangle Region;
         public readonly List<ComponentViewModel> Components;
 
         public readonly List<IntraEdge> IntraEdges;
@@ -220,7 +220,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Row = row;
             Id = Guid.NewGuid();
             var rectSize = clusterSize - new Vector2(1, 1); //We want the rectangle to contain as many points as the cluster size along its edge hence -1
-            Region = Rectangle.Create(new Vector2(column * clusterSize.X, row * clusterSize.Y), rectSize);
+            Region = BoundingRectangle.FromPositionAndSize(new Vector2(column * clusterSize.X, row * clusterSize.Y), rectSize);
             Components = new List<ComponentViewModel>();
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint>();
@@ -233,7 +233,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Column = 0;
             Row = 0;
             Id = Guid.NewGuid();
-            Region = Rectangle.Zero;
+            Region = BoundingRectangle.Zero;
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint>();
             IntraEdges = new List<IntraEdge>();
@@ -247,7 +247,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
             Row = 1;
             Id = Guid.NewGuid();
             var rectSize = clusterSize - new Vector2(1, 1);
-            Region = Rectangle.Create(new Vector2(1, 1), rectSize);
+            Region = BoundingRectangle.FromPositionAndSize(new Vector2(1, 1), rectSize);
             Components = new List<ComponentViewModel>();
             EdgePoints = SetEdgePoints();
             DoorPoints = new List<EdgePoint> {EdgePoints[0], EdgePoints[9], EdgePoints[10], EdgePoints[19], EdgePoints[20], EdgePoints[29], EdgePoints[30], EdgePoints[39]};

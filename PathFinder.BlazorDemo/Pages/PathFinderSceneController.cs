@@ -9,30 +9,29 @@ using Aptacode.AppFramework.Scene;
 using Aptacode.AppFramework.Scene.Events;
 using Aptacode.Geometry.Primitives;
 using Aptacode.PathFinder.Maps.Hpa;
-using Rectangle = Aptacode.Geometry.Primitives.Polygons.Rectangle;
 
 namespace PathFinder.BlazorDemo.Pages
 {
     public class PathFinderSceneController : SceneController
     {
-        public PathFinderSceneController(Vector2 size)
+        public PathFinderSceneController(Vector2 size) : base(size)
         {
+            ShowGrid = true;
+
             UserInteractionController.OnMouseEvent += UserInteractionControllerOnOnMouseEvent;
 
             PathFinderScene = new Scene(size);
 
-            var obstacle1 = Rectangle.Create(new Vector2(20, 20),
-                new Vector2(10, 10)).ToViewModel();
+            var obstacle1 = Polygon.Rectangle.FromPositionAndSize(new Vector2(20, 20), new Vector2(10, 10)).ToViewModel();
             obstacle1.FillColor = Color.Gray;
             PathFinderScene.Add(obstacle1);
 
-            var obstacle2 = Rectangle.Create(new Vector2(20, 60),
-                new Vector2(10, 10)).ToViewModel();
+            var obstacle2 = Polygon.Rectangle.FromPositionAndSize(new Vector2(20, 60), new Vector2(10, 10)).ToViewModel();
             obstacle2.Margin = 0.0f;
             obstacle2.FillColor = Color.Gray;
             PathFinderScene.Add(obstacle2);
 
-            var obstacle3 = Rectangle.Create(new Vector2(60, 20),
+            var obstacle3 = Polygon.Rectangle.FromPositionAndSize(new Vector2(60, 20),
                 new Vector2(10, 10)).ToViewModel();
             obstacle3.FillColor = Color.Gray;
             PathFinderScene.Add(obstacle3);
