@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aptacode.AppFramework" Version="1.0.15" />
-    <PackageReference Include="Aptacode.Geometry" Version="1.0.25" />
+    <PackageReference Include="Aptacode.AppFramework" Version="1.0.16" />
+    <PackageReference Include="Aptacode.Geometry" Version="1.0.32" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />

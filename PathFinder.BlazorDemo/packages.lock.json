@@ -4,21 +4,21 @@
     ".NETCoreApp,Version=v5.0": {
       "Aptacode.AppFramework": {
         "type": "Direct",
-        "requested": "[1.0.15, )",
-        "resolved": "1.0.15",
-        "contentHash": "YP7Qp6U6KI7LywmUsBufmXsd39laBFjmC6vZO1U8uYw4ASDKCt90lYosDkWVyWcATyQNv7BxljwJK0U42qgq+A==",
+        "requested": "[1.0.16, )",
+        "resolved": "1.0.16",
+        "contentHash": "cZMnZGYz1s6YSBCnePdP/S2Ns3zc/F/3VxNl5jEfpi0rfYf6MQobqYLVW/ophAx/TXUCIjrZ6k4UCTUrAVse+Q==",
         "dependencies": {
           "Aptacode.BlazorCanvas": "1.0.9",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.25",
+          "Aptacode.Geometry": "1.0.32",
           "Microsoft.AspNetCore.Components.Web": "5.0.2"
         }
       },
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.25, )",
-        "resolved": "1.0.25",
-        "contentHash": "XZpnk6vIGAU30H6Fo9qbMnZ4kc7Nkb28bd739loOhtRJX0k6eraXqvTxKI0l8t7S7UP2fxvBXAIqD9mCDXJU2w==",
+        "requested": "[1.0.32, )",
+        "resolved": "1.0.32",
+        "contentHash": "57Bfe5NHDuDYFLM+p8Sdbjx4r2V3ovstZFCEzSF+DJtmY0PacZxsBPcJJRJD9bIuVzW8uGyxogDFYhP0wigA8Q==",
         "dependencies": {
           "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0"
@@ -261,8 +261,8 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.AppFramework": "1.0.15",
-          "Aptacode.Geometry": "1.0.25",
+          "Aptacode.AppFramework": "1.0.16",
+          "Aptacode.Geometry": "1.0.32",
           "OptimizedPriorityQueue": "5.0.0",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"

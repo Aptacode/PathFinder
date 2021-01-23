@@ -10,11 +10,11 @@ namespace PathFinder.BlazorDemo.Pages
     {
         #region Ctor
 
-        public ConnectionViewModel(HierachicalMap map, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(new PolyLine(VertexArray.Create(new[]
+        public ConnectionViewModel(HierachicalMap map, ConnectionPointViewModel startPoint, ConnectionPointViewModel endPoint) : base(PolyLine.Create(new[]
         {
-            startPoint.Ellipse.BoundingCircle.Center,
-            endPoint.Ellipse.BoundingCircle.Center
-        })))
+            startPoint.Primitive.BoundingRectangle.Center,
+            endPoint.Primitive.BoundingRectangle.Center
+        }))
         {
             Map = map;
             StartPoint = startPoint;
@@ -27,15 +27,14 @@ namespace PathFinder.BlazorDemo.Pages
 
         public void RecalculatePath()
         {
-            var points = Map.FindPath(StartPoint.Ellipse.Position, EndPoint.Ellipse.Position);
+            var points = Map.FindPath(StartPoint.Primitive.Position, EndPoint.Primitive.Position);
 
             var path = points.ToList();
 
-            path.Insert(0, StartPoint.Ellipse.Position);
-            path.Add(EndPoint.Ellipse.Position);
+            path.Insert(0, StartPoint.Primitive.Position);
+            path.Add(EndPoint.Primitive.Position);
 
-            PolyLine = new PolyLine(VertexArray.Create(path.ToArray()));
-            UpdateBoundingRectangle();
+            Primitive = PolyLine.Create(path.ToArray());
             Invalidated = true;
         }
 
@@ -44,9 +43,6 @@ namespace PathFinder.BlazorDemo.Pages
         public HierachicalMap Map { get; set; }
         public ConnectionPointViewModel StartPoint { get; set; }
         public ConnectionPointViewModel EndPoint { get; set; }
-
-        public PolyLine Connection => PolyLine;
-
         #endregion
     }
 }
