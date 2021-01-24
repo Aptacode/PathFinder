@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Aptacode.AppFramework.Components;
 using Aptacode.AppFramework.Scene;
+using Aptacode.AppFramework.Scene.Events;
 using Priority_Queue;
 
 namespace Aptacode.PathFinder.Maps.Hpa
@@ -40,7 +41,7 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
             foreach (var componentViewModel in scene.Components)
             {
-                Update(componentViewModel);
+                Add(componentViewModel);
             }
 
             _scene.OnComponentAdded += SceneOnOnComponentAdded;
@@ -160,6 +161,11 @@ namespace Aptacode.PathFinder.Maps.Hpa
         private void SceneOnOnComponentAdded(object? sender, ComponentViewModel component)
         {
             Add(component);
+        }
+
+        private void ComponentOnOnTranslated(object? sender, TranslateEvent e)
+        {
+            Update((ComponentViewModel)sender);
         }
 
         private void SceneOnOnComponentRemoved(object? sender, ComponentViewModel component)
@@ -343,11 +349,13 @@ namespace Aptacode.PathFinder.Maps.Hpa
 
         public void Add(ComponentViewModel component)
         {
+            component.OnTranslated += ComponentOnOnTranslated;
             Update(component);
         }
 
         public void Remove(ComponentViewModel component)
         {
+            component.OnTranslated -= ComponentOnOnTranslated;
             Update(component);
         }
 

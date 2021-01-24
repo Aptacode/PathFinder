@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives;
-using Aptacode.Geometry.Vertices;
 using Aptacode.PathFinder.Maps.Hpa;
 
 namespace PathFinder.BlazorDemo.Pages
@@ -34,7 +33,7 @@ namespace PathFinder.BlazorDemo.Pages
             path.Insert(0, StartPoint.Primitive.Position);
             path.Add(EndPoint.Primitive.Position);
 
-            Primitive = PolyLine.Create(path.ToArray());
+            Primitive = PolyLine.Create(path.ToHashSet().ToArray());
             Invalidated = true;
         }
 

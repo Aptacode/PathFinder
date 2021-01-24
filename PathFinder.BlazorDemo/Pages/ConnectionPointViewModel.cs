@@ -10,7 +10,6 @@ namespace PathFinder.BlazorDemo.Pages
 
         public ConnectionPointViewModel(Ellipse ellipse) : base(ellipse)
         {
-            Margin = 0.0f;
         }
 
         #endregion
