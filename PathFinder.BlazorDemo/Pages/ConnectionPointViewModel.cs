@@ -2,33 +2,32 @@
 using Aptacode.AppFramework.Components.Primitives;
 using Aptacode.Geometry.Primitives;
 
-namespace PathFinder.BlazorDemo.Pages
+namespace PathFinder.BlazorDemo.Pages;
+
+public class ConnectionPointViewModel : EllipseViewModel
 {
-    public class ConnectionPointViewModel : EllipseViewModel
+    #region Ctor
+
+    public ConnectionPointViewModel(Ellipse ellipse) : base(ellipse)
     {
-        #region Ctor
+    }
 
-        public ConnectionPointViewModel(Ellipse ellipse) : base(ellipse)
-        {
-        }
+    #endregion
 
-        #endregion
+    #region Prop
 
-        #region Prop
+    public ConnectionViewModel Connection { get; set; }
 
-        public ConnectionViewModel Connection { get; set; }
+    #endregion
 
-        #endregion
+    public override void Translate(Vector2 delta)
+    {
+        base.Translate(delta);
+        RecalculatePaths();
+    }
 
-        public override void Translate(Vector2 delta)
-        {
-            base.Translate(delta);
-            RecalculatePaths();
-        }
-
-        public void RecalculatePaths()
-        {
-            Connection?.RecalculatePath();
-        }
+    public void RecalculatePaths()
+    {
+        Connection?.RecalculatePath();
     }
 }

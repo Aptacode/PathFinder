@@ -1,43 +1,31 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
-      "Aptacode.AppFramework": {
-        "type": "Direct",
-        "requested": "[1.0.20, )",
-        "resolved": "1.0.20",
-        "contentHash": "6Mf+T8vldymrGM/9+7h1wr6EOv2PJV+PtV6S4an65iDHfUu4bFW6Nl8AWWrtRpK9dcbEXfBOQjsD6OwEm2kFOQ==",
-        "dependencies": {
-          "Aptacode.BlazorCanvas": "1.0.9",
-          "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.35",
-          "Microsoft.AspNetCore.Components.Web": "5.0.2"
-        }
-      },
+    "net6.0": {
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.35, )",
-        "resolved": "1.0.35",
-        "contentHash": "ZyhJNzdTekWg8Fb39Zmr5D/OvBaoMqilGylTkdVcaatyvNElWYxmr+xA27O1bbkeQAsEyDQXmteoqpcsNRiUyg==",
+        "requested": "[1.0.39, )",
+        "resolved": "1.0.39",
+        "contentHash": "Vl0TmykKeQ5lnGfkqIgE1WGTxiHb6uE5DXgxmE17x8xQx/lmzepwAwdfLyJdved77Hvoa4B7hRBLQp1z20mqkQ==",
         "dependencies": {
-          "OptimizedPriorityQueue": "5.0.0",
+          "OptimizedPriorityQueue": "5.1.0",
           "System.Numerics.Vectors": "4.5.0"
         }
       },
       "coverlet.collector": {
         "type": "Direct",
-        "requested": "[3.0.2, )",
-        "resolved": "3.0.2",
-        "contentHash": "iBvPAIDaI7j/iMx/DzCGCJ3rdiOmel9VINEfaTiBv/NKIGHOP4X3hqc6Q1wgMtArEshlhXexQknP17SK4vXb1w=="
+        "requested": "[3.1.2, )",
+        "resolved": "3.1.2",
+        "contentHash": "wuLDIDKD5XMt0A7lE31JPenT7QQwZPFkP5rRpdJeblyXZ9MGLI8rYjvm5fvAKln+2/X+4IxxQDxBtwdrqKNLZw=="
       },
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
-        "requested": "[16.8.3, )",
-        "resolved": "16.8.3",
-        "contentHash": "E2hDEEHIUmDpGm0LIjVenWhXWWd5lWylzuujz0iPwwxPYUA2Ua6jrxfMNdoKombDSk9hpDDA0M3xnFz6TLh/KQ==",
+        "requested": "[17.1.0, )",
+        "resolved": "17.1.0",
+        "contentHash": "MVKvOsHIfrZrvg+8aqOF5dknO/qWrR1sWZjMPQ1N42MKMlL/zQL30FQFZxPeWfmVKWUWAOmAHYsqB5OerTKziw==",
         "dependencies": {
-          "Microsoft.CodeCoverage": "16.8.3",
-          "Microsoft.TestPlatform.TestHost": "16.8.3"
+          "Microsoft.CodeCoverage": "17.1.0",
+          "Microsoft.TestPlatform.TestHost": "17.1.0"
         }
       },
       "xunit": {
@@ -57,10 +45,21 @@
         "resolved": "2.4.3",
         "contentHash": "kZZSmOmKA8OBlAJaquPXnJJLM9RwQ27H7BMVqfMLUcTi9xHinWGJiWksa3D4NEtz0wZ/nxd2mogObvBgJKCRhQ=="
       },
+      "Aptacode.AppFramework": {
+        "type": "Transitive",
+        "resolved": "1.0.33",
+        "contentHash": "LAAn2DHFi2blxPMRcogujUqgvz5k5CGxvZj4cA6eq8SBNsqeO/g6VXXghGx1NOCVkarlwL9ovlWTWUG6Tsv3mg==",
+        "dependencies": {
+          "Aptacode.BlazorCanvas": "1.0.11",
+          "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
+          "Aptacode.Geometry": "1.0.37",
+          "Microsoft.AspNetCore.Components.Web": "5.0.2"
+        }
+      },
       "Aptacode.BlazorCanvas": {
         "type": "Transitive",
-        "resolved": "1.0.9",
-        "contentHash": "kOns4gwJnvTMOcGZP5otLv3gk+gnd8VJTYs7qmIsaov7G+pgISDvVnwZbIbpCa+NFwRn2T3ycCOjEkV6iCvIzA==",
+        "resolved": "1.0.11",
+        "contentHash": "ld1aO5KXZQokhBHTkMO3zMR5JwZDA7FyIQ/jT1V+NYmsIn8NUCWmXulayXa2zGthCYqkBULlF0cGcrZrH/RJpg==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "5.0.2"
         }
@@ -121,8 +120,8 @@
       },
       "Microsoft.CodeCoverage": {
         "type": "Transitive",
-        "resolved": "16.8.3",
-        "contentHash": "pFZAEvmIEkEIKl6WD1wCZ2qkc3f6PLdc2kAjCsUJfaMxVtgq3qxcQd4eZq+ZMt9eSX12VfxtFav2vPy1yiu8bw=="
+        "resolved": "17.1.0",
+        "contentHash": "0N/ZJ71ncCxQWhgtkEYKOgu2oMHa8h1tsOUbhmIKXF8UwtSUCe4vHAsJ3DVcNWRwNfQzSTy263ZE+QF6MdIhhQ=="
       },
       "Microsoft.CSharp": {
         "type": "Transitive",
@@ -196,20 +195,19 @@
       },
       "Microsoft.TestPlatform.ObjectModel": {
         "type": "Transitive",
-        "resolved": "16.8.3",
-        "contentHash": "dqHiRggyAbkjQO9926SzM11Pn0nKjH1wwM6ee3E9//y1WZsUgTSVCMS14qvlQlk9iUZJyj+iz3/1zplE4Ll+hw==",
+        "resolved": "17.1.0",
+        "contentHash": "OMo/FYnKGy3lZEK0gfitskRM3ga/YBt6MyCyFPq0xNLeybGOQ6HnYNAAvzyePo5WPuMiw3LX+HiuRWNjnas1fA==",
         "dependencies": {
-          "NuGet.Frameworks": "5.0.0",
-          "System.Reflection.Metadata": "1.6.0",
-          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0"
+          "NuGet.Frameworks": "5.11.0",
+          "System.Reflection.Metadata": "1.6.0"
         }
       },
       "Microsoft.TestPlatform.TestHost": {
         "type": "Transitive",
-        "resolved": "16.8.3",
-        "contentHash": "lF3QPoq7NYs7Xr/j5a44jJvHakRQq5lKyjG9adGNqeN28JmhD2qEogzGOL4GVkofqX1FmmbyUali2jlSVval8A==",
+        "resolved": "17.1.0",
+        "contentHash": "JS0JDLniDhIzkSPLHz7N/x1CG8ywJOtwInFDYA3KQvbz+ojGoT5MT2YDVReL1b86zmNRV8339vsTSm/zh0RcMg==",
         "dependencies": {
-          "Microsoft.TestPlatform.ObjectModel": "16.8.3",
+          "Microsoft.TestPlatform.ObjectModel": "17.1.0",
           "Newtonsoft.Json": "9.0.1"
         }
       },
@@ -305,13 +303,13 @@
       },
       "NuGet.Frameworks": {
         "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "c5JVjuVAm4f7E9Vj+v09Z9s2ZsqFDjBpcsyS3M9xRo0bEdm/LVZSzLxxNvfvAwRiiE8nwe1h2G4OwiwlzFKXlA=="
+        "resolved": "5.11.0",
+        "contentHash": "eaiXkUjC4NPcquGWzAGMXjuxvLwc6XGKMptSyOGQeT0X70BUZObuybJFZLA0OfTdueLd3US23NBPTBb6iF3V1Q=="
       },
       "OptimizedPriorityQueue": {
         "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "P697wMak7fu1b+dbulF7lUbitE3s459oQlYSLA+1HPibItPF6chE9639D42P+BV3c5JNQ4FxdB+w0pMP4+nyjw=="
+        "resolved": "5.1.0",
+        "contentHash": "0AnX6kAs0GiLrSqrHKe5mpQhJSHTmXeqLNucV2CxGATP/I9UzLMc1N4MtS/z8qB6mcgX61OjHdY3YbOmETGs+A=="
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
         "type": "Transitive",
@@ -1239,9 +1237,9 @@
       "Aptacode.PathFinder": {
         "type": "Project",
         "dependencies": {
-          "Aptacode.AppFramework": "1.0.20",
-          "Aptacode.Geometry": "1.0.35",
-          "OptimizedPriorityQueue": "5.0.0",
+          "Aptacode.AppFramework": "1.0.33",
+          "Aptacode.Geometry": "1.0.39",
+          "OptimizedPriorityQueue": "5.1.0",
           "System.Numerics.Vectors": "4.5.0",
           "System.ValueTuple": "4.5.0"
         }

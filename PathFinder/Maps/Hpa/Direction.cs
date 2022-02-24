@@ -1,11 +1,10 @@
-﻿namespace Aptacode.PathFinder.Maps.Hpa
+﻿namespace Aptacode.PathFinder.Maps.Hpa;
+
+public enum Direction
 {
-    public enum Direction
-    {
-        Up = 0,
-        Right = 1,
-        Down = 2,
-        Left = 3,
-        None = 4
-    }
+    Up = 0,
+    Right = 1,
+    Down = 2,
+    Left = 3,
+    None = 4
 }

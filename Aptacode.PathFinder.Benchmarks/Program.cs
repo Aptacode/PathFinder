@@ -1,9 +1,8 @@
-﻿namespace Aptacode.PathFinder.Benchmarks
+﻿namespace Aptacode.PathFinder.Benchmarks;
+
+internal class Program
 {
-    internal class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-        }
     }
 }

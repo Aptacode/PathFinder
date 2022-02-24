@@ -1,34 +1,34 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "Aptacode.AppFramework": {
         "type": "Direct",
-        "requested": "[1.0.20, )",
-        "resolved": "1.0.20",
-        "contentHash": "6Mf+T8vldymrGM/9+7h1wr6EOv2PJV+PtV6S4an65iDHfUu4bFW6Nl8AWWrtRpK9dcbEXfBOQjsD6OwEm2kFOQ==",
+        "requested": "[1.0.33, )",
+        "resolved": "1.0.33",
+        "contentHash": "LAAn2DHFi2blxPMRcogujUqgvz5k5CGxvZj4cA6eq8SBNsqeO/g6VXXghGx1NOCVkarlwL9ovlWTWUG6Tsv3mg==",
         "dependencies": {
-          "Aptacode.BlazorCanvas": "1.0.9",
+          "Aptacode.BlazorCanvas": "1.0.11",
           "Aptacode.CSharp.Common.Utilities": "1.0.0.30",
-          "Aptacode.Geometry": "1.0.35",
+          "Aptacode.Geometry": "1.0.37",
           "Microsoft.AspNetCore.Components.Web": "5.0.2"
         }
       },
       "Aptacode.Geometry": {
         "type": "Direct",
-        "requested": "[1.0.35, )",
-        "resolved": "1.0.35",
-        "contentHash": "ZyhJNzdTekWg8Fb39Zmr5D/OvBaoMqilGylTkdVcaatyvNElWYxmr+xA27O1bbkeQAsEyDQXmteoqpcsNRiUyg==",
+        "requested": "[1.0.39, )",
+        "resolved": "1.0.39",
+        "contentHash": "Vl0TmykKeQ5lnGfkqIgE1WGTxiHb6uE5DXgxmE17x8xQx/lmzepwAwdfLyJdved77Hvoa4B7hRBLQp1z20mqkQ==",
         "dependencies": {
-          "OptimizedPriorityQueue": "5.0.0",
+          "OptimizedPriorityQueue": "5.1.0",
           "System.Numerics.Vectors": "4.5.0"
         }
       },
       "OptimizedPriorityQueue": {
         "type": "Direct",
-        "requested": "[5.0.0, )",
-        "resolved": "5.0.0",
-        "contentHash": "P697wMak7fu1b+dbulF7lUbitE3s459oQlYSLA+1HPibItPF6chE9639D42P+BV3c5JNQ4FxdB+w0pMP4+nyjw=="
+        "requested": "[5.1.0, )",
+        "resolved": "5.1.0",
+        "contentHash": "0AnX6kAs0GiLrSqrHKe5mpQhJSHTmXeqLNucV2CxGATP/I9UzLMc1N4MtS/z8qB6mcgX61OjHdY3YbOmETGs+A=="
       },
       "System.Numerics.Vectors": {
         "type": "Direct",
@@ -44,8 +44,8 @@
       },
       "Aptacode.BlazorCanvas": {
         "type": "Transitive",
-        "resolved": "1.0.9",
-        "contentHash": "kOns4gwJnvTMOcGZP5otLv3gk+gnd8VJTYs7qmIsaov7G+pgISDvVnwZbIbpCa+NFwRn2T3ycCOjEkV6iCvIzA==",
+        "resolved": "1.0.11",
+        "contentHash": "ld1aO5KXZQokhBHTkMO3zMR5JwZDA7FyIQ/jT1V+NYmsIn8NUCWmXulayXa2zGthCYqkBULlF0cGcrZrH/RJpg==",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "5.0.2"
         }

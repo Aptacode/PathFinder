@@ -1,34 +1,27 @@
 ﻿using System.Collections.Generic;
 
-namespace Aptacode.PathFinder.Maps.Hpa
+namespace Aptacode.PathFinder.Maps.Hpa;
+
+public static class ListExtensions
 {
-    public static class ListExtensions
+    public static T[] Backwards<T>(this List<T> list)
     {
-        public static T[] Backwards<T>(this List<T> list)
-        {
-            var n = list.Count;
-            T[] reverseList = new T[n];
+        var n = list.Count;
+        var reverseList = new T[n];
 
-            for (var i = 0; i < n; i++)
-            {
-                reverseList[n - 1 - i] = list[i];
-            }
+        for (var i = 0; i < n; i++) reverseList[n - 1 - i] = list[i];
 
-            return reverseList;
-        }
+        return reverseList;
+    }
 
-        public static T[] Backwards<T>(this T[] list)
-        {
-            var n = list.Length;
+    public static T[] Backwards<T>(this T[] list)
+    {
+        var n = list.Length;
 
-            T[] reverseList = new T[n];
+        var reverseList = new T[n];
 
-            for (var i = 0; i < n; i++)
-            {
-                reverseList[n - 1 - i] = list[i];
-            }
+        for (var i = 0; i < n; i++) reverseList[n - 1 - i] = list[i];
 
-            return reverseList;
-        }
+        return reverseList;
     }
 }
